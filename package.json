@@ -1,0 +1,28 @@
+{
+  "name": "pramana-github",
+  "version": "1.0.0",
+  "description": "> **PRAMANA (प्रमाण)**: In Indian jurisprudence and epistemology, *Pramana* signifies the valid means of acquiring verified knowledge, evidentiary proof, and justified belief.",
+  "main": "server.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akshay-codingera/pramana.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/akshay-codingera/pramana/issues"
+  },
+  "homepage": "https://github.com/akshay-codingera/pramana#readme",
+  "dependencies": {
+    "three": "^0.187.0"
+  }
+}
