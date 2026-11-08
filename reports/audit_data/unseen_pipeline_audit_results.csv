@@ -1,0 +1,4 @@
+"Document_Type","File_Name","Words","Chunks","Detected_Indicators","Predicted_Label","P_Allowed","P_Dismissed","Confidence","Top1_Delta_P","Ground_Truth","Is_Correct"
+"PDF","road_contract.pdf",5071,32,2,"ALLOWED",0.8479,0.1521,0.6958,0.0792,"DISMISSED",FALSE
+"DOCX","authentic_sc_2026.docx",5283,32,1,"ALLOWED",0.5842,0.4158,0.1683,0.138,"ALLOWED",TRUE
+"TXT","authentic_sc_appeal_disposition.txt",7720,32,3,"ALLOWED",0.7579,0.2421,0.5157,-0.1503,"ALLOWED",TRUE

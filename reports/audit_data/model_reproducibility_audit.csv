@@ -1,0 +1,13 @@
+"Metric","Reproduced_Value","Previously_Reported","Discrepancy"
+"Evaluated_Samples",300,5132,-4832
+"Accuracy",80.33,78.55,1.78
+"Balanced_Accuracy",79.86,78.61,1.25
+"Precision",82.26,84.52,-2.25999999999999
+"Recall",73.38,70.3,3.08
+"Specificity",86.34,86.92,-0.579999999999998
+"F1_Score",0.7757,0.7676,0.0081
+"Brier_Score",0.1434,0.1439,-5e-04
+"TP",102,1818,-1716
+"FP",22,333,-311
+"FN",37,768,-731
+"TN",139,2213,-2074

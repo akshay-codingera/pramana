@@ -1,0 +1,5 @@
+library(reticulate)
+torch <- import("torch")
+cat("PyTorch imported successfully in R! Version:", torch$`__version__`, "\n")
+x <- torch$tensor(c(1.0, 2.0, 3.0))
+cat("Tensor:", as.numeric(x$numpy()), "\n")

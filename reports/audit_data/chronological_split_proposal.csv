@@ -1,0 +1,4 @@
+"Split","Years","Total_Cases","Allowed_Cases","Dismissed_Cases","Allowed_Ratio","Cohort_Pct"
+"Train (Historical)","1950–2015 (66 yrs)",28620,13604,15016,"47.53%","83.60%"
+"Validation (Buffer)","2016–2020 (5 yrs)",2465,1476,989,"59.88%","7.20%"
+"Held-Out Test (Contemporary)","2021–2026 (6 yrs)",3148,2158,990,"68.55%","9.20%"
