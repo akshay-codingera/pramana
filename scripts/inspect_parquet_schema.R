@@ -1,0 +1,8 @@
+library(nanoparquet)
+parquet_files <- list.files("data/source/metadata_parquet", pattern = "\\.parquet$", full.names = TRUE, recursive = TRUE)
+cat("Total parquet files found:", length(parquet_files), "\n")
+sample_pq <- read_parquet(parquet_files[1])
+cat("Columns in parquet files:\n")
+print(colnames(sample_pq))
+cat("\nStructure of first row:\n")
+str(sample_pq[1, ])

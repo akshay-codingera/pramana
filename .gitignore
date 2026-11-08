@@ -1,0 +1,68 @@
+# ====================================================================
+# PRAMANA — Git Ignore Configuration
+# ====================================================================
+
+# Operating System & Editor Artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Python Virtual Environments & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# R Environment & History
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Model Checkpoints & Weights (>5 MB)
+# (Excluded from Git; models are stored locally or fetched via setup script)
+engine/models/*.pt
+engine/models/*.pth
+engine/models/*.rds
+result/dataset_audit/master_metadata_all_years.rds
+
+# Heavy Research Data & Large Split CSVs (>20 GB)
+data/source/
+data/extracted/
+data/processed/extracted_text/
+data/processed/segmented_cases/
+data/processed/legal_cases.csv
+data/splits/grouped_*.csv
+
+# Temporary Upload Staging & Execution Outputs
+data/unseen_uploads/*
+!data/unseen_uploads/.gitkeep
+result/plots/*
+!result/plots/.gitkeep
+result/unseen_pred_*.json
+result/explain_*.json
+result/gt_*.json
+result/exp_list_*.json
+result/custom_input_*.txt
+scratch/
+*.log
+s3_tar_inventory.txt
