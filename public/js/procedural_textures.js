@@ -1,153 +1,540 @@
 /**
- * PRAMANA — Procedural High-Fidelity PBR Texture Generator
- * Generates procedural canvas textures for Indian Teak, Courtroom Marble,
- * Dholpur Sandstone, Official Indian Flag (Tiranga), Flagstone Pavers,
- * Lawn Turf, and Asphalt Driveway with zero external image dependencies.
+ * PRAMANA — High-Fidelity Procedural PBR Texture Generator
+ * Generates rich PBR texture suites (Diffuse, Tangent-Space Normal Map, Roughness Map)
+ * using HTML5 2D Canvas and Sobel gradient filtering with zero external image dependencies.
+ *
+ * Supported Materials:
+ * - Dholpur Red Sandstone (Ashlar blocks, chiseled bevels, sedimentary grain)
+ * - Jodhpur / Delhi Buff Sandstone (Smooth masonry, subtle banding, fine stone grain)
+ * - Carved Burma Teak Wood (Directional grain, annual growth rings, satin oil sheen)
+ * - Cast Architectural Brass / Gold (Brushed surface, micro-scratches, metallic luster)
+ * - Interlocking Flagstone Pavers (Chamfered slabs, mortar joints, aggregate)
+ * - Manicured Turf Lawn (Multi-tone blades, organic surface variation)
+ * - Municipal Asphalt Road (Aggregate tarmac, bitumen speckles)
+ * - Official Indian National Flag (Tiranga: 3:2 ratio, 24-spoke Ashoka Chakra, micro-weave)
  */
 
 import * as THREE from 'three';
 
-export function createWoodTexture(baseColor = '#4a2615', grainColor = '#2d1408', width = 512, height = 512) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
+/**
+ * Utility: Generate a Tangent-Space Normal Map from a Grayscale Heightmap Canvas
+ * Computes surface gradients using a 3x3 Sobel kernel and outputs standard tangent normal RGB.
+ */
+function createNormalMapFromHeight(heightCanvas, strength = 2.5) {
+  const width = heightCanvas.width;
+  const height = heightCanvas.height;
+  const srcCtx = heightCanvas.getContext('2d');
+  const srcData = srcCtx.getImageData(0, 0, width, height).data;
 
-  // Base stain
-  ctx.fillStyle = baseColor;
-  ctx.fillRect(0, 0, width, height);
+  const normalCanvas = document.createElement('canvas');
+  normalCanvas.width = width;
+  normalCanvas.height = height;
+  const normalCtx = normalCanvas.getContext('2d');
+  const normalImgData = normalCtx.createImageData(width, height);
+  const dst = normalImgData.data;
 
-  // Longitudinal wood grain lines
-  ctx.strokeStyle = grainColor;
-  ctx.lineWidth = 1;
-  ctx.globalAlpha = 0.22;
-
-  for (let i = 0; i < 400; i++) {
-    const y = Math.random() * height;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    // Smooth wavy grain
-    const cp1x = width * 0.33;
-    const cp1y = y + (Math.random() - 0.5) * 8;
-    const cp2x = width * 0.66;
-    const cp2y = y + (Math.random() - 0.5) * 8;
-    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, width, y + (Math.random() - 0.5) * 6);
-    ctx.stroke();
+  // Helper to sample height at (x, y) with wrapping
+  function getHeight(x, y) {
+    const wx = (x + width) % width;
+    const wy = (y + height) % height;
+    const idx = (wy * width + wx) * 4;
+    // Standard luminance from R channel
+    return srcData[idx] / 255.0;
   }
 
-  // Fine wood pores
-  ctx.fillStyle = grainColor;
-  ctx.globalAlpha = 0.15;
-  for (let p = 0; p < 800; p++) {
-    const px = Math.random() * width;
-    const py = Math.random() * height;
-    ctx.fillRect(px, py, 2 + Math.random() * 3, 1);
-  }
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      // 3x3 Sobel operator for dx and dy
+      const tl = getHeight(x - 1, y - 1);
+      const t  = getHeight(x,     y - 1);
+      const tr = getHeight(x + 1, y - 1);
+      const l  = getHeight(x - 1, y);
+      const r  = getHeight(x + 1, y);
+      const bl = getHeight(x - 1, y + 1);
+      const b  = getHeight(x,     y + 1);
+      const br = getHeight(x + 1, y + 1);
 
-  ctx.globalAlpha = 1.0;
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  return texture;
-}
+      const dx = (tr + 2.0 * r + br) - (tl + 2.0 * l + bl);
+      const dy = (bl + 2.0 * b + br) - (tl + 2.0 * t + tr);
 
-export function createMarbleTexture(baseColor = '#dcd6cd', veinColor = '#a89f92', width = 512, height = 512) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
+      // Normal vector in tangent space: (-dx * strength, -dy * strength, 1.0)
+      const nx = -dx * strength;
+      const ny = -dy * strength;
+      const nz = 1.0;
+      const len = Math.sqrt(nx * nx + ny * ny + nz * nz);
 
-  // Base stone
-  ctx.fillStyle = baseColor;
-  ctx.fillRect(0, 0, width, height);
-
-  // Organic marble veins
-  ctx.strokeStyle = veinColor;
-  ctx.globalAlpha = 0.18;
-  ctx.lineWidth = 1.5;
-
-  for (let v = 0; v < 25; v++) {
-    ctx.beginPath();
-    let x = Math.random() * width;
-    let y = 0;
-    ctx.moveTo(x, y);
-    while (y < height) {
-      x += (Math.random() - 0.5) * 24;
-      y += 10 + Math.random() * 20;
-      ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-  }
-
-  // Stone grain noise
-  ctx.fillStyle = '#948a7b';
-  ctx.globalAlpha = 0.08;
-  for (let n = 0; n < 1500; n++) {
-    ctx.fillRect(Math.random() * width, Math.random() * height, 1.5, 1.5);
-  }
-
-  ctx.globalAlpha = 1.0;
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  return texture;
-}
-
-export function createSandstoneTexture(colorHex = '#f3ecda', grainHex = '#c4b8a2', width = 512, height = 512) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-
-  ctx.fillStyle = colorHex;
-  ctx.fillRect(0, 0, width, height);
-
-  // Fine mineral granular noise
-  ctx.fillStyle = grainHex;
-  ctx.globalAlpha = 0.25;
-  for (let i = 0; i < 3500; i++) {
-    ctx.fillRect(Math.random() * width, Math.random() * height, 1.2, 1.2);
-  }
-
-  // Stone block mortar seams
-  ctx.strokeStyle = 'rgba(80, 60, 45, 0.35)';
-  ctx.lineWidth = 2;
-  ctx.globalAlpha = 0.3;
-  // Horizontal courses
-  for (let h = 64; h < height; h += 64) {
-    ctx.beginPath();
-    ctx.moveTo(0, h);
-    ctx.lineTo(width, h);
-    ctx.stroke();
-  }
-  // Vertical staggered joints
-  for (let r = 0; r < height / 64; r++) {
-    const offset = (r % 2) * 64;
-    for (let w = offset; w < width; w += 128) {
-      ctx.beginPath();
-      ctx.moveTo(w, r * 64);
-      ctx.lineTo(w, (r + 1) * 64);
-      ctx.stroke();
+      const dstIdx = (y * width + x) * 4;
+      // Map [-1, 1] -> [0, 255]
+      dst[dstIdx]     = Math.floor(((nx / len) * 0.5 + 0.5) * 255);
+      dst[dstIdx + 1] = Math.floor(((ny / len) * 0.5 + 0.5) * 255);
+      dst[dstIdx + 2] = Math.floor(((nz / len) * 0.5 + 0.5) * 255);
+      dst[dstIdx + 3] = 255;
     }
   }
 
-  ctx.globalAlpha = 1.0;
-  const texture = new THREE.CanvasTexture(canvas);
+  normalCtx.putImageData(normalImgData, 0, 0);
+  const texture = new THREE.CanvasTexture(normalCanvas);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   return texture;
 }
 
 /**
- * Official Indian National Flag (Tiranga) Texture Generator
- * Complies with the Flag Code of India: 3:2 ratio, Saffron, White, Green,
- * and navy blue Ashoka Chakra with exactly 24 equally spaced spokes.
+ * Creates High-Resolution Sandstone PBR Texture Suite (Diffuse, Normal, Roughness)
  */
-export function createIndianFlagTexture(width = 1024, height = 683) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
+export function createSandstonePBR(options = {}) {
+  const {
+    baseColor = '#8c331c',
+    veinColor = '#5e1e0d',
+    mortarColor = '#3a1308',
+    blockW = 128,
+    blockH = 64,
+    width = 512,
+    height = 512,
+    hasBlocks = true,
+    normalStrength = 2.8
+  } = options;
+
+  // 1. Diffuse Canvas
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const dCtx = diffCanvas.getContext('2d');
+
+  // Base stone wash
+  dCtx.fillStyle = baseColor;
+  dCtx.fillRect(0, 0, width, height);
+
+  // 2. Heightmap Canvas for Normal Map computation
+  const hCanvas = document.createElement('canvas');
+  hCanvas.width = width;
+  hCanvas.height = height;
+  const hCtx = hCanvas.getContext('2d');
+  hCtx.fillStyle = '#808080';
+  hCtx.fillRect(0, 0, width, height);
+
+  // 3. Roughness Canvas
+  const rCanvas = document.createElement('canvas');
+  rCanvas.width = width;
+  rCanvas.height = height;
+  const rCtx = rCanvas.getContext('2d');
+  rCtx.fillStyle = '#d0d0d0'; // Base roughness ~0.82
+  rCtx.fillRect(0, 0, width, height);
+
+  // Sedimentary stratification layers (wavy natural horizontal bedding)
+  for (let s = 0; s < 18; s++) {
+    const y = (s / 18) * height + (Math.random() - 0.5) * 20;
+    dCtx.strokeStyle = veinColor;
+    dCtx.lineWidth = 4 + Math.random() * 8;
+    dCtx.globalAlpha = 0.18 + Math.random() * 0.15;
+    dCtx.beginPath();
+    dCtx.moveTo(0, y);
+    dCtx.bezierCurveTo(width * 0.33, y + Math.random() * 12, width * 0.66, y - Math.random() * 12, width, y);
+    dCtx.stroke();
+
+    // Height offset for stratification
+    hCtx.strokeStyle = Math.random() > 0.5 ? '#909090' : '#707070';
+    hCtx.lineWidth = dCtx.lineWidth;
+    hCtx.globalAlpha = 0.15;
+    hCtx.beginPath();
+    hCtx.moveTo(0, y);
+    hCtx.bezierCurveTo(width * 0.33, y + Math.random() * 12, width * 0.66, y - Math.random() * 12, width, y);
+    hCtx.stroke();
+  }
+
+  // Fine mineral granular noise
+  const dImgData = dCtx.getImageData(0, 0, width, height);
+  const hImgData = hCtx.getImageData(0, 0, width, height);
+  const rImgData = rCtx.getImageData(0, 0, width, height);
+
+  for (let i = 0; i < width * height * 4; i += 4) {
+    const noise = (Math.random() - 0.5) * 28;
+    dImgData.data[i]     = Math.min(255, Math.max(0, dImgData.data[i] + noise));
+    dImgData.data[i + 1] = Math.min(255, Math.max(0, dImgData.data[i + 1] + noise * 0.8));
+    dImgData.data[i + 2] = Math.min(255, Math.max(0, dImgData.data[i + 2] + noise * 0.6));
+
+    // Fine surface roughness variation
+    hImgData.data[i] = Math.min(255, Math.max(0, hImgData.data[i] + noise * 0.7));
+    rImgData.data[i] = Math.min(255, Math.max(0, rImgData.data[i] + noise * 0.5));
+  }
+  dCtx.putImageData(dImgData, 0, 0);
+  hCtx.putImageData(hImgData, 0, 0);
+  rCtx.putImageData(rImgData, 0, 0);
+
+  // Chiseled Ashlar Masonry Blocks & Mortar Joints (if enabled)
+  if (hasBlocks) {
+    const rows = Math.ceil(height / blockH);
+    for (let r = 0; r <= rows; r++) {
+      const y = r * blockH;
+
+      // Horizontal Mortar Seam
+      dCtx.strokeStyle = mortarColor;
+      dCtx.lineWidth = 2.5;
+      dCtx.globalAlpha = 0.85;
+      dCtx.beginPath();
+      dCtx.moveTo(0, y);
+      dCtx.lineTo(width, y);
+      dCtx.stroke();
+
+      // Deep groove in heightmap
+      hCtx.strokeStyle = '#202020';
+      hCtx.lineWidth = 3.5;
+      hCtx.globalAlpha = 0.9;
+      hCtx.beginPath();
+      hCtx.moveTo(0, y);
+      hCtx.lineTo(width, y);
+      hCtx.stroke();
+
+      // Rough mortar in roughness map
+      rCtx.strokeStyle = '#f5f5f5'; // Mortar is very rough
+      rCtx.lineWidth = 3.0;
+      rCtx.globalAlpha = 0.9;
+      rCtx.beginPath();
+      rCtx.moveTo(0, y);
+      rCtx.lineTo(width, y);
+      rCtx.stroke();
+
+      // Vertical Staggered Joint
+      const offset = (r % 2) * (blockW / 2);
+      for (let x = -offset; x <= width + blockW; x += blockW) {
+        dCtx.strokeStyle = mortarColor;
+        dCtx.lineWidth = 2.0;
+        dCtx.globalAlpha = 0.8;
+        dCtx.beginPath();
+        dCtx.moveTo(x, y);
+        dCtx.lineTo(x, y + blockH);
+        dCtx.stroke();
+
+        hCtx.strokeStyle = '#202020';
+        hCtx.lineWidth = 3.0;
+        hCtx.globalAlpha = 0.85;
+        hCtx.beginPath();
+        hCtx.moveTo(x, y);
+        hCtx.lineTo(x, y + blockH);
+        hCtx.stroke();
+
+        rCtx.strokeStyle = '#f5f5f5';
+        rCtx.lineWidth = 2.5;
+        rCtx.globalAlpha = 0.85;
+        rCtx.beginPath();
+        rCtx.moveTo(x, y);
+        rCtx.lineTo(x, y + blockH);
+        rCtx.stroke();
+
+        // Chiseled Block Edge Bevel (inner shadow & highlight)
+        hCtx.strokeStyle = '#a0a0a0'; // Top/left bevel highlight
+        hCtx.lineWidth = 1.5;
+        hCtx.globalAlpha = 0.4;
+        hCtx.strokeRect(x + 2, y + 2, blockW - 4, blockH - 4);
+      }
+    }
+  }
+
+  // Create Three.js Textures
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.wrapS = THREE.RepeatWrapping;
+  diffuseTex.wrapT = THREE.RepeatWrapping;
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  const normalTex = createNormalMapFromHeight(hCanvas, normalStrength);
+
+  const roughnessTex = new THREE.CanvasTexture(rCanvas);
+  roughnessTex.wrapS = THREE.RepeatWrapping;
+  roughnessTex.wrapT = THREE.RepeatWrapping;
+
+  return { map: diffuseTex, normalMap: normalTex, roughnessMap: roughnessTex };
+}
+
+/**
+ * Creates Carved Burma Teak Wood PBR Suite (Diffuse, Normal, Roughness)
+ */
+export function createWoodPBR(baseColor = '#3a1f10', grainColor = '#1f0d04', width = 512, height = 512) {
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const dCtx = diffCanvas.getContext('2d');
+
+  const hCanvas = document.createElement('canvas');
+  hCanvas.width = width;
+  hCanvas.height = height;
+  const hCtx = hCanvas.getContext('2d');
+  hCtx.fillStyle = '#808080';
+  hCtx.fillRect(0, 0, width, height);
+
+  const rCanvas = document.createElement('canvas');
+  rCanvas.width = width;
+  rCanvas.height = height;
+  const rCtx = rCanvas.getContext('2d');
+  rCtx.fillStyle = '#909090'; // Satin sheen ~0.55
+  rCtx.fillRect(0, 0, width, height);
+
+  // Base wood stain
+  dCtx.fillStyle = baseColor;
+  dCtx.fillRect(0, 0, width, height);
+
+  // Longitudinal wood grain lines
+  for (let i = 0; i < 450; i++) {
+    const y = Math.random() * height;
+    dCtx.strokeStyle = grainColor;
+    dCtx.lineWidth = 0.8 + Math.random() * 1.6;
+    dCtx.globalAlpha = 0.25;
+
+    hCtx.strokeStyle = Math.random() > 0.5 ? '#606060' : '#a0a0a0';
+    hCtx.lineWidth = dCtx.lineWidth;
+    hCtx.globalAlpha = 0.3;
+
+    dCtx.beginPath();
+    dCtx.moveTo(0, y);
+    const cp1x = width * 0.33;
+    const cp1y = y + (Math.random() - 0.5) * 12;
+    const cp2x = width * 0.66;
+    const cp2y = y + (Math.random() - 0.5) * 12;
+    dCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, width, y + (Math.random() - 0.5) * 8);
+    dCtx.stroke();
+
+    hCtx.beginPath();
+    hCtx.moveTo(0, y);
+    hCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, width, y + (Math.random() - 0.5) * 8);
+    hCtx.stroke();
+  }
+
+  // Wood Pores
+  dCtx.fillStyle = grainColor;
+  dCtx.globalAlpha = 0.2;
+  hCtx.fillStyle = '#404040';
+  hCtx.globalAlpha = 0.4;
+  for (let p = 0; p < 1200; p++) {
+    const px = Math.random() * width;
+    const py = Math.random() * height;
+    const pw = 2 + Math.random() * 4;
+    dCtx.fillRect(px, py, pw, 1.2);
+    hCtx.fillRect(px, py, pw, 1.2);
+  }
+
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.wrapS = THREE.RepeatWrapping;
+  diffuseTex.wrapT = THREE.RepeatWrapping;
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  const normalTex = createNormalMapFromHeight(hCanvas, 2.0);
+
+  const roughnessTex = new THREE.CanvasTexture(rCanvas);
+  roughnessTex.wrapS = THREE.RepeatWrapping;
+  roughnessTex.wrapT = THREE.RepeatWrapping;
+
+  return { map: diffuseTex, normalMap: normalTex, roughnessMap: roughnessTex };
+}
+
+/**
+ * Creates Cast Architectural Brass / Gold PBR Suite
+ */
+export function createBrassPBR(width = 256, height = 256) {
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const dCtx = diffCanvas.getContext('2d');
+
+  // Base golden brass
+  dCtx.fillStyle = '#d4af37';
+  dCtx.fillRect(0, 0, width, height);
+
+  // Brushed metal micro-scratches
+  dCtx.strokeStyle = '#b89225';
+  dCtx.lineWidth = 1;
+  dCtx.globalAlpha = 0.2;
+  for (let i = 0; i < 200; i++) {
+    const y = Math.random() * height;
+    dCtx.beginPath();
+    dCtx.moveTo(0, y);
+    dCtx.lineTo(width, y + (Math.random() - 0.5) * 4);
+    dCtx.stroke();
+  }
+
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.wrapS = THREE.RepeatWrapping;
+  diffuseTex.wrapT = THREE.RepeatWrapping;
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  return { map: diffuseTex };
+}
+
+/**
+ * Creates Interlocking Flagstone Pavers PBR Suite (Diffuse, Normal, Roughness)
+ */
+export function createPaverPBR(width = 512, height = 512) {
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const dCtx = diffCanvas.getContext('2d');
+
+  const hCanvas = document.createElement('canvas');
+  hCanvas.width = width;
+  hCanvas.height = height;
+  const hCtx = hCanvas.getContext('2d');
+  hCtx.fillStyle = '#808080';
+  hCtx.fillRect(0, 0, width, height);
+
+  const rCanvas = document.createElement('canvas');
+  rCanvas.width = width;
+  rCanvas.height = height;
+  const rCtx = rCanvas.getContext('2d');
+  rCtx.fillStyle = '#b8b8b8'; // ~0.72 roughness
+  rCtx.fillRect(0, 0, width, height);
+
+  dCtx.fillStyle = '#9e968a';
+  dCtx.fillRect(0, 0, width, height);
+
+  const paverW = 64;
+  const paverH = 32;
+
+  for (let y = 0; y < height; y += paverH) {
+    const row = Math.floor(y / paverH);
+    const offsetX = (row % 2) * (paverW / 2);
+
+    for (let x = -offsetX; x < width + paverW; x += paverW) {
+      // Natural slab tonal variation
+      const shade = 145 + Math.floor((Math.random() - 0.5) * 32);
+      dCtx.fillStyle = `rgb(${shade + 12}, ${shade + 6}, ${shade - 6})`;
+      dCtx.fillRect(x + 1.5, y + 1.5, paverW - 3, paverH - 3);
+
+      // Chamfered stone bevel in heightmap
+      hCtx.fillStyle = '#909090';
+      hCtx.fillRect(x + 2, y + 2, paverW - 4, paverH - 4);
+
+      // Deep mortar groove
+      hCtx.strokeStyle = '#181818';
+      hCtx.lineWidth = 3.0;
+      hCtx.strokeRect(x, y, paverW, paverH);
+
+      dCtx.strokeStyle = '#4e483e';
+      dCtx.lineWidth = 2.0;
+      dCtx.strokeRect(x, y, paverW, paverH);
+    }
+  }
+
+  // Mineral speckled aggregate
+  for (let i = 0; i < 4000; i++) {
+    const px = Math.random() * width;
+    const py = Math.random() * height;
+    dCtx.fillStyle = Math.random() > 0.5 ? 'rgba(0, 0, 0, 0.14)' : 'rgba(255, 255, 255, 0.12)';
+    dCtx.fillRect(px, py, 1.4, 1.4);
+    hCtx.fillStyle = Math.random() > 0.5 ? '#606060' : '#a0a0a0';
+    hCtx.fillRect(px, py, 1.2, 1.2);
+  }
+
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.wrapS = THREE.RepeatWrapping;
+  diffuseTex.wrapT = THREE.RepeatWrapping;
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  const normalTex = createNormalMapFromHeight(hCanvas, 3.2);
+
+  const roughnessTex = new THREE.CanvasTexture(rCanvas);
+  roughnessTex.wrapS = THREE.RepeatWrapping;
+  roughnessTex.wrapT = THREE.RepeatWrapping;
+
+  return { map: diffuseTex, normalMap: normalTex, roughnessMap: roughnessTex };
+}
+
+/**
+ * Creates Manicured Lawn Grass PBR Suite
+ */
+export function createGrassPBR(width = 512, height = 512) {
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const dCtx = diffCanvas.getContext('2d');
+
+  const hCanvas = document.createElement('canvas');
+  hCanvas.width = width;
+  hCanvas.height = height;
+  const hCtx = hCanvas.getContext('2d');
+  hCtx.fillStyle = '#808080';
+  hCtx.fillRect(0, 0, width, height);
+
+  // Deep rich green turf base
+  dCtx.fillStyle = '#224a1e';
+  dCtx.fillRect(0, 0, width, height);
+
+  // Multi-tone blade distribution
+  const tones = ['#2c5a24', '#1e3d17', '#3a6e30', '#48853e', '#173113'];
+  for (let i = 0; i < 20000; i++) {
+    dCtx.fillStyle = tones[Math.floor(Math.random() * tones.length)];
+    dCtx.globalAlpha = 0.7;
+    const x = Math.random() * width;
+    const y = Math.random() * height;
+    dCtx.fillRect(x, y, 1.5, 3.5);
+
+    hCtx.fillStyle = Math.random() > 0.5 ? '#a0a0a0' : '#606060';
+    hCtx.globalAlpha = 0.4;
+    hCtx.fillRect(x, y, 1.5, 3.5);
+  }
+
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.wrapS = THREE.RepeatWrapping;
+  diffuseTex.wrapT = THREE.RepeatWrapping;
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  const normalTex = createNormalMapFromHeight(hCanvas, 2.2);
+
+  return { map: diffuseTex, normalMap: normalTex };
+}
+
+/**
+ * Creates Municipal Asphalt Driveway PBR Suite
+ */
+export function createAsphaltPBR(width = 512, height = 512) {
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const dCtx = diffCanvas.getContext('2d');
+
+  const hCanvas = document.createElement('canvas');
+  hCanvas.width = width;
+  hCanvas.height = height;
+  const hCtx = hCanvas.getContext('2d');
+  hCtx.fillStyle = '#808080';
+  hCtx.fillRect(0, 0, width, height);
+
+  dCtx.fillStyle = '#262930';
+  dCtx.fillRect(0, 0, width, height);
+
+  // Aggregate bitumen stones & speckles
+  for (let i = 0; i < 8000; i++) {
+    const val = Math.random() > 0.5 ? 90 : 35;
+    dCtx.fillStyle = `rgba(${val}, ${val}, ${val}, 0.3)`;
+    const x = Math.random() * width;
+    const y = Math.random() * height;
+    dCtx.fillRect(x, y, 1.2, 1.2);
+
+    hCtx.fillStyle = val > 60 ? '#b0b0b0' : '#505050';
+    hCtx.fillRect(x, y, 1.2, 1.2);
+  }
+
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.wrapS = THREE.RepeatWrapping;
+  diffuseTex.wrapT = THREE.RepeatWrapping;
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  const normalTex = createNormalMapFromHeight(hCanvas, 2.6);
+
+  return { map: diffuseTex, normalMap: normalTex };
+}
+
+/**
+ * Official Indian National Flag (Tiranga) High-Resolution Texture & Weave Normal Map
+ * Strictly complies with the Flag Code of India:
+ * - 3:2 Proportions
+ * - Saffron (#ff9933), White (#ffffff), Green (#128807)
+ * - Navy Blue (#000088) Ashoka Chakra with EXACTLY 24 equally spaced spokes (15° apart)
+ * - Central hub with inner core, and 24 outer gopura dots along the inner rim
+ * - Micro-weave cloth normal map for authentic khadi fabric texture
+ */
+export function createIndianFlagPBR(width = 1024, height = 683) {
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const ctx = diffCanvas.getContext('2d');
 
   const bandH = height / 3;
 
@@ -155,7 +542,7 @@ export function createIndianFlagTexture(width = 1024, height = 683) {
   ctx.fillStyle = '#ff9933';
   ctx.fillRect(0, 0, width, bandH);
 
-  // 2. White Band
+  // 2. Pure White Band
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, bandH, width, bandH);
 
@@ -166,19 +553,19 @@ export function createIndianFlagTexture(width = 1024, height = 683) {
   // 4. Navy Blue Ashoka Chakra
   const cx = width / 2;
   const cy = height / 2;
-  const chakraRadius = bandH * 0.38; // ~76% of band height
+  const chakraRadius = bandH * 0.38; // ~76% of white band height
 
   ctx.strokeStyle = '#000088';
   ctx.fillStyle = '#000088';
 
   // Outer Ring
-  ctx.lineWidth = Math.max(3, chakraRadius * 0.07);
+  ctx.lineWidth = Math.max(3.5, chakraRadius * 0.075);
   ctx.beginPath();
   ctx.arc(cx, cy, chakraRadius, 0, Math.PI * 2);
   ctx.stroke();
 
   // Central Hub
-  const hubRadius = chakraRadius * 0.16;
+  const hubRadius = chakraRadius * 0.17;
   ctx.beginPath();
   ctx.arc(cx, cy, hubRadius, 0, Math.PI * 2);
   ctx.fill();
@@ -189,9 +576,9 @@ export function createIndianFlagTexture(width = 1024, height = 683) {
   ctx.arc(cx, cy, hubRadius * 0.45, 0, Math.PI * 2);
   ctx.fill();
 
-  // Exactly 24 Equally Spaced Spokes (15 degrees each)
+  // EXACTLY 24 Equally Spaced Spokes (15 degrees each)
   ctx.strokeStyle = '#000088';
-  ctx.lineWidth = Math.max(2, chakraRadius * 0.035);
+  ctx.lineWidth = Math.max(2.2, chakraRadius * 0.038);
   for (let i = 0; i < 24; i++) {
     const angle = (i * 360 / 24) * (Math.PI / 180);
     const startX = cx + Math.cos(angle) * (hubRadius * 0.9);
@@ -204,128 +591,59 @@ export function createIndianFlagTexture(width = 1024, height = 683) {
     ctx.lineTo(endX, endY);
     ctx.stroke();
 
-    // Small decorative gopura dots along outer rim between spokes
+    // 24 decorative gopura dots along outer rim between spokes
     const dotAngle = angle + (15 / 2) * (Math.PI / 180);
     const dotX = cx + Math.cos(dotAngle) * (chakraRadius * 0.96);
     const dotY = cy + Math.sin(dotAngle) * (chakraRadius * 0.96);
     ctx.fillStyle = '#000088';
     ctx.beginPath();
-    ctx.arc(dotX, dotY, chakraRadius * 0.025, 0, Math.PI * 2);
+    ctx.arc(dotX, dotY, chakraRadius * 0.026, 0, Math.PI * 2);
     ctx.fill();
   }
 
-  // Fabric micro-weave noise
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+  // Micro-weave cloth heightmap
+  const hCanvas = document.createElement('canvas');
+  hCanvas.width = width;
+  hCanvas.height = height;
+  const hCtx = hCanvas.getContext('2d');
+  hCtx.fillStyle = '#808080';
+  hCtx.fillRect(0, 0, width, height);
+
+  hCtx.fillStyle = '#a0a0a0';
   for (let w = 0; w < width; w += 4) {
-    ctx.fillRect(w, 0, 1, height);
+    hCtx.fillRect(w, 0, 1.5, height);
   }
   for (let h = 0; h < height; h += 4) {
-    ctx.fillRect(0, h, width, 1);
+    hCtx.fillRect(0, h, width, 1.5);
   }
 
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  const normalTex = createNormalMapFromHeight(hCanvas, 1.5);
+
+  return { map: diffuseTex, normalMap: normalTex };
 }
 
-/**
- * Procedural Flagstone Paving Texture for Pathways and Plazas
- */
+// Backward-compatible exports for existing callers
+export function createWoodTexture(baseColor = '#4a2615', grainColor = '#2d1408', width = 512, height = 512) {
+  return createWoodPBR(baseColor, grainColor, width, height).map;
+}
+export function createMarbleTexture(baseColor = '#dcd6cd', veinColor = '#a89f92', width = 512, height = 512) {
+  return createSandstonePBR({ baseColor, veinColor, hasBlocks: false, width, height }).map;
+}
+export function createSandstoneTexture(colorHex = '#f3ecda', grainHex = '#c4b8a2', width = 512, height = 512) {
+  return createSandstonePBR({ baseColor: colorHex, veinColor: grainHex, hasBlocks: true, width, height }).map;
+}
+export function createIndianFlagTexture(width = 1024, height = 683) {
+  return createIndianFlagPBR(width, height).map;
+}
 export function createPaverTexture(width = 512, height = 512) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-
-  // Base stone tone
-  ctx.fillStyle = '#9c9488';
-  ctx.fillRect(0, 0, width, height);
-
-  // Staggered paving slabs
-  const paverW = 64;
-  const paverH = 32;
-
-  ctx.strokeStyle = '#5a544b';
-  ctx.lineWidth = 2.5;
-
-  for (let y = 0; y < height; y += paverH) {
-    const row = Math.floor(y / paverH);
-    const offsetX = (row % 2) * (paverW / 2);
-    for (let x = -offsetX; x < width; x += paverW) {
-      // Subtle color variation per paver
-      const shade = 140 + Math.floor((Math.random() - 0.5) * 20);
-      ctx.fillStyle = `rgb(${shade + 10}, ${shade + 4}, ${shade - 5})`;
-      ctx.fillRect(x + 1.5, y + 1.5, paverW - 3, paverH - 3);
-
-      // Paver border joint
-      ctx.strokeRect(x, y, paverW, paverH);
-    }
-  }
-
-  // Mineral noise
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
-  for (let i = 0; i < 2000; i++) {
-    ctx.fillRect(Math.random() * width, Math.random() * height, 1.5, 1.5);
-  }
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  return texture;
+  return createPaverPBR(width, height).map;
 }
-
-/**
- * Procedural Lawn Grass Texture with Multi-Tone Blade Distribution
- */
 export function createGrassTexture(width = 512, height = 512) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-
-  // Base rich turf
-  ctx.fillStyle = '#1e4020';
-  ctx.fillRect(0, 0, width, height);
-
-  // Multi-tone grass blades
-  const greens = ['#28542b', '#1b3b1d', '#356a39', '#46804a', '#18331a'];
-  for (let i = 0; i < 15000; i++) {
-    ctx.fillStyle = greens[Math.floor(Math.random() * greens.length)];
-    ctx.globalAlpha = 0.65;
-    const x = Math.random() * width;
-    const y = Math.random() * height;
-    ctx.fillRect(x, y, 1.5, 3.5);
-  }
-  ctx.globalAlpha = 1.0;
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  return texture;
+  return createGrassPBR(width, height).map;
 }
-
-/**
- * Procedural Asphalt Driveway Road Surface with Aggregate Texture
- */
 export function createAsphaltTexture(width = 512, height = 512) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-
-  // Base asphalt
-  ctx.fillStyle = '#2b2e35';
-  ctx.fillRect(0, 0, width, height);
-
-  // Mineral aggregate speckles
-  for (let i = 0; i < 6000; i++) {
-    const v = Math.random() > 0.5 ? 90 : 40;
-    ctx.fillStyle = `rgba(${v}, ${v}, ${v}, 0.25)`;
-    ctx.fillRect(Math.random() * width, Math.random() * height, 1.2, 1.2);
-  }
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  return texture;
+  return createAsphaltPBR(width, height).map;
 }

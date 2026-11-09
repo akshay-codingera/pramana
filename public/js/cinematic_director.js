@@ -32,6 +32,8 @@ class CinematicDirector {
   }
 
   init() {
+    window.cinematicDirector = this;
+
     // 1. Build all 3D scenes in the engine
     earthScene.build();
     exteriorScene.build();
@@ -217,10 +219,11 @@ class CinematicDirector {
     threeScene.exteriorGroup.visible = true;
     threeScene.courtroomGroup.visible = false;
     threeScene.setLightingMode('exterior');
+    exteriorScene.closeEntranceDoors();
 
     // 1. High-altitude monumental establishing shot revealing full symmetrical campus and dome
-    threeScene.teleportCamera(new THREE.Vector3(0, 165, 380), new THREE.Vector3(0, 50, 0));
-    threeScene.setCameraTarget(new THREE.Vector3(0, 48, 220), new THREE.Vector3(0, 48, 120), 0.032);
+    threeScene.teleportCamera(new THREE.Vector3(0, 160, 360), new THREE.Vector3(0, 48, 40));
+    threeScene.setCameraTarget(new THREE.Vector3(0, 52, 240), new THREE.Vector3(0, 48, 40), 0.032);
 
     this.setSubtext(
       'THE SUPREME COURT OF INDIA',
@@ -230,7 +233,7 @@ class CinematicDirector {
     // 2. Waypoint: Gliding over the forecourt plaza and flag towards the monumental portico steps
     setTimeout(() => {
       if (this.isIntroSkipped || this.stage !== CINEMATIC_STAGES.SC_EXTERIOR) return;
-      threeScene.setCameraTarget(new THREE.Vector3(0, 22, 105), new THREE.Vector3(0, 32, 60), 0.038);
+      threeScene.setCameraTarget(new THREE.Vector3(0, 24, 125), new THREE.Vector3(0, 30, 60), 0.038);
     }, 2400);
 
     // Next: Enter Building through Central Portico
@@ -244,8 +247,11 @@ class CinematicDirector {
     this.stage = CINEMATIC_STAGES.ENTERING_COURTROOM;
     this.setProgress(90);
 
-    // Move camera straight between the colonnade pillars and up to the carved entrance doors
-    threeScene.setCameraTarget(new THREE.Vector3(0, 26, 64), new THREE.Vector3(0, 26, 45), 0.055);
+    // Trigger ceremonial entrance doors opening naturally
+    exteriorScene.openEntranceDoors();
+
+    // Move camera smoothly onto the portico terrace, framing the fluted columns, coffered ceiling, and opening teak doors
+    threeScene.setCameraTarget(new THREE.Vector3(0, 24, 78), new THREE.Vector3(0, 26, 45), 0.045);
 
     this.setSubtext(
       'ENTERING THE CENTRAL ROTUNDA',
@@ -256,7 +262,43 @@ class CinematicDirector {
     this.stageTimeout = setTimeout(() => {
       if (this.isIntroSkipped) return;
       this.enterCourtroomActive();
-    }, 2400);
+    }, 2800);
+  }
+
+  /**
+   * Sets one of the 4 designated architectural camera views for visual inspection
+   * @param {string} viewKey - 'A_AERIAL' | 'B_FRONTAL' | 'C_GROUND' | 'D_ENTRANCE'
+   */
+  setCameraView(viewKey) {
+    threeScene.earthGroup.visible = false;
+    threeScene.exteriorGroup.visible = true;
+    threeScene.courtroomGroup.visible = false;
+    threeScene.setLightingMode('exterior');
+
+    switch (viewKey) {
+      case 'A_AERIAL':
+        // View A: Complete aerial architectural view
+        threeScene.teleportCamera(new THREE.Vector3(0, 160, 360), new THREE.Vector3(0, 48, 40));
+        exteriorScene.closeEntranceDoors();
+        break;
+      case 'B_FRONTAL':
+        // View B: Full frontal architectural view showcasing classical symmetry
+        threeScene.teleportCamera(new THREE.Vector3(0, 52, 240), new THREE.Vector3(0, 48, 40));
+        exteriorScene.closeEntranceDoors();
+        break;
+      case 'C_GROUND':
+        // View C: Ground-level entrance approach across the plaza
+        threeScene.teleportCamera(new THREE.Vector3(0, 16, 125), new THREE.Vector3(0, 26, 60));
+        exteriorScene.closeEntranceDoors();
+        break;
+      case 'D_ENTRANCE':
+        // View D: Detailed entrance close-up framed with portico columns, ceiling, and opening doors
+        threeScene.teleportCamera(new THREE.Vector3(0, 24, 78), new THREE.Vector3(0, 26, 45));
+        exteriorScene.openEntranceDoors();
+        break;
+      default:
+        console.warn('Unknown camera view:', viewKey);
+    }
   }
 
   enterCourtroomActive() {

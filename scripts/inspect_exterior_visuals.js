@@ -1,10 +1,13 @@
 // scripts/inspect_exterior_visuals.js
 // Automated verification and high-resolution capture of the upgraded Supreme Court architectural reconstruction.
+// Captures the 4 designated architectural camera views and flag close-up.
 
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
+
+const ARTIFACT_DIR = 'C:\\Users\\aksha\\.gemini\\antigravity\\brain\\54ef08f6-1581-47d5-9f68-d717a0a18f3c\\figures\\audit';
 
 async function ensureChrome() {
   return new Promise((resolve) => {
@@ -34,7 +37,7 @@ async function getPageWsUrl() {
         const list = JSON.parse(data);
         const page = list.find(t => t.type === 'page' && t.url.includes('3001'));
         if (page) resolve(page.webSocketDebuggerUrl);
-        else reject(new Error('PRAMANA page target not found'));
+        else reject(new Error('PRAMANA page target not found on port 3001'));
       });
     }).on('error', reject);
   });
@@ -61,17 +64,29 @@ function sendCommand(ws, id, method, params = {}) {
 async function captureScreenshot(ws, id, filename) {
   const res = await sendCommand(ws, id, 'Page.captureScreenshot', { format: 'png' });
   const buffer = Buffer.from(res.data, 'base64');
-  const filepath = path.join(__dirname, '..', 'reports', 'screenshots', filename);
-  fs.writeFileSync(filepath, buffer);
-  console.log(`[Captured] ${filename} (${(buffer.length / 1024).toFixed(1)} KB) -> ${filepath}`);
-  return filepath;
+  const localPath = path.join(__dirname, '..', 'reports', 'screenshots', filename);
+  fs.writeFileSync(localPath, buffer);
+
+  // Copy to artifact directory
+  try {
+    if (!fs.existsSync(ARTIFACT_DIR)) {
+      fs.mkdirSync(ARTIFACT_DIR, { recursive: true });
+    }
+    const artifactPath = path.join(ARTIFACT_DIR, filename);
+    fs.writeFileSync(artifactPath, buffer);
+  } catch (err) {
+    console.warn('Could not copy to artifact dir:', err.message);
+  }
+
+  console.log(`[Captured] ${filename} (${(buffer.length / 1024).toFixed(1)} KB)`);
+  return localPath;
 }
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function run() {
   const wsUrl = await getPageWsUrl();
-  console.log('Connecting to Chrome CDP for Supreme Court Exterior Architectural Inspection...');
+  console.log('Connecting to Chrome CDP for Supreme Court Architectural Inspection...');
   const ws = new WebSocket(wsUrl);
   await new Promise(r => ws.onopen = r);
 
@@ -99,32 +114,101 @@ async function run() {
   console.log('\nReloading page to observe exterior sequence...');
   await sendCommand(ws, 5, 'Page.navigate', { url: 'http://localhost:3001' });
 
-  // Wait for Earth sequence to complete and transition to exterior (~11.5s from start)
-  console.log('Waiting 11.5s for arrival at Supreme Court exterior...');
+  // Wait for Earth sequence to complete and arrive at exterior (~11.5s from reload)
+  console.log('Waiting 11.5s for natural arrival at Supreme Court exterior...');
   await sleep(11500);
 
-  // 1. Wide Establishing Architectural View
-  console.log('Capturing Wide Establishing Shot...');
+  // 1. Natural In-Flight Sequence Captures
+  console.log('\n--- Capturing In-Flight Cinematic Journey ---');
   await captureScreenshot(ws, 10, '04_sc_exterior.png');
   await captureScreenshot(ws, 11, 'sc_establishing_shot.png');
 
-  // 2. Forecourt & Indian National Flag Reveal (~2.2s later)
-  console.log('Waiting 2.2s for Forecourt & Flag reveal...');
   await sleep(2200);
   await captureScreenshot(ws, 12, 'sc_flag_forecourt.png');
 
-  // 3. Portico & Colonnade Approach (~2.0s later)
-  console.log('Waiting 2.0s for Portico Colonnade glide...');
   await sleep(2000);
   await captureScreenshot(ws, 13, 'sc_portico_colonnade.png');
 
-  // 4. Main Entrance Doors & Motto Plaque (~1.5s later)
-  console.log('Waiting 1.5s for Ceremonial Entrance Portal...');
   await sleep(1500);
   await captureScreenshot(ws, 14, '05_building_entrance.png');
   await captureScreenshot(ws, 15, 'sc_entrance_doors.png');
 
-  console.log('\n--- Supreme Court Architectural Inspection Complete! ---');
+  // 2. High-Precision Dedicated Architectural Views (A, B, C, D)
+  console.log('\n--- Capturing 4 Dedicated Architectural Views ---');
+
+  // View A: Complete Aerial Architectural View
+  console.log('Setting View A: Complete Aerial View...');
+  await sendCommand(ws, 20, 'Runtime.evaluate', {
+    expression: `window.cinematicDirector.setCameraView('A_AERIAL')`
+  });
+  await sleep(1200);
+  await captureScreenshot(ws, 21, 'view_a_aerial_architecture.png');
+
+  // View B: Full Frontal Architectural View
+  console.log('Setting View B: Full Frontal Elevation...');
+  await sendCommand(ws, 22, 'Runtime.evaluate', {
+    expression: `window.cinematicDirector.setCameraView('B_FRONTAL')`
+  });
+  await sleep(1200);
+  await captureScreenshot(ws, 23, 'view_b_frontal_architecture.png');
+
+  // View C: Ground-Level Entrance Approach
+  console.log('Setting View C: Ground-Level Entrance Approach...');
+  await sendCommand(ws, 24, 'Runtime.evaluate', {
+    expression: `window.cinematicDirector.setCameraView('C_GROUND')`
+  });
+  await sleep(1200);
+  await captureScreenshot(ws, 25, 'view_c_ground_approach.png');
+
+  // View D: Detailed Entrance Close-Up (Framed with pillars, ceiling, and opening doors)
+  console.log('Setting View D: Detailed Entrance Close-Up (Framed with Opening Doors)...');
+  await sendCommand(ws, 26, 'Runtime.evaluate', {
+    expression: `window.cinematicDirector.setCameraView('D_ENTRANCE')`
+  });
+  await sleep(1500);
+  await captureScreenshot(ws, 27, 'view_d_entrance_detail.png');
+
+  // Dedicated Close-Up of Dynamic Indian National Flag (Tiranga)
+  console.log('Setting Dedicated Close-Up of Dynamic Tiranga Flag...');
+  await sendCommand(ws, 28, 'Runtime.evaluate', {
+    expression: `
+      window.threeScene.teleportCamera(new THREE.Vector3(12, 74, 185), new THREE.Vector3(10, 74, 160));
+    `
+  });
+  await sleep(1200);
+  await captureScreenshot(ws, 29, 'view_flag_cloth_detail.png');
+
+  // Measure Real-Time Performance & JS Memory Metrics
+  console.log('\nMeasuring 60 FPS Performance & Memory Footprint...');
+  const perfResult = await sendCommand(ws, 30, 'Runtime.evaluate', {
+    expression: `
+      new Promise((resolve) => {
+        let frames = 0;
+        const start = performance.now();
+        function check() {
+          frames++;
+          if (performance.now() - start >= 1000) {
+            const duration = performance.now() - start;
+            const fps = (frames / (duration / 1000)).toFixed(1);
+            const memory = performance.memory ? (performance.memory.usedJSHeapSize / 1048576).toFixed(2) : 'N/A';
+            resolve({ fps: parseFloat(fps), frameTimeMs: (duration / frames).toFixed(2), memoryMB: memory });
+          } else {
+            requestAnimationFrame(check);
+          }
+        }
+        requestAnimationFrame(check);
+      });
+    `,
+    awaitPromise: true,
+    returnByValue: true
+  });
+
+  console.log('--- Performance Metrics on Intel Iris Xe Integrated Graphics ---');
+  console.log(`FPS: ${perfResult.result.value.fps} FPS`);
+  console.log(`Average Frame Time: ${perfResult.result.value.frameTimeMs} ms`);
+  console.log(`Active JS Heap: ${perfResult.result.value.memoryMB} MB`);
+
+  console.log('\n--- Supreme Court Architectural Inspection & Verification Complete! ---');
   ws.close();
   process.exit(0);
 }

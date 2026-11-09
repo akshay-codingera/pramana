@@ -45,6 +45,8 @@ class ThreeSceneManager {
 
   init(containerElement) {
     this.container = containerElement;
+    window.threeScene = this;
+    window.THREE = THREE;
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -143,13 +145,18 @@ class ThreeSceneManager {
     } else if (mode === 'exterior') {
       this.scene.background.setHex(0xd0e2f2); // Photorealistic atmospheric Delhi morning sky
       this.scene.fog.color.setHex(0xd0e2f2);
-      this.scene.fog.density = 0.0006;
-      this.ambientLight.intensity = 0.7;
-      this.hemiLight.intensity = 0.75;
-      this.hemiLight.color.setHex(0xfbfdfe);
-      this.hemiLight.groundColor.setHex(0x42382e);
-      this.sunLight.position.set(220, 380, 260);
-      this.sunLight.intensity = 2.4;
+      this.scene.fog.density = 0.00045;
+      this.ambientLight.intensity = 0.65;
+      this.hemiLight.intensity = 0.85;
+      this.hemiLight.color.setHex(0xf8faff);
+      this.hemiLight.groundColor.setHex(0x6e4a38); // Warm Dholpur red sandstone bounce
+      this.sunLight.position.set(240, 420, 260);
+      this.sunLight.intensity = 2.6;
+      this.sunLight.shadow.camera.left = -260;
+      this.sunLight.shadow.camera.right = 260;
+      this.sunLight.shadow.camera.top = 260;
+      this.sunLight.shadow.camera.bottom = -260;
+      this.sunLight.shadow.camera.updateProjectionMatrix();
     } else if (mode === 'courtroom') {
       this.scene.background.setHex(0x0b0d12);
       this.scene.fog.color.setHex(0x0b0d12);
