@@ -133,20 +133,26 @@ class ThreeSceneManager {
 
   setLightingMode(mode) {
     if (mode === 'space') {
+      this.scene.background.setHex(0x000000);
+      this.scene.fog.color.setHex(0x000000);
       this.ambientLight.intensity = 0.2;
       this.hemiLight.intensity = 0.15;
       this.sunLight.position.set(800, 300, 600);
       this.sunLight.intensity = 2.4;
       this.scene.fog.density = 0.00005;
     } else if (mode === 'exterior') {
-      this.ambientLight.intensity = 0.6;
-      this.hemiLight.intensity = 0.65;
-      this.hemiLight.color.setHex(0xeef4fc);
-      this.hemiLight.groundColor.setHex(0x382c20);
-      this.sunLight.position.set(200, 350, 250);
-      this.sunLight.intensity = 2.0;
-      this.scene.fog.density = 0.0008;
+      this.scene.background.setHex(0xd0e2f2); // Photorealistic atmospheric Delhi morning sky
+      this.scene.fog.color.setHex(0xd0e2f2);
+      this.scene.fog.density = 0.0006;
+      this.ambientLight.intensity = 0.7;
+      this.hemiLight.intensity = 0.75;
+      this.hemiLight.color.setHex(0xfbfdfe);
+      this.hemiLight.groundColor.setHex(0x42382e);
+      this.sunLight.position.set(220, 380, 260);
+      this.sunLight.intensity = 2.4;
     } else if (mode === 'courtroom') {
+      this.scene.background.setHex(0x0b0d12);
+      this.scene.fog.color.setHex(0x0b0d12);
       this.ambientLight.intensity = 0.7;
       this.hemiLight.intensity = 0.55;
       this.hemiLight.color.setHex(0xffeed6);

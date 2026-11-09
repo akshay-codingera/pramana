@@ -218,39 +218,45 @@ class CinematicDirector {
     threeScene.courtroomGroup.visible = false;
     threeScene.setLightingMode('exterior');
 
-    // Camera high exterior aerial approach
-    threeScene.teleportCamera(new THREE.Vector3(0, 160, 380), new THREE.Vector3(0, 45, 0));
-    threeScene.setCameraTarget(new THREE.Vector3(0, 22, 120), new THREE.Vector3(0, 32, 60), 0.03);
+    // 1. High-altitude monumental establishing shot revealing full symmetrical campus and dome
+    threeScene.teleportCamera(new THREE.Vector3(0, 165, 380), new THREE.Vector3(0, 50, 0));
+    threeScene.setCameraTarget(new THREE.Vector3(0, 48, 220), new THREE.Vector3(0, 48, 120), 0.032);
 
     this.setSubtext(
       'THE SUPREME COURT OF INDIA',
       'The Apex Judicial Authority — Established January 28, 1950 under Part V, Chapter IV of the Constitution.'
     );
 
+    // 2. Waypoint: Gliding over the forecourt plaza and flag towards the monumental portico steps
+    setTimeout(() => {
+      if (this.isIntroSkipped || this.stage !== CINEMATIC_STAGES.SC_EXTERIOR) return;
+      threeScene.setCameraTarget(new THREE.Vector3(0, 22, 105), new THREE.Vector3(0, 32, 60), 0.038);
+    }, 2400);
+
     // Next: Enter Building through Central Portico
     this.stageTimeout = setTimeout(() => {
       if (this.isIntroSkipped) return;
       this.transitionEnteringCourtroom();
-    }, 4500);
+    }, 5200);
   }
 
   transitionEnteringCourtroom() {
     this.stage = CINEMATIC_STAGES.ENTERING_COURTROOM;
     this.setProgress(90);
 
-    // Move camera straight into the main entrance doors
-    threeScene.setCameraTarget(new THREE.Vector3(0, 24, 62), new THREE.Vector3(0, 26, 50), 0.06);
+    // Move camera straight between the colonnade pillars and up to the carved entrance doors
+    threeScene.setCameraTarget(new THREE.Vector3(0, 26, 64), new THREE.Vector3(0, 26, 45), 0.055);
 
     this.setSubtext(
       'ENTERING THE CENTRAL ROTUNDA',
-      'Transitioning into the institutional chamber of Chief Justice Courtroom No. 1.'
+      'Transitioning through the ceremonial portal into Chief Justice Courtroom No. 1.'
     );
 
-    // Complete into Courtroom (after 2s)
+    // Complete into Courtroom
     this.stageTimeout = setTimeout(() => {
       if (this.isIntroSkipped) return;
       this.enterCourtroomActive();
-    }, 2200);
+    }, 2400);
   }
 
   enterCourtroomActive() {
