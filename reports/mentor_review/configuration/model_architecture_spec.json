@@ -1,0 +1,46 @@
+{
+  "model_name": "HierarchicalBiGRUWithAttention",
+  "framework": "PyTorch (wrapped via R reticulate)",
+  "implementation_files": [
+    "engine/hierarchical_nn.py",
+    "R/hierarchical_model.R"
+  ],
+  "chunk_embedding": {
+    "input_dimension": 256,
+    "projection_dimension": 128,
+    "layer_norm": true,
+    "activation": "ReLU",
+    "dropout": 0.3
+  },
+  "sequential_encoder": {
+    "type": "Bidirectional GRU",
+    "input_size": 128,
+    "hidden_size": 64,
+    "num_layers": 1,
+    "bidirectional": true,
+    "combined_output_size": 128
+  },
+  "attention_mechanism": {
+    "type": "Additive Attention (Bahdanau-style)",
+    "projection_hidden": 64,
+    "activation": "Tanh",
+    "context_vector_dimension": 1,
+    "pooling": "softmax-weighted sum"
+  },
+  "classification_head": {
+    "dropout": 0.3,
+    "dense_layer_1": {
+      "in_features": 128,
+      "out_features": 32,
+      "activation": "ReLU"
+    },
+    "dense_layer_2": {
+      "in_features": 32,
+      "out_features": 1,
+      "activation": "Linear"
+    },
+    "output_activation": "Sigmoid"
+  },
+  "loss_function": "BCEWithLogitsLoss()",
+  "total_trainable_parameters": 114881
+}

@@ -1,0 +1,6 @@
+model_architecture,text_representation,pre_decision_masking,test_accuracy,balanced_accuracy,precision,recall,specificity,f1_score,brier_score
+"Majority Baseline (Zero-Rule)","Empirical Prior","N/A",50.39%,50.00%,50.39%,100.00%,0.00%,0.6701,0.2500
+"Random Uniform Guessing","Null","N/A",50.00%,50.00%,50.00%,50.00%,50.00%,0.5000,0.2500
+"TF-IDF + Ridge Logistic Regression","Top 5,000 N-Grams","Tail Masking",68.20%,68.15%,71.50%,61.30%,75.00%,0.6601,0.2015
+"Direct Truncation BiGRU (First 512)","Initial 512 Tokens","None (Truncated)",71.40%,71.35%,74.80%,65.10%,77.60%,0.6960,0.1850
+"PRAMANA Hierarchical BiGRU + Attention","32 Chunks x 512 Tokens (Overlapping)","Tail Operative Masking",78.55%,78.61%,84.52%,70.30%,86.92%,0.7676,0.1439

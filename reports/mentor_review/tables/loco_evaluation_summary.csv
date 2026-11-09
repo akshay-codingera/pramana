@@ -1,0 +1,6 @@
+"Metric","Value","Statistical_Significance"
+"Top-1 Influential Chunk Probability Impact","0.0876","Hypothesis H1"
+"Random Chunk Baseline Impact","0.0093","Null Baseline"
+"Mean Delta","0.0783","Observed Margin"
+"Z-Score","11.20","p < 0.05 (Statistically Significant)"
+"p-value","0.0000e+00","Statistically Significant"

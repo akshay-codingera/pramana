@@ -1,0 +1,14 @@
+{
+  "batch_size": 32,
+  "gradient_accumulation_steps": 1,
+  "learning_rate": 0.001,
+  "optimizer": "Adam",
+  "weight_decay": 0.00001,
+  "max_epochs": 7,
+  "early_stopping_patience": 2,
+  "best_checkpoint_epoch": 5,
+  "max_chunks_per_document": 32,
+  "chunk_token_length": 512,
+  "chunk_overlap_stride": 384,
+  "pre_decision_masking_tail_window": 5
+}

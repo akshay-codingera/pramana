@@ -1,0 +1,7 @@
+parameter,value,description
+Wilcoxon Signed-Rank Z-Score,11.20,Statistical significance against zero effect
+p-value,< 1e-15,Empirical probability under null hypothesis
+Mean Salient Chunk Shift (|?P|),0.0876,Average probability shift from top-ranked chunk
+Random Chunk Baseline Shift (|?P|),0.0093,Average probability shift from arbitrary non-salient chunk
+Attribution Margin,+0.0783,Difference between salient and random perturbations
+Max Observed Chunk Shift,0.1503,Maximum single chunk perturbation in sample

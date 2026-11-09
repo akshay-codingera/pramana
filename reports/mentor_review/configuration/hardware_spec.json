@@ -1,0 +1,8 @@
+{
+  "cpu": "13th Gen Intel(R) Core(TM) i5-1334U",
+  "physical_cores": 10,
+  "logical_processors": 12,
+  "total_ram_gb": 15.65,
+  "gpu": "Intel Iris Xe Graphics (Shared Memory, CPU computation utilized for training)",
+  "storage": "Solid State Drive (NVMe)"
+}

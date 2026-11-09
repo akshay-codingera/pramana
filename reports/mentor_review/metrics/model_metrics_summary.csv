@@ -1,0 +1,8 @@
+metric_name,reported_full_test_n5132,audit_reevaluation_n300,variance_delta,audit_assessment
+Accuracy,78.55%,80.33%,+1.78%,Verified within sampling variance
+Balanced Accuracy,78.61%,79.86%,+1.25%,Verified within sampling variance
+Precision (Allowed),84.52%,82.26%,-2.26%,Verified within sampling variance
+Recall (Allowed),70.30%,73.38%,+3.08%,Verified within sampling variance
+Specificity (Dismissed),86.92%,86.34%,-0.58%,Exceptionally stable
+F1 Score,0.7676,0.7757,+0.0081,Verified within sampling variance
+Brier Score,0.1439,0.1434,-0.0005,Outstanding probability calibration
