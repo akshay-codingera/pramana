@@ -6,6 +6,7 @@
 
 import * as THREE from 'three';
 import { threeScene } from './three_scene.js';
+import { createSandstoneTexture } from './procedural_textures.js';
 
 class SupremeCourtExteriorScene {
   constructor() {
@@ -16,16 +17,29 @@ class SupremeCourtExteriorScene {
   build() {
     if (this.isBuilt) return;
 
+    // Procedural Stone PBR Textures
+    const redSandstoneTex = createSandstoneTexture('#7c2d12', '#4d1607', 512, 512);
+    redSandstoneTex.repeat.set(4, 2);
+
+    const creamFacadeTex = createSandstoneTexture('#f3ecda', '#c4b8a2', 512, 512);
+    creamFacadeTex.repeat.set(6, 4);
+
     // Materials Palette
     const sandstoneRedMat = new THREE.MeshStandardMaterial({
       color: 0x7c2d12, // Dholpur red sandstone base plinth
-      roughness: 0.85,
+      map: redSandstoneTex,
+      bumpMap: redSandstoneTex,
+      bumpScale: 0.4,
+      roughness: 0.82,
       metalness: 0.05
     });
 
     const facadeCreamMat = new THREE.MeshStandardMaterial({
       color: 0xf3ecda, // Traditional Supreme Court cream sandstone
-      roughness: 0.72,
+      map: creamFacadeTex,
+      bumpMap: creamFacadeTex,
+      bumpScale: 0.3,
+      roughness: 0.68,
       metalness: 0.08
     });
 
@@ -137,8 +151,10 @@ class SupremeCourtExteriorScene {
     porticoRoof.castShadow = true;
     this.group.add(porticoRoof);
 
-    // Classical Fluted Pillars
-    const pillarGeo = new THREE.CylinderGeometry(2.2, 2.6, 46, 20);
+    // Classical Fluted Pillars with Base Pedestals and Capital Cornices
+    const pillarGeo = new THREE.CylinderGeometry(2.2, 2.6, 44, 20);
+    const capitalGeo = new THREE.BoxGeometry(7, 2, 7);
+    const baseGeo = new THREE.BoxGeometry(7.5, 2.5, 7.5);
     const pillarPositions = [-38, -26, -14, 14, 26, 38];
     pillarPositions.forEach(x => {
       const pillar = new THREE.Mesh(pillarGeo, facadeCreamMat);
@@ -146,6 +162,18 @@ class SupremeCourtExteriorScene {
       pillar.castShadow = true;
       pillar.receiveShadow = true;
       this.group.add(pillar);
+
+      const base = new THREE.Mesh(baseGeo, sandstoneRedMat);
+      base.position.set(x, 13.25, 76);
+      base.castShadow = true;
+      base.receiveShadow = true;
+      this.group.add(base);
+
+      const cap = new THREE.Mesh(capitalGeo, facadeCreamMat);
+      cap.position.set(x, 57, 76);
+      cap.castShadow = true;
+      cap.receiveShadow = true;
+      this.group.add(cap);
     });
 
     // Central Archway / Main Entrance Doors

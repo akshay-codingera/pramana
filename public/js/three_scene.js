@@ -104,6 +104,10 @@ class ThreeSceneManager {
     this.ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
     this.scene.add(this.ambientLight);
 
+    // Realistic Sky / Ground Bounce Hemisphere Light
+    this.hemiLight = new THREE.HemisphereLight(0xfff6eb, 0x1a1e28, 0.5);
+    this.scene.add(this.hemiLight);
+
     // Space/Sun Directional Light (used for Earth and Exterior)
     this.sunLight = new THREE.DirectionalLight(0xfff5ea, 2.2);
     this.sunLight.position.set(1000, 400, 800);
@@ -130,16 +134,23 @@ class ThreeSceneManager {
   setLightingMode(mode) {
     if (mode === 'space') {
       this.ambientLight.intensity = 0.2;
+      this.hemiLight.intensity = 0.15;
       this.sunLight.position.set(800, 300, 600);
       this.sunLight.intensity = 2.4;
       this.scene.fog.density = 0.00005;
     } else if (mode === 'exterior') {
-      this.ambientLight.intensity = 0.7;
+      this.ambientLight.intensity = 0.6;
+      this.hemiLight.intensity = 0.65;
+      this.hemiLight.color.setHex(0xeef4fc);
+      this.hemiLight.groundColor.setHex(0x382c20);
       this.sunLight.position.set(200, 350, 250);
       this.sunLight.intensity = 2.0;
       this.scene.fog.density = 0.0008;
     } else if (mode === 'courtroom') {
-      this.ambientLight.intensity = 0.8;
+      this.ambientLight.intensity = 0.7;
+      this.hemiLight.intensity = 0.55;
+      this.hemiLight.color.setHex(0xffeed6);
+      this.hemiLight.groundColor.setHex(0x2c180e);
       this.sunLight.position.set(10, 40, 20);
       this.sunLight.intensity = 1.0;
       this.scene.fog.density = 0.004;

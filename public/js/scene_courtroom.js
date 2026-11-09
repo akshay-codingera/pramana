@@ -7,6 +7,7 @@
 
 import * as THREE from 'three';
 import { threeScene } from './three_scene.js';
+import { createWoodTexture, createMarbleTexture } from './procedural_textures.js';
 
 class CourtroomScene {
   constructor() {
@@ -17,23 +18,42 @@ class CourtroomScene {
   build() {
     if (this.isBuilt) return;
 
+    // Procedural PBR Textures
+    const teakWoodTex = createWoodTexture('#482414', '#261005', 512, 512);
+    teakWoodTex.repeat.set(4, 2);
+
+    const darkTrimTex = createWoodTexture('#2b1409', '#150803', 512, 512);
+    darkTrimTex.repeat.set(6, 2);
+
+    const floorMarbleTex = createMarbleTexture('#dedad2', '#a09789', 512, 512);
+    floorMarbleTex.repeat.set(10, 12);
+
     // Materials Palette
     const teakWoodMat = new THREE.MeshStandardMaterial({
       color: 0x482414, // Rich Indian Teak
-      roughness: 0.42,
+      map: teakWoodTex,
+      bumpMap: teakWoodTex,
+      bumpScale: 0.35,
+      roughness: 0.38,
       metalness: 0.08
     });
 
     const darkTrimWoodMat = new THREE.MeshStandardMaterial({
       color: 0x2b1409,
-      roughness: 0.5,
+      map: darkTrimTex,
+      bumpMap: darkTrimTex,
+      bumpScale: 0.4,
+      roughness: 0.45,
       metalness: 0.05
     });
 
     const floorMarbleMat = new THREE.MeshStandardMaterial({
       color: 0xdcd6cd, // Honed courtroom stone floor
-      roughness: 0.35,
-      metalness: 0.05
+      map: floorMarbleTex,
+      bumpMap: floorMarbleTex,
+      bumpScale: 0.2,
+      roughness: 0.28,
+      metalness: 0.04
     });
 
     const wallPanelMat = new THREE.MeshStandardMaterial({
@@ -201,6 +221,26 @@ class CourtroomScene {
     podium.position.set(0, 3.6, -8);
     podium.castShadow = true;
     this.group.add(podium);
+
+    // Legal Dossiers & Case Briefs on Advocate Tables (Indian Court Basta Folders)
+    const fileDossierMat = new THREE.MeshStandardMaterial({ color: 0xf0ebd8, roughness: 0.6 });
+    const ribbonRedMat = new THREE.MeshStandardMaterial({ color: 0x9e1a1a, roughness: 0.7 });
+
+    const dossierGeo = new THREE.BoxGeometry(2.4, 0.35, 3.2);
+    const ribbonGeo = new THREE.BoxGeometry(2.45, 0.38, 0.35);
+
+    [-19, -14, 14, 19].forEach(x => {
+      const file = new THREE.Mesh(dossierGeo, fileDossierMat);
+      file.position.set(x, 5.4, -4);
+      file.rotation.y = (x > 0 ? 0.08 : -0.08);
+      file.castShadow = true;
+      this.group.add(file);
+
+      const ribbon = new THREE.Mesh(ribbonGeo, ribbonRedMat);
+      ribbon.position.copy(file.position);
+      ribbon.rotation.copy(file.rotation);
+      this.group.add(ribbon);
+    });
 
     // 5. Spectator Wooden Benches (Rows 1 to 4)
     for (let r = 0; r < 4; r++) {
