@@ -767,6 +767,244 @@ export function createPalmBarkPBR(width = 256, height = 512) {
 }
 
 /**
+ * Creates Authentic High-Fidelity Evergreen Pine Needle Foliage Spray Alpha Texture
+ */
+/**
+ * Creates Authentic High-Fidelity Evergreen Pine Needle Foliage Spray Alpha Texture
+ * Generates a dense, plush evergreen needle bough pad with rich multi-toned needles,
+ * deep shaded interior foliage mass, and soft feathery outer needle tufts.
+ */
+export function createPineNeedleTexture(width = 512, height = 512) {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+
+  // Fully transparent background
+  ctx.clearRect(0, 0, width, height);
+
+  const cx = width / 2;
+  const baseY = height * 0.95;
+
+  // 1. Spreading woody branchlet framework
+  const branchConfigs = [
+    { startX: cx, startY: baseY, endX: cx, endY: height * 0.18, width: 8.0 },
+    { startX: cx, startY: height * 0.75, endX: cx - width * 0.32, endY: height * 0.38, width: 5.5 },
+    { startX: cx, startY: height * 0.75, endX: cx + width * 0.32, endY: height * 0.38, width: 5.5 },
+    { startX: cx, startY: height * 0.52, endX: cx - width * 0.26, endY: height * 0.22, width: 4.0 },
+    { startX: cx, startY: height * 0.52, endX: cx + width * 0.26, endY: height * 0.22, width: 4.0 },
+    { startX: cx, startY: height * 0.34, endX: cx - width * 0.16, endY: height * 0.12, width: 3.0 },
+    { startX: cx, startY: height * 0.34, endX: cx + width * 0.16, endY: height * 0.12, width: 3.0 }
+  ];
+
+  // 2. Underlying dense soft evergreen bough mass (eliminates thin wireframe / bare look)
+  branchConfigs.forEach(b => {
+    const steps = 32;
+    for (let s = 0; s <= steps; s++) {
+      const t = s / steps;
+      const x = b.startX + (b.endX - b.startX) * t + (Math.random() - 0.5) * 8;
+      const y = b.startY + (b.endY - b.startY) * t + (Math.random() - 0.5) * 8;
+      const padRadius = 32 * (1.15 - t * 0.45);
+
+      const grad = ctx.createRadialGradient(x, y, 4, x, y, padRadius);
+      grad.addColorStop(0, '#0d2614');
+      grad.addColorStop(0.45, '#15391e');
+      grad.addColorStop(0.80, '#1c4827');
+      grad.addColorStop(1, 'rgba(28, 72, 39, 0)');
+
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, padRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  // 3. Central woody branchlet strokes
+  branchConfigs.forEach(b => {
+    ctx.strokeStyle = '#321c10';
+    ctx.lineWidth = b.width;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(b.startX, b.startY);
+    ctx.lineTo(b.endX, b.endY);
+    ctx.stroke();
+
+    ctx.strokeStyle = '#482a17';
+    ctx.lineWidth = b.width * 0.45;
+    ctx.beginPath();
+    ctx.moveTo(b.startX - 1, b.startY);
+    ctx.lineTo(b.endX - 1, b.endY);
+    ctx.stroke();
+  });
+
+  // Rich evergreen pine needle color tones (authentic institutional forest spruce & deodar green)
+  const needleTones = {
+    shadow: ['#07190c', '#0b2413', '#10301a', '#163c21'],
+    mid: ['#1b4626', '#225630', '#2a673a', '#347844', '#3e8a50'],
+    highlight: ['#4a995d', '#58aa6c', '#68b87a', '#7ac48b']
+  };
+
+  // Helper to paint curved needle fascicles radiating outward
+  function paintNeedleBundle(ox, oy, baseAngle, spread, length, toneArray, count, minW, maxW) {
+    for (let n = 0; n < count; n++) {
+      const angle = baseAngle + (Math.random() - 0.5) * spread;
+      const nLen = length * (0.8 + Math.random() * 0.4);
+      const curvature = (Math.random() - 0.5) * 10;
+
+      ctx.save();
+      ctx.translate(ox, oy);
+      ctx.rotate(angle);
+
+      ctx.strokeStyle = toneArray[Math.floor(Math.random() * toneArray.length)];
+      ctx.lineWidth = minW + Math.random() * (maxW - minW);
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(curvature, -nLen * 0.5, curvature * 1.4, -nLen);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+  }
+
+  // 4. Layer 1: Dense interior shadow needles (creates deep internal volume)
+  branchConfigs.forEach(b => {
+    const steps = 36;
+    for (let s = 0; s <= steps; s++) {
+      const t = s / steps;
+      const x = b.startX + (b.endX - b.startX) * t + (Math.random() - 0.5) * 16;
+      const y = b.startY + (b.endY - b.startY) * t + (Math.random() - 0.5) * 16;
+      const baseAngle = Math.atan2(b.endY - b.startY, b.endX - b.startX) + Math.PI / 2;
+
+      paintNeedleBundle(x, y, baseAngle - Math.PI / 2, 1.4, 46, needleTones.shadow, 8, 2.2, 3.4);
+    }
+  });
+
+  // 5. Layer 2: Main body evergreen pine needles (vibrant foliage mass)
+  branchConfigs.forEach(b => {
+    const steps = 42;
+    for (let s = 0; s <= steps; s++) {
+      const t = s / steps;
+      const x = b.startX + (b.endX - b.startX) * t + (Math.random() - 0.5) * 14;
+      const y = b.startY + (b.endY - b.startY) * t + (Math.random() - 0.5) * 14;
+      const baseAngle = Math.atan2(b.endY - b.startY, b.endX - b.startX) + Math.PI / 2;
+
+      paintNeedleBundle(x, y, baseAngle - Math.PI / 2 - 0.45, 1.1, 40, needleTones.mid, 7, 1.8, 2.8);
+      paintNeedleBundle(x, y, baseAngle - Math.PI / 2 + 0.45, 1.1, 40, needleTones.mid, 7, 1.8, 2.8);
+    }
+  });
+
+  // 6. Layer 3: Sunlit needle tip highlights (feathery, soft outer plumage)
+  branchConfigs.forEach(b => {
+    const steps = 30;
+    for (let s = 4; s <= steps; s++) {
+      const t = s / steps;
+      const x = b.startX + (b.endX - b.startX) * t + (Math.random() - 0.5) * 10;
+      const y = b.startY + (b.endY - b.startY) * t + (Math.random() - 0.5) * 10;
+      const baseAngle = Math.atan2(b.endY - b.startY, b.endX - b.startX) + Math.PI / 2;
+
+      paintNeedleBundle(x, y, baseAngle - Math.PI / 2, 1.5, 36, needleTones.highlight, 6, 1.4, 2.2);
+    }
+  });
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.ClampToEdgeWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+/**
+ * Creates Rich Furrowed Reddish-Brown Pine Bark PBR Suite
+ */
+export function createPineBarkPBR(width = 256, height = 512) {
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const dCtx = diffCanvas.getContext('2d');
+
+  const hCanvas = document.createElement('canvas');
+  hCanvas.width = width;
+  hCanvas.height = height;
+  const hCtx = hCanvas.getContext('2d');
+
+  const rCanvas = document.createElement('canvas');
+  rCanvas.width = width;
+  rCanvas.height = height;
+  const rCtx = rCanvas.getContext('2d');
+
+  // Base reddish-brown pine tone
+  dCtx.fillStyle = '#422416';
+  dCtx.fillRect(0, 0, width, height);
+
+  hCtx.fillStyle = '#808080';
+  hCtx.fillRect(0, 0, width, height);
+
+  rCtx.fillStyle = '#e8e8e8';
+  rCtx.fillRect(0, 0, width, height);
+
+  // Vertical furrowed scales and bark plates
+  const numFurrows = 24;
+  for (let f = 0; f < numFurrows; f++) {
+    const x = (f / numFurrows) * width + (Math.random() - 0.5) * 6;
+    const furrowWidth = 4.0 + Math.random() * 5.0;
+
+    // Deep shadowed fissure
+    dCtx.strokeStyle = '#180d09';
+    dCtx.lineWidth = furrowWidth;
+    dCtx.beginPath();
+    dCtx.moveTo(x, 0);
+    dCtx.bezierCurveTo(x + 10, height * 0.33, x - 10, height * 0.66, x + 4, height);
+    dCtx.stroke();
+
+    hCtx.strokeStyle = '#1a1a1a';
+    hCtx.lineWidth = furrowWidth * 1.2;
+    hCtx.beginPath();
+    hCtx.moveTo(x, 0);
+    hCtx.bezierCurveTo(x + 10, height * 0.33, x - 10, height * 0.66, x + 4, height);
+    hCtx.stroke();
+
+    // Raised scale plates (warm terracotta/cinnamon highlights)
+    dCtx.fillStyle = f % 2 === 0 ? '#5a311d' : '#6b3a24';
+    dCtx.fillRect(x + furrowWidth, 0, (width / numFurrows) - furrowWidth, height);
+
+    hCtx.fillStyle = '#b0b0b0';
+    hCtx.fillRect(x + furrowWidth, 0, (width / numFurrows) - furrowWidth, height);
+  }
+
+  // Horizontal fissure rings
+  for (let y = 0; y < height; y += 28) {
+    const yy = y + (Math.random() - 0.5) * 12;
+    dCtx.strokeStyle = '#20110a';
+    dCtx.lineWidth = 2.5;
+    dCtx.beginPath();
+    dCtx.moveTo(0, yy);
+    dCtx.lineTo(width, yy);
+    dCtx.stroke();
+
+    hCtx.strokeStyle = '#282828';
+    hCtx.lineWidth = 3.0;
+    hCtx.beginPath();
+    hCtx.moveTo(0, yy);
+    hCtx.lineTo(width, yy);
+    hCtx.stroke();
+  }
+
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.wrapS = THREE.RepeatWrapping;
+  diffuseTex.wrapT = THREE.RepeatWrapping;
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  const normalTex = createNormalMapFromHeight(hCanvas, 2.5);
+
+  const roughnessTex = new THREE.CanvasTexture(rCanvas);
+  roughnessTex.wrapS = THREE.RepeatWrapping;
+  roughnessTex.wrapT = THREE.RepeatWrapping;
+
+  return { map: diffuseTex, normalMap: normalTex, roughnessMap: roughnessTex };
+}
+
+/**
  * Creates Authentic Royal Palm Feather Frond (Pinnate) Alpha Texture
  */
 export function createPalmFrondTexture(width = 256, height = 1024) {
