@@ -1,0 +1,572 @@
+/* ==========================================================================
+   PRAMANA — 3D Courtroom, Kathgharas & Judicial Overlays Styles
+   ========================================================================== */
+
+#courtroomContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Courtroom Top Header HUD */
+.courtroom-header {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: auto;
+  z-index: 20;
+}
+
+/* High-End Architectural Brass & Obsidian Wordmark Plaque */
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(180deg, rgba(18, 23, 33, 0.94) 0%, rgba(8, 10, 15, 0.98) 100%);
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border-gold);
+  backdrop-filter: var(--glass-blur-heavy);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.15);
+  transition: all var(--transition-fast);
+}
+
+.brand-badge:hover {
+  border-color: var(--gold-light);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 18px 40px rgba(0, 0, 0, 0.85), 0 0 26px rgba(212, 175, 55, 0.28);
+}
+
+.brand-icon {
+  font-size: 22px;
+  color: var(--gold-primary);
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4));
+}
+
+.brand-name {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  background: linear-gradient(135deg, #ffffff 0%, var(--gold-light) 40%, var(--gold-primary) 80%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+.brand-subtitle {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+.courtroom-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Floating Architectural Viewpoint Selector */
+.viewpoint-nav {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(8, 10, 15, 0.82);
+  padding: 6px 10px;
+  border-radius: 30px;
+  border: 1px solid var(--border-bronze);
+  backdrop-filter: var(--glass-blur-heavy);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 34px rgba(0, 0, 0, 0.75);
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.viewpoint-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 7px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  outline: none;
+}
+
+.viewpoint-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(212, 175, 55, 0.2);
+}
+
+.viewpoint-btn:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+.viewpoint-btn.active {
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold-primary) 70%, var(--gold-dark) 100%);
+  color: #080a0f;
+  font-weight: 600;
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  border-color: var(--gold-light);
+}
+
+/* 3D Kathghara Projected Floating Plaques */
+.kathghara-tag {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(180deg, rgba(18, 23, 33, 0.95) 0%, rgba(8, 10, 16, 0.98) 100%);
+  border: 1px solid var(--gold-primary);
+  border-radius: 6px;
+  padding: 10px 18px;
+  color: var(--text-primary);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 28px rgba(0, 0, 0, 0.75), 0 0 18px rgba(212, 175, 55, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: center;
+  backdrop-filter: var(--glass-blur-heavy);
+  z-index: 15;
+}
+
+.kathghara-tag:hover {
+  transform: translate(-50%, -58%) scale(1.05);
+  border-color: var(--gold-light);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 16px 36px rgba(0, 0, 0, 0.85), 0 0 28px rgba(212, 175, 55, 0.5);
+}
+
+.kathghara-tag-num {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+}
+
+.kathghara-tag-title {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.kathghara-tag-hint {
+  font-size: 10px;
+  color: var(--gold-light);
+  opacity: 0.75;
+}
+
+/* Kathghara Overlay Drawers / Modals */
+.court-drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(3, 4, 6, 0.75);
+  backdrop-filter: blur(10px);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-smooth);
+}
+
+.court-drawer-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.court-drawer {
+  position: fixed;
+  top: 0;
+  right: -640px;
+  width: 620px;
+  max-width: 94vw;
+  height: 100vh;
+  background: linear-gradient(180deg, rgba(14, 18, 26, 0.96) 0%, rgba(8, 10, 16, 0.98) 100%);
+  border-left: 1px solid var(--border-gold);
+  box-shadow: -20px 0 50px rgba(0, 0, 0, 0.9), inset 1px 0 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: var(--glass-blur-heavy);
+  z-index: 55;
+  transition: right var(--transition-cinematic);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+
+.court-drawer.active {
+  right: 0;
+}
+
+.drawer-header {
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--border-bronze);
+  background: linear-gradient(180deg, rgba(22, 28, 40, 0.7) 0%, rgba(12, 16, 24, 0.8) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.drawer-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.drawer-pretitle {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+}
+
+.drawer-title {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.drawer-footer {
+  padding: 18px 28px;
+  border-top: 1px solid var(--border-bronze);
+  background: linear-gradient(180deg, rgba(10, 13, 19, 0.92) 0%, rgba(6, 8, 12, 0.98) 100%);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Upload & Dropzone inside Kathghara 2 */
+.dropzone-container {
+  border: 2px dashed rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  padding: 34px 22px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.06) 0%, rgba(14, 18, 26, 0.75) 100%);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.dropzone-container:hover,
+.dropzone-container.drag-over {
+  border-color: var(--gold-light);
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.12) 0%, rgba(20, 26, 38, 0.85) 100%);
+  box-shadow: inset 0 0 24px rgba(212, 175, 55, 0.18), 0 0 16px rgba(212, 175, 55, 0.2);
+  transform: translateY(-1px);
+}
+
+.dropzone-icon {
+  font-size: 38px;
+  color: var(--gold-primary);
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.35));
+}
+
+.dropzone-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.dropzone-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Tabbed Input in Kathghara 2 (File vs Paste Text) */
+.sub-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-bronze);
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.sub-tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  padding: 10px 6px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sub-tab-btn:hover {
+  color: #ffffff;
+}
+
+.sub-tab-btn.active {
+  color: var(--gold-light);
+  border-bottom-color: var(--gold-primary);
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.text-input-area {
+  width: 100%;
+  height: 180px;
+  background: rgba(10, 13, 19, 0.88);
+  border: 1px solid var(--border-bronze);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 14px;
+  resize: vertical;
+  outline: none;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.text-input-area:focus {
+  border-color: var(--gold-primary);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(212, 175, 55, 0.35);
+}
+
+/* Integrity & Pre-decision Masking Protocol Banner */
+.masking-banner {
+  background: linear-gradient(180deg, rgba(34, 24, 12, 0.85) 0%, rgba(20, 14, 8, 0.92) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 6px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+.masking-banner-icon {
+  color: var(--accent-amber);
+  font-size: 20px;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.masking-banner-text {
+  font-size: 12px;
+  color: #e2e8f0;
+  line-height: 1.55;
+}
+
+/* Prediction Results Cards */
+.result-card {
+  background: linear-gradient(180deg, rgba(16, 21, 30, 0.94) 0%, rgba(10, 13, 19, 0.98) 100%);
+  border: 1px solid var(--border-bronze);
+  border-radius: 8px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 16px 36px rgba(0, 0, 0, 0.85);
+}
+
+.verdict-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.verdict-badge-large {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 22px;
+  border-radius: 6px;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.verdict-badge-large.allowed {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.12) 100%);
+  color: #34d399;
+  border: 1px solid var(--verdict-allowed-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 24px var(--verdict-allowed-glow);
+}
+
+.verdict-badge-large.dismissed {
+  background: linear-gradient(180deg, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0.12) 100%);
+  color: #f87171;
+  border: 1px solid var(--verdict-dismissed-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 24px var(--verdict-dismissed-glow);
+}
+
+.probability-bars-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.prob-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.prob-bar-bg {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.prob-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.prob-bar-fill.allowed {
+  background: linear-gradient(90deg, #059669 0%, #10b981 70%, #34d399 100%);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+.prob-bar-fill.dismissed {
+  background: linear-gradient(90deg, #b91c1c 0%, #ef4444 70%, #f87171 100%);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+/* LOCO Passage Cards */
+.loco-passages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loco-passage-card {
+  background: linear-gradient(180deg, rgba(16, 21, 30, 0.8) 0%, rgba(10, 13, 19, 0.9) 100%);
+  border: 1px solid var(--border-bronze);
+  border-left: 3px solid var(--text-muted);
+  border-radius: 6px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.loco-passage-card:hover {
+  background: linear-gradient(180deg, rgba(24, 31, 45, 0.9) 0%, rgba(14, 18, 26, 0.95) 100%);
+  border-color: var(--gold-primary);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 18px rgba(0, 0, 0, 0.65), 0 0 14px rgba(212, 175, 55, 0.2);
+}
+
+.loco-passage-card.supporting {
+  border-left-color: var(--verdict-allowed);
+}
+
+.loco-passage-card.opposing {
+  border-left-color: var(--verdict-dismissed);
+}
+
+.loco-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+
+.loco-delta-tag {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.loco-delta-tag.supporting {
+  background: var(--verdict-allowed-bg);
+  color: #34d399;
+  border: 1px solid var(--verdict-allowed-border);
+}
+
+.loco-delta-tag.opposing {
+  background: var(--verdict-dismissed-bg);
+  color: #f87171;
+  border: 1px solid var(--verdict-dismissed-border);
+}
+
+.loco-passage-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* Institutional Disclaimer Badge */
+.disclaimer-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(180deg, rgba(22, 18, 12, 0.92) 0%, rgba(12, 10, 6, 0.96) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--sandstone-cream);
+  font-weight: 500;
+  backdrop-filter: var(--glass-blur-heavy);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.disclaimer-badge .disclaimer-icon {
+  color: var(--accent-amber);
+  font-size: 14px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
+}

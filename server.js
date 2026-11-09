@@ -47,11 +47,21 @@ const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.js': 'application/javascript; charset=utf-8',
+  '.mjs': 'application/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
   '.svg': 'image/svg+xml',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.glb': 'model/gltf-binary',
+  '.gltf': 'model/gltf+json',
+  '.bin': 'application/octet-stream',
+  '.woff2': 'font/woff2',
+  '.woff': 'font/woff',
+  '.mp3': 'audio/mpeg',
+  '.wav': 'audio/wav',
+  '.ogg': 'audio/ogg'
 };
 
 function sendJSON(res, statusCode, data) {
@@ -188,7 +198,7 @@ const server = http.createServer((req, res) => {
   }
 
   // 3. API: Unseen Document Upload & Prediction
-  if (req.method === 'POST' && pathname === '/api/upload_predict') {
+  if (req.method === 'POST' && (pathname === '/api/upload_predict' || pathname === '/api/predict-unseen')) {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });
     req.on('end', () => {
@@ -304,6 +314,41 @@ const server = http.createServer((req, res) => {
 
   // 5. API: List Experiments & Cumulative Evaluation
   if (req.method === 'GET' && pathname === '/api/experiments') {
+    const regFile = path.join(RESULT_DIR, 'unseen_experiments.json');
+    if (fs.existsSync(regFile)) {
+      try {
+        const content = fs.readFileSync(regFile, 'utf8').trim();
+        const records = content ? JSON.parse(content) : [];
+        let tp = 0, fp = 0, fn = 0, tn = 0, n_eval = 0;
+        records.forEach(r => {
+          const gt = r.ground_truth;
+          if (typeof gt === 'string' && (gt.toUpperCase() === 'ALLOWED' || gt.toUpperCase() === 'DISMISSED')) {
+            n_eval++;
+            const pred = r.predicted_outcome;
+            const act = gt.toUpperCase();
+            if (pred === 'ALLOWED' && act === 'ALLOWED') tp++;
+            if (pred === 'ALLOWED' && act === 'DISMISSED') fp++;
+            if (pred === 'DISMISSED' && act === 'ALLOWED') fn++;
+            if (pred === 'DISMISSED' && act === 'DISMISSED') tn++;
+          }
+        });
+        const evalSummary = {
+          total_experiments: records.length,
+          total_evaluated: n_eval,
+          accuracy: n_eval > 0 ? (tp + tn) / n_eval : 0,
+          confusion_matrix: {
+            true_positives: tp,
+            false_positives: fp,
+            false_negatives: fn,
+            true_negatives: tn
+          }
+        };
+        return sendJSON(res, 200, { experiments: records, evaluation_summary: evalSummary });
+      } catch (parseErr) {
+        // Fall through to Rscript fallback below
+      }
+    }
+
     const timestamp = Date.now();
     const outJson = path.join(RESULT_DIR, `exp_list_${timestamp}.json`);
     const args = [
