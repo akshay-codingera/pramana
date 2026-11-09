@@ -6,12 +6,36 @@
 export const apiClient = {
   /**
    * Run unseen document prediction through the actual R/PyTorch pipeline
-   * @param {FormData} formData - multipart containing 'document' or 'raw_text'
+   * @param {FormData|object} payload - multipart containing 'document' or 'raw_text', or JSON object
    */
-  async predictUnseen(formData) {
-    const res = await fetch('/api/predict-unseen', {
+  async predictUnseen(payload) {
+    let body;
+    const headers = { 'Content-Type': 'application/json' };
+
+    if (payload instanceof FormData) {
+      const text = payload.get('raw_text');
+      const doc = payload.get('document');
+      if (text) {
+        body = JSON.stringify({ text, model: 'hierarchical' });
+      } else if (doc) {
+        const base64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(doc);
+        });
+        body = JSON.stringify({ file_base64: base64, filename: doc.name, model: 'hierarchical' });
+      } else {
+        body = JSON.stringify({ text: '', model: 'hierarchical' });
+      }
+    } else {
+      body = JSON.stringify(payload);
+    }
+
+    const res = await fetch('/api/upload_predict', {
       method: 'POST',
-      body: formData
+      headers,
+      body
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));

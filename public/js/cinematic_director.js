@@ -315,8 +315,15 @@ class CinematicDirector {
     threeScene.teleportCamera(new THREE.Vector3(0, 12, 38), new THREE.Vector3(0, 7, -20));
     threeScene.setCameraTarget(new THREE.Vector3(0, 12, 35), new THREE.Vector3(0, 7, -20), 0.05);
 
-    // Hide cinematic narration subtext
+    // Hide cinematic narration subtext & overlay
     this.setSubtext('', '');
+    const overlay = document.getElementById('cinematicOverlay');
+    if (overlay) {
+      overlay.classList.add('visually-hidden');
+      overlay.style.display = 'none';
+    }
+    const hud = document.querySelector('.cinematic-hud');
+    if (hud) hud.classList.remove('visible');
 
     // Hide cinematic progress bar
     const bar = document.getElementById('cinematicProgress');
@@ -361,6 +368,13 @@ class CinematicDirector {
 
     // Close any open drawers
     this.closeDrawers();
+
+    // Re-show cinematic overlay
+    const overlay = document.getElementById('cinematicOverlay');
+    if (overlay) {
+      overlay.classList.remove('visually-hidden');
+      overlay.style.display = 'block';
+    }
 
     // Reset black curtain
     const curtain = document.getElementById('blackCurtain');

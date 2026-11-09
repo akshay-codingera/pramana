@@ -32,7 +32,11 @@ import {
   createPaverPBR,
   createGrassPBR,
   createAsphaltPBR,
-  createIndianFlagPBR
+  createIndianFlagPBR,
+  createBarkPBR,
+  createPalmBarkPBR,
+  createPalmFrondTexture,
+  createFoliageTexture
 } from './procedural_textures.js';
 
 class SupremeCourtExteriorScene {
@@ -44,6 +48,7 @@ class SupremeCourtExteriorScene {
     this.rightDoor = null;
     this.doorOpenProgress = 0.0;
     this.targetDoorOpen = 0.0;
+    this.animatedFoliage = [];
     this.isBuilt = false;
   }
 
@@ -218,9 +223,57 @@ class SupremeCourtExteriorScene {
     const flowerRedMat = new THREE.MeshStandardMaterial({ color: 0xd62828, roughness: 0.75 });
     const flowerGoldMat = new THREE.MeshStandardMaterial({ color: 0xf4a261, roughness: 0.75 });
 
-    // Palm Tree Bark & Fronds
-    const palmBarkMat = new THREE.MeshStandardMaterial({ color: 0x6e5d4e, roughness: 0.85 });
-    const palmFrondMat = new THREE.MeshStandardMaterial({ color: 0x265a22, roughness: 0.72, side: THREE.DoubleSide });
+    // High-Fidelity PBR Tree Bark (Neem / Peepal)
+    const barkPBR = createBarkPBR(512, 512);
+    const barkMat = new THREE.MeshStandardMaterial({
+      color: 0x483a30,
+      map: barkPBR.map,
+      normalMap: barkPBR.normalMap,
+      normalScale: new THREE.Vector2(0.85, 0.85),
+      roughnessMap: barkPBR.roughnessMap,
+      roughness: 0.88,
+      metalness: 0.02
+    });
+
+    // High-Fidelity PBR Palm Trunk Bark (Ringed Leaf-Scars)
+    const palmBarkPBR = createPalmBarkPBR(256, 512);
+    const palmBarkMat = new THREE.MeshStandardMaterial({
+      color: 0x766c60,
+      map: palmBarkPBR.map,
+      normalMap: palmBarkPBR.normalMap,
+      normalScale: new THREE.Vector2(0.9, 0.9),
+      roughness: 0.84,
+      metalness: 0.04
+    });
+
+    // Realistic Organic Canopy Foliage with Alpha Transparency & Subsurface Sheen
+    const foliageTex = createFoliageTexture(512, 512);
+    const foliageMat = new THREE.MeshStandardMaterial({
+      map: foliageTex,
+      alphaTest: 0.35,
+      transparent: true,
+      roughness: 0.65,
+      metalness: 0.02,
+      side: THREE.DoubleSide
+    });
+
+    // Authentic Pinnate Royal Palm Frond Material
+    const palmFrondTex = createPalmFrondTexture(256, 1024);
+    const palmFrondMat = new THREE.MeshStandardMaterial({
+      map: palmFrondTex,
+      alphaTest: 0.25,
+      transparent: true,
+      roughness: 0.55,
+      metalness: 0.04,
+      side: THREE.DoubleSide
+    });
+
+    // Dark Organic Mulch / Soil for Garden Planting Beds
+    const mulchMat = new THREE.MeshStandardMaterial({
+      color: 0x241810,
+      roughness: 0.95,
+      metalness: 0.0
+    });
 
     // White Painted Window Frame Trim
     const whiteTrimMat = new THREE.MeshStandardMaterial({
@@ -1163,7 +1216,7 @@ class SupremeCourtExteriorScene {
     // 9. CAMPUS AVENUE TREES, STREETLAMPS & PERIMETER WALL
     // =========================================================================
 
-    // A. 14 Royal Palm Trees (Roystonea regia) lining the Semicircular Driveway
+    // A. 14 Realistic Royal Palm Trees (Roystonea regia) lining the Semicircular Driveway
     for (let p = 0; p < 14; p++) {
       const angle = (p * Math.PI / 13);
       const rad = 176;
@@ -1172,61 +1225,184 @@ class SupremeCourtExteriorScene {
 
       const palmGroup = new THREE.Group();
 
-      // Ringed Grey Trunk with natural swelling
-      const trunkGeo = new THREE.CylinderGeometry(1.2, 1.9, 34, 16);
+      // Swelling root flare collar
+      const baseGeo = new THREE.CylinderGeometry(1.8, 2.5, 3.5, 16);
+      const baseMesh = new THREE.Mesh(baseGeo, palmBarkMat);
+      baseMesh.position.y = 1.75;
+      baseMesh.castShadow = true;
+      palmGroup.add(baseMesh);
+
+      // Tapered ringed grey trunk (Height: 33)
+      const trunkGeo = new THREE.CylinderGeometry(1.2, 1.8, 33, 16);
       const trunk = new THREE.Mesh(trunkGeo, palmBarkMat);
-      trunk.position.y = 17;
+      trunk.position.y = 20.0;
       trunk.castShadow = true;
       palmGroup.add(trunk);
 
-      // Smooth Green Crownshaft
-      const crownshaftGeo = new THREE.CylinderGeometry(1.2, 1.2, 6.0, 16);
-      const crownshaftMat = new THREE.MeshStandardMaterial({ color: 0x3d7032, roughness: 0.6 });
+      // Smooth emerald green crownshaft
+      const crownshaftGeo = new THREE.CylinderGeometry(1.22, 1.25, 7.5, 16);
+      const crownshaftMat = new THREE.MeshStandardMaterial({ color: 0x24611d, roughness: 0.42, metalness: 0.04 });
       const crownshaft = new THREE.Mesh(crownshaftGeo, crownshaftMat);
-      crownshaft.position.y = 36;
+      crownshaft.position.y = 40.0;
       palmGroup.add(crownshaft);
 
-      // 10 Arching Feather Fronds forming a full crown
-      for (let f = 0; f < 10; f++) {
-        const frondAngle = (f * Math.PI * 2) / 10;
-        const frondGeo = new THREE.PlaneGeometry(18, 5.5);
-        const frond = new THREE.Mesh(frondGeo, palmFrondMat);
-        frond.position.set(Math.sin(frondAngle) * 7.5, 37.5, Math.cos(frondAngle) * 7.5);
-        frond.rotation.y = frondAngle;
-        frond.rotation.x = 0.42;
-        palmGroup.add(frond);
-      }
+      // Dynamic Crown Fronds Group (animated with wind)
+      const crownGroup = new THREE.Group();
+      crownGroup.position.y = 43.5;
+      crownGroup.userData = { baseRotZ: 0, baseRotX: 0, seed: p * 1.4 };
+      this.animatedFoliage.push(crownGroup);
 
+      // 16 Arching feather fronds arranged in 3 natural tiers
+      const tiers = [
+        { count: 4, elevation: 0.35, length: 18, width: 4.8 },  // Upright young fronds
+        { count: 6, elevation: 0.75, length: 22, width: 5.4 },  // Horizontal mature fronds
+        { count: 6, elevation: 1.25, length: 20, width: 4.8 }   // Drooping lower fronds
+      ];
+
+      tiers.forEach(tier => {
+        for (let f = 0; f < tier.count; f++) {
+          const frondAngle = (f * Math.PI * 2) / tier.count + (tier.elevation * 0.4);
+          const frondGroup = new THREE.Group();
+          frondGroup.rotation.y = frondAngle;
+
+          // Arching rachis stem
+          const stemGeo = new THREE.CylinderGeometry(0.08, 0.04, tier.length, 6);
+          const stem = new THREE.Mesh(stemGeo, crownshaftMat);
+          stem.position.set(0, tier.length * 0.45 * Math.cos(tier.elevation), tier.length * 0.45 * Math.sin(tier.elevation));
+          stem.rotation.x = tier.elevation;
+          frondGroup.add(stem);
+
+          // Feather leaflet blade plane with authentic pinnate palm texture
+          const leafGeo = new THREE.PlaneGeometry(tier.width, tier.length);
+          const leafMesh = new THREE.Mesh(leafGeo, palmFrondMat);
+          leafMesh.position.set(0, tier.length * 0.45 * Math.cos(tier.elevation), tier.length * 0.45 * Math.sin(tier.elevation));
+          leafMesh.rotation.x = tier.elevation + Math.PI / 2;
+          leafMesh.castShadow = true;
+          frondGroup.add(leafMesh);
+
+          crownGroup.add(frondGroup);
+        }
+      });
+
+      palmGroup.add(crownGroup);
       palmGroup.position.set(px, 0, pz);
       this.group.add(palmGroup);
     }
 
-    // B. 6 Mature Indian Shade Trees (Neem / Peepal) framing the Wings
+    // B. 6 Majestic Mature Indian Shade Trees (Neem / Peepal) framing the Wings
     const shadeTreePositions = [
-      { x: -245, z: 25 }, { x: -265, z: 85 }, { x: -235, z: 145 },
-      { x: 245, z: 25 },  { x: 265, z: 85 },  { x: 235, z: 145 }
+      { x: -245, z: 25, scale: 1.05 }, { x: -265, z: 85, scale: 0.95 }, { x: -235, z: 145, scale: 1.0 },
+      { x: 245, z: 25, scale: 1.0 },   { x: 265, z: 85, scale: 1.1 },  { x: 235, z: 145, scale: 0.92 }
     ];
 
-    shadeTreePositions.forEach(tp => {
+    shadeTreePositions.forEach((tp, idx) => {
       const treeGroup = new THREE.Group();
+      treeGroup.scale.set(tp.scale, tp.scale, tp.scale);
 
-      // Gnarled Trunk
-      const trunkGeo = new THREE.CylinderGeometry(2.6, 4.0, 24, 14);
-      const trunk = new THREE.Mesh(trunkGeo, palmBarkMat);
-      trunk.position.y = 12;
-      trunk.castShadow = true;
-      treeGroup.add(trunk);
+      // 1. Massive gnarled trunk base with buttress roots
+      const trunkBaseGeo = new THREE.CylinderGeometry(3.2, 4.6, 12, 14);
+      const trunkBase = new THREE.Mesh(trunkBaseGeo, barkMat);
+      trunkBase.position.y = 6;
+      trunkBase.castShadow = true;
+      treeGroup.add(trunkBase);
 
-      // Layered Organic Foliage Clusters (4 overlapping spheres)
-      const leafColors = [0x22481e, 0x2e5c28, 0x1d3d1a, 0x386b32];
-      for (let c = 0; c < 4; c++) {
-        const leafMat = new THREE.MeshStandardMaterial({ color: leafColors[c], roughness: 0.88 });
-        const canopyGeo = new THREE.SphereGeometry(14 + (c % 2) * 3, 14, 12);
-        const canopy = new THREE.Mesh(canopyGeo, leafMat);
-        canopy.position.set((c - 1.5) * 6, 27 + c * 3, ((c + 1) % 2) * 6);
-        canopy.castShadow = true;
-        treeGroup.add(canopy);
+      // Buttress root flares
+      for (let r = 0; r < 4; r++) {
+        const rootAngle = (r * Math.PI / 2) + 0.3;
+        const rootGeo = new THREE.BoxGeometry(2.0, 5.0, 5.5);
+        const root = new THREE.Mesh(rootGeo, barkMat);
+        root.position.set(Math.cos(rootAngle) * 3.2, 2.5, Math.sin(rootAngle) * 3.2);
+        root.rotation.y = rootAngle;
+        root.castShadow = true;
+        treeGroup.add(root);
       }
+
+      // 2. Main trunk stem rising to fork (Y = 6 to 18)
+      const trunkStemGeo = new THREE.CylinderGeometry(2.4, 3.2, 12, 12);
+      const trunkStem = new THREE.Mesh(trunkStemGeo, barkMat);
+      trunkStem.position.y = 15;
+      trunkStem.castShadow = true;
+      treeGroup.add(trunkStem);
+
+      // 3. Three Primary Boughs branching organically outwards
+      const boughConfigs = [
+        { angle: 0.65, azimuth: 0.2, len: 18, radTop: 1.4, radBot: 2.2 },
+        { angle: 0.75, azimuth: 2.1, len: 17, radTop: 1.3, radBot: 2.1 },
+        { angle: 0.70, azimuth: 4.2, len: 19, radTop: 1.4, radBot: 2.3 }
+      ];
+
+      boughConfigs.forEach((bough, bIdx) => {
+        const boughGroup = new THREE.Group();
+        boughGroup.position.set(0, 19, 0);
+        boughGroup.rotation.y = bough.azimuth;
+
+        const boughGeo = new THREE.CylinderGeometry(bough.radTop, bough.radBot, bough.len, 10);
+        const boughMesh = new THREE.Mesh(boughGeo, barkMat);
+        boughMesh.position.set(0, bough.len * 0.45 * Math.cos(bough.angle), bough.len * 0.45 * Math.sin(bough.angle));
+        boughMesh.rotation.x = bough.angle;
+        boughMesh.castShadow = true;
+        boughGroup.add(boughMesh);
+
+        // Secondary spreading limbs
+        for (let l = 0; l < 2; l++) {
+          const limbAngle = bough.angle + (l === 0 ? -0.35 : 0.35);
+          const limbLen = 12;
+          const limbGeo = new THREE.CylinderGeometry(0.8, bough.radTop, limbLen, 8);
+          const limbMesh = new THREE.Mesh(limbGeo, barkMat);
+          const limbStartX = (l === 0 ? -2.5 : 2.5);
+          const limbStartY = bough.len * 0.75 * Math.cos(bough.angle);
+          const limbStartZ = bough.len * 0.75 * Math.sin(bough.angle);
+
+          limbMesh.position.set(limbStartX, limbStartY + limbLen * 0.45 * Math.cos(limbAngle), limbStartZ + limbLen * 0.45 * Math.sin(limbAngle));
+          limbMesh.rotation.x = limbAngle;
+          limbMesh.rotation.z = (l === 0 ? -0.3 : 0.3);
+          limbMesh.castShadow = true;
+          boughGroup.add(limbMesh);
+
+          // Volumetric Leafy Canopy Clusters on secondary limbs (pure organic alpha leaf planes, zero geometric spheres)
+          const clusterGroup = new THREE.Group();
+          clusterGroup.position.set(limbStartX, limbStartY + limbLen * Math.cos(limbAngle), limbStartZ + limbLen * Math.sin(limbAngle));
+          clusterGroup.userData = { baseRotZ: 0, baseRotX: 0, seed: idx * 2.5 + bIdx + l };
+          this.animatedFoliage.push(clusterGroup);
+
+          // 6 Intersecting radial foliage planes forming a lush, multi-directional canopy
+          for (let p = 0; p < 6; p++) {
+            const quadGeo = new THREE.PlaneGeometry(24, 18);
+            const quad = new THREE.Mesh(quadGeo, foliageMat);
+            quad.rotation.y = (p * Math.PI) / 6;
+            quad.rotation.x = (p % 2 === 0 ? 0.28 : -0.28);
+            quad.castShadow = true;
+            clusterGroup.add(quad);
+          }
+
+          // Horizontal canopy cap plane
+          const capGeo = new THREE.PlaneGeometry(22, 22);
+          const capMesh = new THREE.Mesh(capGeo, foliageMat);
+          capMesh.rotation.x = Math.PI / 2;
+          capMesh.position.y = 4.0;
+          clusterGroup.add(capMesh);
+
+          boughGroup.add(clusterGroup);
+        }
+
+        treeGroup.add(boughGroup);
+      });
+
+      // Central overarching crown canopy cluster connecting the boughs
+      const crownCluster = new THREE.Group();
+      crownCluster.position.set(0, 26, 0);
+      crownCluster.userData = { baseRotZ: 0, baseRotX: 0, seed: idx * 3.1 };
+      this.animatedFoliage.push(crownCluster);
+
+      for (let cp = 0; cp < 6; cp++) {
+        const cGeo = new THREE.PlaneGeometry(32, 24);
+        const cMesh = new THREE.Mesh(cGeo, foliageMat);
+        cMesh.rotation.y = (cp * Math.PI) / 6;
+        cMesh.rotation.x = (cp % 2 === 0 ? 0.32 : -0.32);
+        cMesh.castShadow = true;
+        crownCluster.add(cMesh);
+      }
+      treeGroup.add(crownCluster);
 
       treeGroup.position.set(tp.x, 0, tp.z);
       this.group.add(treeGroup);
@@ -1282,7 +1458,14 @@ class SupremeCourtExteriorScene {
         this.flagClothMaterial.uniforms.uTime.value = time;
       }
 
-      // 2. Smooth Door Opening Interpolation
+      // 2. Subtle Environmental Wind Movement on Foliage
+      this.animatedFoliage.forEach(f => {
+        const wind = Math.sin(time * 2.2 + f.userData.seed) * 0.035;
+        f.rotation.z = f.userData.baseRotZ + wind;
+        f.rotation.x = f.userData.baseRotX + Math.cos(time * 1.8 + f.userData.seed) * 0.025;
+      });
+
+      // 3. Smooth Door Opening Interpolation
       if (Math.abs(this.doorOpenProgress - this.targetDoorOpen) > 0.001) {
         this.doorOpenProgress += (this.targetDoorOpen - this.doorOpenProgress) * Math.min(1.0, delta * 3.5);
 

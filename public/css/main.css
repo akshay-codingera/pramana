@@ -4,51 +4,84 @@
    ========================================================================== */
 
 :root {
+  /* ==========================================================================
+     PRAMANA DESIGN SYSTEM — LUXURY INSTITUTIONAL DESIGN TOKENS
+     ========================================================================== */
+
   /* Spatial & Architectural Obsidian Palette */
-  --bg-void: #050608;
-  --bg-obsidian: #0b0d12;
-  --bg-card: rgba(16, 20, 28, 0.88);
-  --bg-card-hover: rgba(24, 30, 42, 0.95);
-  --bg-elevated: #161b24;
-  --bg-surface: #1e2430;
+  --bg-void: #030406;
+  --bg-obsidian: #080a0f;
+  --bg-obsidian-pure: #05070a;
+  --bg-obsidian-surface: #0e1219;
+  --bg-obsidian-elevated: #151a24;
+  --bg-card: rgba(14, 18, 25, 0.88);
+  --bg-card-hover: rgba(22, 28, 39, 0.96);
+  --bg-card-solid: #11151f;
+  --bg-glass-panel: rgba(10, 13, 19, 0.92);
+  --bg-glass-hud: rgba(8, 10, 15, 0.78);
 
   /* Teak & Sandstone Architectural Accents */
-  --wood-dark: #2a160d;
-  --wood-teak: #4e2915;
-  --wood-light: #7b4322;
+  --wood-dark: #22120a;
+  --wood-teak: #452413;
+  --wood-light: #703c1e;
   --sandstone-red: #7c2d12;
-  --sandstone-cream: #f5eedc;
+  --sandstone-cream: #f4ecda;
+  --sandstone-buff: #d9caa1;
 
   /* Imperial Gold & Bronze Metallic Accents */
+  --gold-pure: #ffd700;
   --gold-primary: #d4af37;
   --gold-light: #f3e5ab;
+  --gold-amber: #e6b800;
   --gold-dark: #997d25;
+  --gold-antique: #c5a059;
+  --bronze-light: #a37f4e;
   --bronze-accent: #8b6b3e;
+  --bronze-dark: #5a4223;
+  --bronze-hairline: rgba(212, 175, 55, 0.28);
+  --brass-sheen: linear-gradient(135deg, rgba(243, 229, 171, 0.25) 0%, rgba(212, 175, 55, 0.1) 50%, rgba(153, 125, 37, 0.2) 100%);
 
   /* Juridical Outcome Semantics */
   --verdict-allowed: #10b981;
-  --verdict-allowed-glow: rgba(16, 185, 129, 0.35);
+  --verdict-allowed-glow: rgba(16, 185, 129, 0.4);
   --verdict-allowed-bg: rgba(16, 185, 129, 0.12);
+  --verdict-allowed-border: rgba(16, 185, 129, 0.45);
   --verdict-dismissed: #ef4444;
-  --verdict-dismissed-glow: rgba(239, 68, 68, 0.35);
+  --verdict-dismissed-glow: rgba(239, 68, 68, 0.4);
   --verdict-dismissed-bg: rgba(239, 68, 68, 0.12);
+  --verdict-dismissed-border: rgba(239, 68, 68, 0.45);
   --accent-amber: #f59e0b;
   --accent-blue: #38bdf8;
   --accent-purple: #a855f7;
 
   /* Text & Readability Hierarchy */
+  --text-pure: #ffffff;
   --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-dark: #0f172a;
+  --text-secondary: #cbd5e1;
+  --text-muted: #78889b;
+  --text-dim: #475569;
+  --text-dark: #080a0f;
+  --text-gold: #f3e5ab;
 
-  /* Borders & Glassmorphism */
+  /* Borders & Architectural Hairlines */
   --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.12);
   --border-gold: rgba(212, 175, 55, 0.35);
-  --border-focus: rgba(212, 175, 55, 0.7);
+  --border-gold-strong: rgba(212, 175, 55, 0.65);
+  --border-bronze: rgba(163, 127, 78, 0.35);
+  --border-focus: rgba(212, 175, 55, 0.85);
+
+  /* Shadows, Insets & Glassmorphism */
   --glass-blur: blur(16px);
-  --shadow-cinematic: 0 20px 40px -15px rgba(0, 0, 0, 0.85);
-  --shadow-gold: 0 0 25px rgba(212, 175, 55, 0.25);
+  --glass-blur-heavy: blur(24px);
+  --shadow-cinematic: 0 20px 45px -12px rgba(0, 0, 0, 0.88);
+  --shadow-plaque: 0 12px 32px -8px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --shadow-gold: 0 0 25px rgba(212, 175, 55, 0.28);
+  --shadow-gold-hover: 0 0 28px rgba(212, 175, 55, 0.45), 0 8px 20px rgba(0, 0, 0, 0.7);
+  --shadow-inset-bevel: inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+
+  /* Focus Ring */
+  --focus-ring: 0 0 0 2px var(--bg-obsidian), 0 0 0 4px rgba(212, 175, 55, 0.8);
 
   /* Typography Fonts */
   --font-serif: 'Cinzel', Georgia, serif;
@@ -151,87 +184,205 @@ h1, h2, h3, h4 {
   letter-spacing: 0.02em;
 }
 
-/* Universal Buttons */
+/* Universal Buttons Design System */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 8px 18px;
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
+  letter-spacing: 0.02em;
   border-radius: 6px;
   border: 1px solid var(--border-subtle);
-  background: rgba(22, 27, 36, 0.85);
+  background: linear-gradient(180deg, rgba(24, 30, 42, 0.85) 0%, rgba(14, 18, 26, 0.95) 100%);
   color: var(--text-primary);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-smooth);
   backdrop-filter: var(--glass-blur);
   text-decoration: none;
   outline: none;
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .btn:hover {
-  background: rgba(30, 36, 48, 0.95);
+  background: linear-gradient(180deg, rgba(34, 43, 60, 0.9) 0%, rgba(18, 24, 34, 0.98) 100%);
   border-color: var(--border-gold);
   color: var(--gold-light);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 6px 16px rgba(0, 0, 0, 0.55), 0 0 12px rgba(212, 175, 55, 0.15);
 }
 
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Primary Architectural Luxury Button */
+.btn-primary,
 .btn-gold {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(153, 125, 37, 0.3));
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.25) 0%, rgba(153, 125, 37, 0.28) 40%, rgba(15, 18, 26, 0.95) 100%);
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-light);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 0 12px rgba(212, 175, 55, 0.15), 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.btn-primary:hover,
+.btn-gold:hover {
+  background: linear-gradient(180deg, rgba(243, 229, 171, 0.35) 0%, rgba(212, 175, 55, 0.38) 40%, rgba(18, 22, 32, 0.98) 100%);
+  border-color: var(--gold-light);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 0 22px rgba(212, 175, 55, 0.45), 0 8px 20px rgba(0, 0, 0, 0.7);
+}
+
+.btn-primary:active,
+.btn-gold:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7), 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: rgba(14, 18, 26, 0.75);
+  border: 1px solid var(--border-bronze);
+  color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+  background: rgba(22, 28, 40, 0.88);
   border-color: var(--gold-primary);
+  color: var(--text-primary);
+}
+
+/* Compact Button */
+.btn-sm {
+  padding: 5px 12px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+/* Icon Buttons */
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border: 1px solid var(--border-bronze);
+  background: rgba(14, 18, 26, 0.85);
   color: var(--gold-light);
 }
 
-.btn-gold:hover {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.35), rgba(153, 125, 37, 0.5));
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.3);
+.btn-icon:hover {
+  border-color: var(--gold-primary);
+  color: #fff;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.35), 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-.btn-sm {
-  padding: 4px 10px;
-  font-size: 12px;
+/* Button States: Disabled & Loading */
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.42;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(40%);
+  box-shadow: none !important;
+  transform: none !important;
 }
 
-.btn-icon {
-  width: 34px;
-  height: 34px;
-  padding: 0;
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+  color: transparent !important;
+}
+
+.btn-loading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: calc(50% - 8px);
+  left: calc(50% - 8px);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-top-color: var(--gold-light);
   border-radius: 50%;
+  animation: btnSpinner 0.7s linear infinite;
 }
 
-/* Universal Badges */
+@keyframes btnSpinner {
+  to { transform: rotate(360deg); }
+}
+
+/* Architectural Plaque Containers & Informational Labels */
+.plaque-card,
+.stat-card {
+  background: linear-gradient(180deg, rgba(16, 21, 30, 0.92) 0%, rgba(10, 13, 19, 0.96) 100%);
+  border: 1px solid var(--border-bronze);
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px rgba(0, 0, 0, 0.75);
+  backdrop-filter: var(--glass-blur-heavy);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.plaque-card:hover,
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-gold-strong);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 16px 36px rgba(0, 0, 0, 0.85), 0 0 18px rgba(212, 175, 55, 0.18);
+}
+
+/* Universal Badges & Precision Emblems */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 10px;
-  border-radius: 9999px;
+  padding: 4px 11px;
+  border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   border: 1px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .badge-gold {
-  background: rgba(212, 175, 55, 0.15);
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.22) 0%, rgba(153, 125, 37, 0.15) 100%);
   color: var(--gold-light);
-  border-color: rgba(212, 175, 55, 0.35);
+  border-color: rgba(212, 175, 55, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 12px rgba(212, 175, 55, 0.2);
 }
 
 .badge-allowed {
-  background: var(--verdict-allowed-bg);
-  color: var(--verdict-allowed);
-  border-color: rgba(16, 185, 129, 0.3);
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.08) 100%);
+  color: #34d399;
+  border-color: var(--verdict-allowed-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 14px var(--verdict-allowed-glow);
 }
 
 .badge-dismissed {
-  background: var(--verdict-dismissed-bg);
-  color: var(--verdict-dismissed);
-  border-color: rgba(239, 68, 68, 0.3);
+  background: linear-gradient(180deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.08) 100%);
+  color: #f87171;
+  border-color: var(--verdict-dismissed-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 14px var(--verdict-dismissed-glow);
 }
 
 .badge-dot {
@@ -239,5 +390,34 @@ h1, h2, h3, h4 {
   height: 6px;
   border-radius: 50%;
   background-color: currentColor;
-  box-shadow: 0 0 6px currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Universal Form Controls: Inputs, Textareas, Selects */
+.search-input,
+.text-input-area,
+select.search-input {
+  width: 100%;
+  background: rgba(10, 13, 19, 0.85);
+  border: 1px solid var(--border-bronze);
+  border-radius: 5px;
+  padding: 9px 13px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-primary);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+}
+
+.search-input:focus,
+.text-input-area:focus,
+select.search-input:focus {
+  border-color: var(--gold-primary);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(212, 175, 55, 0.35);
+}
+
+.text-input-area {
+  resize: vertical;
+  line-height: 1.5;
 }

@@ -625,6 +625,281 @@ export function createIndianFlagPBR(width = 1024, height = 683) {
   return { map: diffuseTex, normalMap: normalTex };
 }
 
+/**
+ * Creates Realistic Organic Tree Bark PBR Suite (Neem / Peepal)
+ */
+export function createBarkPBR(width = 512, height = 512) {
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const dCtx = diffCanvas.getContext('2d');
+
+  const hCanvas = document.createElement('canvas');
+  hCanvas.width = width;
+  hCanvas.height = height;
+  const hCtx = hCanvas.getContext('2d');
+  hCtx.fillStyle = '#808080';
+  hCtx.fillRect(0, 0, width, height);
+
+  const rCanvas = document.createElement('canvas');
+  rCanvas.width = width;
+  rCanvas.height = height;
+  const rCtx = rCanvas.getContext('2d');
+  rCtx.fillStyle = '#d8d8d8'; // Rough bark ~0.88
+  rCtx.fillRect(0, 0, width, height);
+
+  // Dark weathered bark base
+  dCtx.fillStyle = '#3e3229';
+  dCtx.fillRect(0, 0, width, height);
+
+  // Longitudinal fibrous furrowed ridges
+  for (let f = 0; f < 350; f++) {
+    const x = Math.random() * width;
+    dCtx.strokeStyle = Math.random() > 0.4 ? '#281f18' : '#5a493c';
+    dCtx.lineWidth = 1.5 + Math.random() * 4.0;
+    dCtx.globalAlpha = 0.35;
+
+    hCtx.strokeStyle = Math.random() > 0.5 ? '#b8b8b8' : '#404040';
+    hCtx.lineWidth = dCtx.lineWidth;
+    hCtx.globalAlpha = 0.45;
+
+    dCtx.beginPath();
+    dCtx.moveTo(x, 0);
+    const cp1x = x + (Math.random() - 0.5) * 16;
+    const cp1y = height * 0.33;
+    const cp2x = x + (Math.random() - 0.5) * 16;
+    const cp2y = height * 0.66;
+    dCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x + (Math.random() - 0.5) * 12, height);
+    dCtx.stroke();
+
+    hCtx.beginPath();
+    hCtx.moveTo(x, 0);
+    hCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x + (Math.random() - 0.5) * 12, height);
+    hCtx.stroke();
+  }
+
+  // Lichen & moss micro-speckles
+  for (let m = 0; m < 3000; m++) {
+    const mx = Math.random() * width;
+    const my = Math.random() * height;
+    dCtx.fillStyle = Math.random() > 0.7 ? '#425433' : '#221914';
+    dCtx.globalAlpha = 0.25;
+    dCtx.fillRect(mx, my, 2.0, 2.0);
+  }
+
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.wrapS = THREE.RepeatWrapping;
+  diffuseTex.wrapT = THREE.RepeatWrapping;
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  const normalTex = createNormalMapFromHeight(hCanvas, 3.2);
+
+  const roughnessTex = new THREE.CanvasTexture(rCanvas);
+  roughnessTex.wrapS = THREE.RepeatWrapping;
+  roughnessTex.wrapT = THREE.RepeatWrapping;
+
+  return { map: diffuseTex, normalMap: normalTex, roughnessMap: roughnessTex };
+}
+
+/**
+ * Creates Royal Palm Trunk Ringed Texture PBR Suite
+ */
+export function createPalmBarkPBR(width = 256, height = 512) {
+  const diffCanvas = document.createElement('canvas');
+  diffCanvas.width = width;
+  diffCanvas.height = height;
+  const dCtx = diffCanvas.getContext('2d');
+
+  const hCanvas = document.createElement('canvas');
+  hCanvas.width = width;
+  hCanvas.height = height;
+  const hCtx = hCanvas.getContext('2d');
+  hCtx.fillStyle = '#808080';
+  hCtx.fillRect(0, 0, width, height);
+
+  // Natural weathered grey-buff palm trunk base
+  dCtx.fillStyle = '#786e63';
+  dCtx.fillRect(0, 0, width, height);
+
+  // Horizontal ringed leaf-scar bands
+  const ringSpacing = 28;
+  for (let y = 0; y < height; y += ringSpacing) {
+    // Deep groove scar
+    dCtx.strokeStyle = '#423c34';
+    dCtx.lineWidth = 3.0;
+    dCtx.globalAlpha = 0.8;
+    dCtx.beginPath();
+    dCtx.moveTo(0, y);
+    dCtx.lineTo(width, y);
+    dCtx.stroke();
+
+    hCtx.strokeStyle = '#282828';
+    hCtx.lineWidth = 4.0;
+    hCtx.beginPath();
+    hCtx.moveTo(0, y);
+    hCtx.lineTo(width, y);
+    hCtx.stroke();
+
+    // Convex band swelling between rings
+    hCtx.fillStyle = '#a8a8a8';
+    hCtx.fillRect(0, y + 4, width, ringSpacing - 8);
+
+    // Subtle tonal variation
+    dCtx.fillStyle = (y / ringSpacing) % 2 === 0 ? '#6e6459' : '#82786d';
+    dCtx.globalAlpha = 0.4;
+    dCtx.fillRect(0, y + 2, width, ringSpacing - 4);
+  }
+
+  // Vertical fiber pores
+  for (let p = 0; p < 1500; p++) {
+    dCtx.fillStyle = 'rgba(40, 35, 30, 0.2)';
+    dCtx.fillRect(Math.random() * width, Math.random() * height, 1.2, 4.0);
+  }
+
+  const diffuseTex = new THREE.CanvasTexture(diffCanvas);
+  diffuseTex.wrapS = THREE.RepeatWrapping;
+  diffuseTex.wrapT = THREE.RepeatWrapping;
+  diffuseTex.colorSpace = THREE.SRGBColorSpace;
+
+  const normalTex = createNormalMapFromHeight(hCanvas, 2.8);
+
+  return { map: diffuseTex, normalMap: normalTex };
+}
+
+/**
+ * Creates Authentic Royal Palm Feather Frond (Pinnate) Alpha Texture
+ */
+export function createPalmFrondTexture(width = 256, height = 1024) {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+
+  // Fully transparent background
+  ctx.clearRect(0, 0, width, height);
+
+  const cx = width / 2;
+
+  // Central thick rachis (stem) running bottom to top
+  ctx.strokeStyle = '#6a8d3b';
+  ctx.lineWidth = 4.5;
+  ctx.beginPath();
+  ctx.moveTo(cx, height);
+  ctx.quadraticCurveTo(cx, height * 0.4, cx, 20);
+  ctx.stroke();
+
+  // Highlight along rachis
+  ctx.strokeStyle = '#a4c661';
+  ctx.lineWidth = 2.0;
+  ctx.beginPath();
+  ctx.moveTo(cx, height);
+  ctx.quadraticCurveTo(cx, height * 0.4, cx, 20);
+  ctx.stroke();
+
+  const leafletTones = ['#1e4a1a', '#295f24', '#377931', '#4b9543', '#5ea855', '#245220'];
+
+  // Paint hundreds of dense, narrow, arching pinnate leaflets extending out from both sides
+  const step = 2.8;
+  for (let y = height - 30; y > 30; y -= step) {
+    const progress = 1.0 - (y / height); // 0 at base, 1 at tip
+    // Width profile: swells in middle, tapers to point at tip
+    const maxLen = (width * 0.46) * Math.sin(Math.pow(progress, 0.6) * Math.PI);
+
+    for (let side of [-1, 1]) {
+      const len = maxLen * (0.85 + Math.random() * 0.3);
+      if (len < 3) continue;
+
+      // Leaflet angle arches from 45 deg near base to 20 deg near tip
+      const angle = (0.75 - progress * 0.35) * side;
+
+      ctx.save();
+      ctx.translate(cx, y);
+      ctx.rotate(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(len * 0.5 * side, -len * 0.2, len * side, 0);
+      ctx.quadraticCurveTo(len * 0.5 * side, len * 0.08, 0, 1.2);
+      ctx.closePath();
+
+      ctx.fillStyle = leafletTones[Math.floor(Math.random() * leafletTones.length)];
+      ctx.globalAlpha = 0.92;
+      ctx.fill();
+
+      // Midrib on individual leaflet
+      ctx.strokeStyle = 'rgba(210, 245, 170, 0.4)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(len * side * 0.85, 0);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.ClampToEdgeWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+/**
+ * Creates Organic Leaf Cluster Canopy Alpha & Normal Texture
+ */
+export function createFoliageTexture(width = 512, height = 512) {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+
+  // Fully transparent background
+  ctx.clearRect(0, 0, width, height);
+
+  const leafTones = ['#1d3d19', '#275222', '#366e30', '#4a8742', '#21471d', '#55944d'];
+
+  // Paint 800 overlapping organic leaves
+  for (let i = 0; i < 900; i++) {
+    const cx = Math.random() * width;
+    const cy = Math.random() * height;
+    const len = 14 + Math.random() * 22;
+    const wid = 7 + Math.random() * 10;
+    const rot = Math.random() * Math.PI * 2;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rot);
+
+    // Leaf blade path
+    ctx.beginPath();
+    ctx.moveTo(0, -len / 2);
+    ctx.bezierCurveTo(wid, -len / 4, wid, len / 4, 0, len / 2);
+    ctx.bezierCurveTo(-wid, len / 4, -wid, -len / 4, 0, -len / 2);
+    ctx.closePath();
+
+    ctx.fillStyle = leafTones[Math.floor(Math.random() * leafTones.length)];
+    ctx.globalAlpha = 0.88;
+    ctx.fill();
+
+    // Leaf central vein
+    ctx.strokeStyle = 'rgba(180, 230, 150, 0.35)';
+    ctx.lineWidth = 1.0;
+    ctx.beginPath();
+    ctx.moveTo(0, -len / 2 + 2);
+    ctx.lineTo(0, len / 2 - 2);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
 // Backward-compatible exports for existing callers
 export function createWoodTexture(baseColor = '#4a2615', grainColor = '#2d1408', width = 512, height = 512) {
   return createWoodPBR(baseColor, grainColor, width, height).map;

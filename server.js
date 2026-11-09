@@ -198,7 +198,7 @@ const server = http.createServer((req, res) => {
   }
 
   // 3. API: Unseen Document Upload & Prediction
-  if (req.method === 'POST' && pathname === '/api/upload_predict') {
+  if (req.method === 'POST' && (pathname === '/api/upload_predict' || pathname === '/api/predict-unseen')) {
     let body = '';
     req.on('data', chunk => { body += chunk.toString(); });
     req.on('end', () => {
