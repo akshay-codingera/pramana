@@ -65,8 +65,8 @@ class ThreeSceneManager {
     this.exteriorGroup.visible = false;
     this.courtroomGroup.visible = false;
 
-    // 2. Camera
-    this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 15000);
+    // 2. Camera with high-precision depth range
+    this.camera = new THREE.PerspectiveCamera(45, width / height, 0.8, 5000);
     this.camera.position.set(0, 0, 800);
     this.camera.lookAt(0, 0, 0);
 
@@ -118,7 +118,8 @@ class ThreeSceneManager {
     this.sunLight.shadow.mapSize.height = 2048;
     this.sunLight.shadow.camera.near = 10;
     this.sunLight.shadow.camera.far = 3000;
-    this.sunLight.shadow.bias = -0.0005;
+    this.sunLight.shadow.bias = -0.0001;
+    this.sunLight.shadow.normalBias = 0.05; // Eliminates shadow acne and sparkling on architectural stone
     this.scene.add(this.sunLight);
 
     // Warm Courtroom Interior Point / Spot Lighting
@@ -152,6 +153,8 @@ class ThreeSceneManager {
       this.hemiLight.groundColor.setHex(0x6e4a38); // Warm Dholpur red sandstone bounce
       this.sunLight.position.set(240, 420, 260);
       this.sunLight.intensity = 2.6;
+      this.sunLight.shadow.bias = -0.0001;
+      this.sunLight.shadow.normalBias = 0.05; // Eliminates shadow-map acne and sparkling
       this.sunLight.shadow.camera.left = -260;
       this.sunLight.shadow.camera.right = 260;
       this.sunLight.shadow.camera.top = 260;

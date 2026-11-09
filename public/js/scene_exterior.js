@@ -337,13 +337,14 @@ class SupremeCourtExteriorScene {
     this.group.add(plinthCornice);
 
     // B. Grand Ceremonial Flight of 14 Tiered Steps with Molded Nosing (Y=0 to Y=14)
+    // Positioned seamlessly in front of portico floor (Z = 92.0) down to Z = 135.6
     for (let s = 0; s < 14; s++) {
       const stepW = 104 + (13 - s) * 2.4;
       const stepY = s * 1.0 + 0.5;
-      const stepZ = 84 + (13 - s) * 3.8;
+      const stepZ = 93.5 + (13 - s) * 3.2;
 
       // Tread Block
-      const stepGeo = new THREE.BoxGeometry(stepW, 1.0, 4.0);
+      const stepGeo = new THREE.BoxGeometry(stepW, 1.0, 3.4);
       const step = new THREE.Mesh(stepGeo, sandstoneRedMat);
       step.position.set(0, stepY, stepZ);
       step.receiveShadow = true;
@@ -354,49 +355,49 @@ class SupremeCourtExteriorScene {
       const nosingGeo = new THREE.CylinderGeometry(0.25, 0.25, stepW + 0.4, 12);
       const nosing = new THREE.Mesh(nosingGeo, sandstoneRedMat);
       nosing.rotation.z = Math.PI / 2;
-      nosing.position.set(0, stepY + 0.48, stepZ + 2.0);
+      nosing.position.set(0, stepY + 0.48, stepZ + 1.7);
       this.group.add(nosing);
     }
 
     // C. Stepped Flanking Balustrade Cheek Walls
     for (let side of [-1, 1]) {
-      const cheekGeo = new THREE.BoxGeometry(6.5, 17, 56);
+      const cheekGeo = new THREE.BoxGeometry(6.5, 17, 46);
       const cheek = new THREE.Mesh(cheekGeo, sandstoneRedMat);
-      cheek.position.set(side * 64, 8.5, 108);
+      cheek.position.set(side * 64, 8.5, 114);
       cheek.castShadow = true;
       cheek.receiveShadow = true;
       this.group.add(cheek);
 
       // Molded Cheek Cap
-      const cheekCapGeo = new THREE.BoxGeometry(7.5, 1.6, 57);
+      const cheekCapGeo = new THREE.BoxGeometry(7.5, 1.6, 47);
       const cheekCap = new THREE.Mesh(cheekCapGeo, sandstoneRedMat);
-      cheekCap.position.set(side * 64, 17.5, 108);
+      cheekCap.position.set(side * 64, 17.5, 114);
       this.group.add(cheekCap);
 
       // Monumental Stone Lamp Pedestal at foot of staircase
       const pedestalGeo = new THREE.BoxGeometry(11, 7, 11);
       const pedestal = new THREE.Mesh(pedestalGeo, sandstoneRedMat);
-      pedestal.position.set(side * 64, 3.5, 136);
+      pedestal.position.set(side * 64, 3.5, 138);
       pedestal.castShadow = true;
       this.group.add(pedestal);
 
       // Molded Pedestal Cornice
       const pedCorniceGeo = new THREE.BoxGeometry(12.5, 1.5, 12.5);
       const pedCornice = new THREE.Mesh(pedCorniceGeo, sandstoneRedMat);
-      pedCornice.position.set(side * 64, 7.5, 136);
+      pedCornice.position.set(side * 64, 7.5, 138);
       this.group.add(pedCornice);
 
       // Cast-Iron Pedestal Lantern Post
       const lampPostGeo = new THREE.CylinderGeometry(0.7, 1.1, 15, 16);
       const lampPost = new THREE.Mesh(lampPostGeo, darkIronMat);
-      lampPost.position.set(side * 64, 15.5, 136);
+      lampPost.position.set(side * 64, 15.5, 138);
       lampPost.castShadow = true;
       this.group.add(lampPost);
 
       // Frosted Glass Luminous Sphere
       const lanternGeo = new THREE.SphereGeometry(1.8, 20, 20);
       const lantern = new THREE.Mesh(lanternGeo, lampGlowMat);
-      lantern.position.set(side * 64, 23.5, 136);
+      lantern.position.set(side * 64, 23.5, 138);
       this.group.add(lantern);
     }
 
@@ -404,10 +405,10 @@ class SupremeCourtExteriorScene {
     // 4. CENTRAL HEXASTYLE ENTRANCE PORTICO & ARCHITRAVE
     // =========================================================================
 
-    // Portico Raised Sandstone Platform Floor
-    const porticoFloorGeo = new THREE.BoxGeometry(112, 2.5, 36);
+    // Portico Raised Sandstone Platform Floor (Z spans [60.0, 92.0], no step overlap)
+    const porticoFloorGeo = new THREE.BoxGeometry(112, 2.0, 32);
     const porticoFloor = new THREE.Mesh(porticoFloorGeo, sandstoneRedMat);
-    porticoFloor.position.set(0, 15.0, 76);
+    porticoFloor.position.set(0, 15.0, 76.0);
     this.group.add(porticoFloor);
 
     // 6 Monumental Classical Fluted Pillars across Front + 2 Side Return Pillars
@@ -558,88 +559,94 @@ class SupremeCourtExteriorScene {
     // 5. CEREMONIAL MAIN ENTRANCE PORTAL, MOTTO PLAQUE & ANIMATED DOORS
     // =========================================================================
 
-    // Recessed Sandstone Portal Surround
-    const portalSurroundGeo = new THREE.BoxGeometry(42, 44, 8);
+    // Recessed Sandstone Portal Surround (Red Sandstone Outer Frame)
+    // Positioned at Z = 60.0 with depth 6.0 (spans Z in [57.0, 63.0]; front face Z = 63.0)
+    const portalSurroundGeo = new THREE.BoxGeometry(42, 44, 6.0);
     const portalSurround = new THREE.Mesh(portalSurroundGeo, sandstoneRedMat);
-    portalSurround.position.set(0, 36, 58);
+    portalSurround.position.set(0, 36, 60.0);
     portalSurround.castShadow = true;
     portalSurround.receiveShadow = true;
     this.group.add(portalSurround);
 
-    // Stepped Inner Molded Portal Reveal
-    const innerRevealGeo = new THREE.BoxGeometry(32, 38, 6);
+    // Stepped Inner Molded Portal Reveal (Cream Sandstone Inner Frame)
+    // Positioned at Z = 58.0 with depth 4.0 (spans Z in [56.0, 60.0]; front face Z = 60.0)
+    // 3.0-unit clear architectural step behind portalSurround front face — zero coplanar overlap!
+    const innerRevealGeo = new THREE.BoxGeometry(32, 38, 4.0);
     const innerReveal = new THREE.Mesh(innerRevealGeo, facadeCreamMat);
-    innerReveal.position.set(0, 34, 59);
+    innerReveal.position.set(0, 34, 58.0);
     this.group.add(innerReveal);
 
-    // Door Portal Dark Opening / Vestibule Cavity
-    const doorVoidGeo = new THREE.BoxGeometry(25, 32, 12);
+    // Door Portal Dark Opening / Vestibule Cavity (Well behind doors)
+    // Positioned at Z = 50.5 with depth 10.0 (spans Z in [45.5, 55.5]; front face Z = 55.5)
+    const doorVoidGeo = new THREE.BoxGeometry(25, 32, 10.0);
     const doorVoidMat = new THREE.MeshBasicMaterial({ color: 0x12100e });
     const doorVoid = new THREE.Mesh(doorVoidGeo, doorVoidMat);
-    doorVoid.position.set(0, 31, 56);
+    doorVoid.position.set(0, 31, 50.5);
     this.group.add(doorVoid);
 
     // Warm Interior Entrance Rotunda / Vestibule Light
     const vestibuleLight = new THREE.PointLight(0xffecd0, 2.5, 35);
-    vestibuleLight.position.set(0, 32, 54);
+    vestibuleLight.position.set(0, 32, 49.0);
     this.group.add(vestibuleLight);
 
     // --- Burma Teak Double Doors with Full Architectural Detailing & Hinges ---
     const doorWidth = 11.2;
     const doorHeight = 27.0;
-    const doorThickness = 1.8;
+    const doorThickness = 1.4;
 
-    // LEFT DOOR LEAF (Hinged at x = -11.2, z = 60)
+    // Doors placed at Z = 57.5 (Leaves span Z in [56.8, 58.2])
+    // Perfectly positioned inside innerReveal (Z in [56.0, 60.0]) and cleanly in front of doorVoid (Z <= 55.5)
+
+    // LEFT DOOR LEAF (Hinged at x = -11.2, z = 57.5)
     this.leftDoor = new THREE.Group();
-    this.leftDoor.position.set(-11.2, 16.5, 60);
+    this.leftDoor.position.set(-11.2, 16.5, 57.5);
 
     const leftLeafMesh = new THREE.Mesh(
       new THREE.BoxGeometry(doorWidth, doorHeight, doorThickness),
       teakDoorMat
     );
-    // Center mesh relative to hinge pivot at left edge
     leftLeafMesh.position.set(doorWidth / 2, doorHeight / 2, 0);
     leftLeafMesh.castShadow = true;
     this.leftDoor.add(leftLeafMesh);
 
     // Recessed Panels on Left Door (4 Beveled Panels)
     for (let py = 0; py < 4; py++) {
-      const panelGeo = new THREE.BoxGeometry(doorWidth - 2.8, 4.8, 0.4);
+      const panelGeo = new THREE.BoxGeometry(doorWidth - 2.8, 4.8, 0.2);
       const panel = new THREE.Mesh(panelGeo, teakDoorMat);
-      panel.position.set(doorWidth / 2, 4.2 + py * 6.2, doorThickness / 2 + 0.1);
+      panel.position.set(doorWidth / 2, 4.2 + py * 6.2, 0.78);
       this.leftDoor.add(panel);
     }
 
     // Heavy Bronze Kick Plate
-    const kickPlateGeo = new THREE.BoxGeometry(doorWidth, 3.2, 0.2);
+    const kickPlateGeo = new THREE.BoxGeometry(doorWidth, 3.2, 0.12);
     const leftKick = new THREE.Mesh(kickPlateGeo, goldTrimMat);
-    leftKick.position.set(doorWidth / 2, 1.6, doorThickness / 2 + 0.15);
+    leftKick.position.set(doorWidth / 2, 1.6, 0.76);
     this.leftDoor.add(leftKick);
 
     // Vertical Polished Brass Pull Handle & Lion-Head Knocker
     const handleGeo = new THREE.CylinderGeometry(0.3, 0.3, 5.5, 12);
     const leftHandle = new THREE.Mesh(handleGeo, goldTrimMat);
-    leftHandle.position.set(doorWidth - 2.0, 13.5, doorThickness / 2 + 0.8);
+    leftHandle.position.set(doorWidth - 2.0, 13.5, 1.35);
     this.leftDoor.add(leftHandle);
 
     const knockerGeo = new THREE.TorusGeometry(0.9, 0.22, 12, 16);
     const leftKnocker = new THREE.Mesh(knockerGeo, goldTrimMat);
-    leftKnocker.position.set(doorWidth - 2.0, 17.5, doorThickness / 2 + 0.6);
+    leftKnocker.position.set(doorWidth - 2.0, 17.5, 1.25);
     this.leftDoor.add(leftKnocker);
 
     // Bronze Studs (4 Rows of 2 Studs)
     for (let r = 0; r < 4; r++) {
       for (let c of [2.5, doorWidth - 2.5]) {
         const stud = new THREE.Mesh(new THREE.SphereGeometry(0.35, 12, 12), goldTrimMat);
-        stud.position.set(c, 4.2 + r * 6.2, doorThickness / 2 + 0.35);
+        stud.position.set(c, 4.2 + r * 6.2, 1.05);
         this.leftDoor.add(stud);
       }
     }
     this.group.add(this.leftDoor);
 
-    // RIGHT DOOR LEAF (Hinged at x = +11.2, z = 60)
+    // RIGHT DOOR LEAF (Hinged at x = +11.2, z = 57.5)
     this.rightDoor = new THREE.Group();
-    this.rightDoor.position.set(11.2, 16.5, 60);
+    this.rightDoor.position.set(11.2, 16.5, 57.5);
 
     const rightLeafMesh = new THREE.Mesh(
       new THREE.BoxGeometry(doorWidth, doorHeight, doorThickness),
@@ -651,64 +658,65 @@ class SupremeCourtExteriorScene {
 
     // Recessed Panels on Right Door
     for (let py = 0; py < 4; py++) {
-      const panelGeo = new THREE.BoxGeometry(doorWidth - 2.8, 4.8, 0.4);
+      const panelGeo = new THREE.BoxGeometry(doorWidth - 2.8, 4.8, 0.2);
       const panel = new THREE.Mesh(panelGeo, teakDoorMat);
-      panel.position.set(-doorWidth / 2, 4.2 + py * 6.2, doorThickness / 2 + 0.1);
+      panel.position.set(-doorWidth / 2, 4.2 + py * 6.2, 0.78);
       this.rightDoor.add(panel);
     }
 
     // Right Kick Plate
     const rightKick = new THREE.Mesh(kickPlateGeo, goldTrimMat);
-    rightKick.position.set(-doorWidth / 2, 1.6, doorThickness / 2 + 0.15);
+    rightKick.position.set(-doorWidth / 2, 1.6, 0.76);
     this.rightDoor.add(rightKick);
 
     // Right Handle & Knocker
     const rightHandle = new THREE.Mesh(handleGeo, goldTrimMat);
-    rightHandle.position.set(-doorWidth + 2.0, 13.5, doorThickness / 2 + 0.8);
+    rightHandle.position.set(-doorWidth + 2.0, 13.5, 1.35);
     this.rightDoor.add(rightHandle);
 
     const rightKnocker = new THREE.Mesh(knockerGeo, goldTrimMat);
-    rightKnocker.position.set(-doorWidth + 2.0, 17.5, doorThickness / 2 + 0.6);
+    rightKnocker.position.set(-doorWidth + 2.0, 17.5, 1.25);
     this.rightDoor.add(rightKnocker);
 
     // Right Bronze Studs
     for (let r = 0; r < 4; r++) {
       for (let c of [-2.5, -doorWidth + 2.5]) {
         const stud = new THREE.Mesh(new THREE.SphereGeometry(0.35, 12, 12), goldTrimMat);
-        stud.position.set(c, 4.2 + r * 6.2, doorThickness / 2 + 0.35);
+        stud.position.set(c, 4.2 + r * 6.2, 1.05);
         this.rightDoor.add(stud);
       }
     }
     this.group.add(this.rightDoor);
 
-    // Transom Arched Fanlight with Radiating Spokes above Doors
-    const fanlightGeo = new THREE.CylinderGeometry(11.2, 11.2, 2.0, 24, 1, false, 0, Math.PI);
+    // Transom Arched Fanlight with Radiating Spokes above Doors (Z = 57.5, thickness 0.4)
+    const fanlightGeo = new THREE.CylinderGeometry(11.2, 11.2, 0.4, 24, 1, false, 0, Math.PI);
     const fanlight = new THREE.Mesh(fanlightGeo, glassWindowMat);
     fanlight.rotation.z = Math.PI / 2;
-    fanlight.position.set(0, 43.5, 59.5);
+    fanlight.position.set(0, 43.5, 57.5);
     this.group.add(fanlight);
 
-    // Fanlight Wrought Iron Sunburst Spokes
+    // Fanlight Wrought Iron Sunburst Spokes (Z = 57.85, thickness 0.25)
     for (let sp = 0; sp < 7; sp++) {
       const spAngle = (sp * Math.PI) / 6;
-      const spokeGeo = new THREE.BoxGeometry(0.4, 11.2, 0.4);
+      const spokeGeo = new THREE.BoxGeometry(0.35, 11.2, 0.25);
       const spoke = new THREE.Mesh(spokeGeo, darkIronMat);
-      spoke.position.set(0, 43.5, 60.5);
+      spoke.position.set(0, 43.5, 57.85);
       spoke.rotation.z = spAngle - Math.PI / 2;
       this.group.add(spoke);
     }
 
     // Gilded Bronze Motto Plaque above Entrance: "यतो धर्मस्ततो जयः"
-    const plaqueFrameGeo = new THREE.BoxGeometry(54, 7.2, 1.8);
+    // Mounted on portalSurround front face (Z = 63.0) with clean forward relief
+    const plaqueFrameGeo = new THREE.BoxGeometry(54, 7.2, 1.4);
     const plaqueFrame = new THREE.Mesh(plaqueFrameGeo, goldTrimMat);
-    plaqueFrame.position.set(0, 53.5, 61.5);
+    plaqueFrame.position.set(0, 53.5, 63.8);
     plaqueFrame.castShadow = true;
     this.group.add(plaqueFrame);
 
-    const plaqueInnerGeo = new THREE.BoxGeometry(50, 5.4, 0.5);
+    const plaqueInnerGeo = new THREE.BoxGeometry(50, 5.4, 0.3);
     const plaqueInnerMat = new THREE.MeshStandardMaterial({ color: 0x1f1406, roughness: 0.5, metalness: 0.4 });
     const plaqueInner = new THREE.Mesh(plaqueInnerGeo, plaqueInnerMat);
-    plaqueInner.position.set(0, 53.5, 62.5);
+    plaqueInner.position.set(0, 53.5, 64.6);
     this.group.add(plaqueInner);
 
     // =========================================================================
@@ -821,42 +829,69 @@ class SupremeCourtExteriorScene {
     dome.castShadow = true;
     this.group.add(dome);
 
-    // 16 Raised Architectural Ribs running up the Dome
-    const ribGeo = new THREE.CylinderGeometry(0.65, 0.95, 37, 8);
+    // 16 Authentic Curved Stone Meridian Ribs (Conforming mathematically to dome curvature)
+    // Replaces straight cylinder spikes with smooth meridian surface moldings
+    class DomeMeridianCurve extends THREE.Curve {
+      constructor(radius, startAngle, endAngle) {
+        super();
+        this.radius = radius;
+        this.startAngle = startAngle;
+        this.endAngle = endAngle;
+      }
+      getPoint(t, optionalTarget = new THREE.Vector3()) {
+        const theta = this.startAngle + t * (this.endAngle - this.startAngle);
+        return optionalTarget.set(
+          Math.cos(theta) * this.radius,
+          Math.sin(theta) * this.radius,
+          0
+        );
+      }
+    }
+
+    const ribCurve = new DomeMeridianCurve(34.65, 0.0, Math.PI / 2 - 0.08);
+    const ribGeo = new THREE.TubeGeometry(ribCurve, 28, 0.45, 8, false);
+
     for (let r = 0; r < 16; r++) {
       const angle = (r * 360 / 16) * (Math.PI / 180);
-      const rib = new THREE.Mesh(ribGeo, goldTrimMat);
-      rib.position.set(Math.sin(angle) * 22.5, 125, Math.cos(angle) * 22.5);
-      rib.rotation.z = Math.sin(angle) * -0.7;
-      rib.rotation.x = Math.cos(angle) * 0.7;
+      const rib = new THREE.Mesh(ribGeo, facadeCreamMat);
+      rib.position.set(0, 108.5, 0);
+      rib.rotation.y = angle;
       rib.castShadow = true;
+      rib.receiveShadow = true;
       this.group.add(rib);
     }
 
+    // Molded Stone Collar Ring at Top of Ribs (graceful architectural termination)
+    const collarGeo = new THREE.CylinderGeometry(5.2, 5.8, 1.4, 24);
+    const collar = new THREE.Mesh(collarGeo, facadeCreamMat);
+    collar.position.set(0, 143.0, 0);
+    collar.castShadow = true;
+    this.group.add(collar);
+
     // E. Magnificent Multi-Tiered Golden Kalasha Finial
     // Inverted Lotus Petal Base (Padma-kosa)
-    const lotusBaseGeo = new THREE.CylinderGeometry(4.8, 7.5, 3.8, 24);
+    const lotusBaseGeo = new THREE.CylinderGeometry(4.8, 7.2, 3.5, 24);
     const lotusBase = new THREE.Mesh(lotusBaseGeo, goldTrimMat);
-    lotusBase.position.set(0, 143.5, 0);
+    lotusBase.position.set(0, 145.2, 0);
     this.group.add(lotusBase);
 
     // Golden Kumbha Vessel (Pot of Nectar)
-    const kumbhaGeo = new THREE.SphereGeometry(3.6, 20, 20);
+    const kumbhaGeo = new THREE.SphereGeometry(3.5, 20, 20);
     const kumbha = new THREE.Mesh(kumbhaGeo, goldTrimMat);
-    kumbha.position.set(0, 147.5, 0);
+    kumbha.position.set(0, 149.0, 0);
     this.group.add(kumbha);
 
     // Amla Ring
-    const amlaGeo = new THREE.TorusGeometry(3.2, 0.8, 12, 24);
+    const amlaGeo = new THREE.TorusGeometry(3.2, 0.75, 12, 24);
     const amla = new THREE.Mesh(amlaGeo, goldTrimMat);
     amla.rotation.x = Math.PI / 2;
-    amla.position.set(0, 149.5, 0);
+    amla.position.set(0, 151.2, 0);
     this.group.add(amla);
 
     // Tapering Needle Spire (Shikha)
     const spireGeo = new THREE.CylinderGeometry(0.35, 1.8, 16, 16);
     const spire = new THREE.Mesh(spireGeo, goldTrimMat);
-    spire.position.set(0, 158, 0);
+    spire.position.set(0, 159.5, 0);
     spire.castShadow = true;
     this.group.add(spire);
 

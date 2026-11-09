@@ -178,6 +178,39 @@ async function run() {
   await sleep(1200);
   await captureScreenshot(ws, 29, 'view_flag_cloth_detail.png');
 
+  // 3. Dedicated Verification Views for Corrected Issues
+  console.log('\n--- Capturing Targeted Defect Resolution Views ---');
+
+  // 1. Corrected Supreme Court Dome (Verifying zero protrusions, smooth curved ribs, and golden Kalasha)
+  console.log('Capturing Corrected Dome View (Zero Spikes/Protrusions)...');
+  await sendCommand(ws, 35, 'Runtime.evaluate', {
+    expression: `
+      window.threeScene.teleportCamera(new THREE.Vector3(0, 132, 90), new THREE.Vector3(0, 122, 0));
+    `
+  });
+  await sleep(1200);
+  await captureScreenshot(ws, 36, 'corrected_sc_dome.png');
+
+  // 2. Complete Frontal Building
+  console.log('Capturing Corrected Complete Frontal Building...');
+  await sendCommand(ws, 37, 'Runtime.evaluate', {
+    expression: `
+      window.cinematicDirector.setCameraView('B_FRONTAL');
+    `
+  });
+  await sleep(1200);
+  await captureScreenshot(ws, 38, 'corrected_sc_frontal.png');
+
+  // 3. Main Entrance at Close Range (Verifying zero Z-fighting, zero sparkling/flickering)
+  console.log('Capturing Corrected Main Entrance at Close Range...');
+  await sendCommand(ws, 39, 'Runtime.evaluate', {
+    expression: `
+      window.cinematicDirector.setCameraView('D_ENTRANCE');
+    `
+  });
+  await sleep(1500);
+  await captureScreenshot(ws, 40, 'corrected_sc_entrance_closeup.png');
+
   // Measure Real-Time Performance & JS Memory Metrics
   console.log('\nMeasuring 60 FPS Performance & Memory Footprint...');
   const perfResult = await sendCommand(ws, 30, 'Runtime.evaluate', {
