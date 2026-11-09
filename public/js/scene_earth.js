@@ -1,7 +1,8 @@
 /**
- * PRAMANA — Scene Earth & Space-to-Ground Sequence (Milestone 3)
- * Procedural Earth with atmospheric scattering glow, cloud layers,
- * deep-space starfield, and descent path to New Delhi, India.
+ * PRAMANA — Scene Earth & Space-to-Ground Sequence (Photorealistic Planetary Upgrade)
+ * High-resolution NASA Blue Marble diffuse albedo, topographical normal mapping,
+ * ocean specular reflectivity, night-side city lights, multi-layer dynamic clouds
+ * with parallax shadows, and physical Rayleigh atmospheric scattering.
  */
 
 import * as THREE from 'three';
@@ -13,6 +14,7 @@ class EarthScene {
     this.earthRadius = 100;
     this.earthMesh = null;
     this.cloudMesh = null;
+    this.cloudShadowMesh = null;
     this.atmosphereMesh = null;
     this.starsMesh = null;
     this.indiaMarker = null;
@@ -26,105 +28,239 @@ class EarthScene {
     // 1. Deep Space Starfield
     this.createStarfield();
 
-    // 2. Procedural High-Detail Earth Surface Texture
-    const earthTexture = this.generateEarthTexture();
-    const earthBump = this.generateBumpMap();
-    const earthSpecular = this.generateSpecularMap();
+    // 2. Texture Pipeline — NASA Blue Marble & Planetary Maps
+    const textureLoader = new THREE.TextureLoader();
 
-    // Earth Sphere Geometry
-    const earthGeo = new THREE.SphereGeometry(this.earthRadius, 64, 64);
-    const earthMat = new THREE.MeshStandardMaterial({
-      map: earthTexture,
-      bumpMap: earthBump,
-      bumpScale: 1.2,
-      roughness: 0.6,
-      metalness: 0.1,
-      roughnessMap: earthSpecular
+    // Albedo / Diffuse: NASA Blue Marble high-resolution satellite imagery
+    const dayMap = textureLoader.load('/assets/earth/earth_day_4k.jpg');
+    dayMap.colorSpace = THREE.SRGBColorSpace;
+
+    // Normal / Bump: Topographical elevation relief (Himalayas, Deccan, continental shelves)
+    const normalMap = textureLoader.load('/assets/earth/earth_normal_2048.jpg');
+
+    // Specular / Roughness Mask: Deep ocean reflectivity vs. matte landmasses
+    const specularMap = textureLoader.load('/assets/earth/earth_specular_2048.jpg');
+
+    // Emissive Night Lights: NASA Black Marble city lights on the dark terminator
+    const lightsMap = textureLoader.load('/assets/earth/earth_lights_2048.png');
+
+    // Cloud Layer: Real meteorological atmospheric circulation
+    const cloudsMap = textureLoader.load('/assets/earth/earth_clouds_2k.jpg');
+
+    // Enable high-fidelity anisotropic filtering if supported
+    const maxAniso = (threeScene.renderer && threeScene.renderer.capabilities.getMaxAnisotropy) ? 
+                     threeScene.renderer.capabilities.getMaxAnisotropy() : 4;
+    [dayMap, normalMap, specularMap, lightsMap, cloudsMap].forEach(tex => {
+      tex.anisotropy = Math.min(8, maxAniso);
     });
 
+    // Space Directional Sun Light Vector
+    const sunDirection = new THREE.Vector3(800, 300, 600).normalize();
+
+    // 3. Realistic Planetary Earth Material with Custom Shader Injections
+    const earthGeo = new THREE.SphereGeometry(this.earthRadius, 64, 64);
+    const earthMat = new THREE.MeshStandardMaterial({
+      map: dayMap,
+      normalMap: normalMap,
+      normalScale: new THREE.Vector2(0.85, 0.85),
+      roughnessMap: specularMap,
+      roughness: 0.8,
+      metalness: 0.05,
+      emissiveMap: lightsMap,
+      emissive: new THREE.Color(0xffffff),
+      emissiveIntensity: 1.0
+    });
+
+    // Custom shader injection for ocean specular reflectivity, night city lights,
+    // and horizon Rayleigh atmospheric grazing haze
+    earthMat.onBeforeCompile = (shader) => {
+      shader.uniforms.uSunDirection = { value: sunDirection };
+
+      // Add uniform to fragment shader
+      shader.fragmentShader = `uniform vec3 uSunDirection;\n` + shader.fragmentShader;
+
+      // In roughnessmap: Invert specular map: Oceans (white in spec map) get smooth roughness ~0.12; land gets rough ~0.90
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <roughnessmap_fragment>',
+        `
+        #include <roughnessmap_fragment>
+        #ifdef USE_ROUGHNESSMAP
+          roughnessFactor = mix(0.90, 0.12, texelRoughness.r);
+        #endif
+        `
+      );
+
+      // In emissivemap: Modulate city lights to only illuminate the dark night hemisphere
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <emissivemap_fragment>',
+        `
+        #ifdef USE_EMISSIVEMAP
+          vec4 emissiveColor = texture2D( emissiveMap, vEmissiveMapUv );
+          vec3 sunDirView = normalize((viewMatrix * vec4(uSunDirection, 0.0)).xyz);
+          float sunDotVal = dot(normalize(vNormal), sunDirView);
+          float nightFactor = 1.0 - smoothstep(-0.25, 0.05, sunDotVal);
+          totalEmissiveRadiance = emissiveColor.rgb * vec3(1.0, 0.85, 0.52) * nightFactor * 2.2;
+        #endif
+        `
+      );
+
+      // In opaque_fragment: Inject daytime atmospheric horizon Rayleigh grazing haze
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <opaque_fragment>',
+        `
+        #include <opaque_fragment>
+        vec3 vDir = -normalize(vViewPosition);
+        vec3 sDir = normalize((viewMatrix * vec4(uSunDirection, 0.0)).xyz);
+        float rimFresnel = pow(1.0 - max(0.0, dot(normal, vDir)), 3.0);
+        float dayScatter = max(0.0, dot(normal, sDir));
+        outgoingLight += vec3(0.2, 0.58, 1.0) * rimFresnel * dayScatter * 0.75;
+        `
+      );
+    };
+
     this.earthMesh = new THREE.Mesh(earthGeo, earthMat);
-    this.earthMesh.rotation.y = THREE.MathUtils.degToRad(-100); // Orient India towards initial camera
-    this.earthMesh.rotation.x = THREE.MathUtils.degToRad(18);  // Axial tilt ~23 degrees
+    // Physically authentic axial tilt (~23.4 deg) and orientation locking India towards initial camera
+    this.earthMesh.rotation.x = THREE.MathUtils.degToRad(-24.0);
+    this.earthMesh.rotation.y = THREE.MathUtils.degToRad(-164.5);
     this.group.add(this.earthMesh);
 
-    // 3. Cloud Layer
-    const cloudGeo = new THREE.SphereGeometry(this.earthRadius * 1.015, 48, 48);
-    const cloudTexture = this.generateCloudTexture();
-    const cloudMat = new THREE.MeshStandardMaterial({
-      map: cloudTexture,
+    // 4. Parallax Cloud Shadow Layer (Inset at radius * 1.004)
+    const cloudShadowGeo = new THREE.SphereGeometry(this.earthRadius * 1.004, 64, 64);
+    const cloudShadowMat = new THREE.MeshBasicMaterial({
+      color: 0x020408,
+      alphaMap: cloudsMap,
       transparent: true,
-      opacity: 0.55,
-      blending: THREE.AdditiveBlending,
-      roughness: 1.0
+      opacity: 0.28,
+      depthWrite: false
+    });
+    this.cloudShadowMesh = new THREE.Mesh(cloudShadowGeo, cloudShadowMat);
+    this.cloudShadowMesh.rotation.copy(this.earthMesh.rotation);
+    this.group.add(this.cloudShadowMesh);
+
+    // 5. Separate Outer Dynamic Cloud Sphere (Elevated at radius * 1.012)
+    const cloudGeo = new THREE.SphereGeometry(this.earthRadius * 1.012, 64, 64);
+    const cloudMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      alphaMap: cloudsMap,
+      transparent: true,
+      opacity: 0.88,
+      roughness: 0.95,
+      metalness: 0.0,
+      blending: THREE.NormalBlending,
+      depthWrite: false
     });
     this.cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
     this.cloudMesh.rotation.copy(this.earthMesh.rotation);
     this.group.add(this.cloudMesh);
 
-    // 4. Atmospheric Blue Scattering Glow Halo
-    const atmoGeo = new THREE.SphereGeometry(this.earthRadius * 1.045, 48, 48);
+    // 6. Atmospheric Blue Rayleigh Scattering Rim Glow (Inverted BackSide Sphere)
+    const atmoGeo = new THREE.SphereGeometry(this.earthRadius * 1.036, 64, 64);
     const atmoMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uSunDirection: { value: sunDirection }
+      },
       vertexShader: `
         varying vec3 vNormal;
+        varying vec3 vViewPosition;
         void main() {
           vNormal = normalize(normalMatrix * normal);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          vViewPosition = -mvPosition.xyz;
+          gl_Position = projectionMatrix * mvPosition;
         }
       `,
       fragmentShader: `
         varying vec3 vNormal;
+        varying vec3 vViewPosition;
+        uniform vec3 uSunDirection;
+
         void main() {
-          float intensity = pow(0.65 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
-          gl_FragColor = vec4(0.25, 0.65, 1.0, 1.0) * intensity * 0.85;
+          vec3 normal = normalize(vNormal);
+          vec3 viewDir = normalize(vViewPosition);
+
+          // BackSide: normal points inward toward sphere center
+          float viewDot = dot(normal, viewDir);
+          float rim = pow(1.0 - max(0.0, viewDot), 2.8);
+
+          // Atmospheric scattering is brightest on the sunlit limb
+          vec3 sunDirView = normalize((viewMatrix * vec4(uSunDirection, 0.0)).xyz);
+          float sunScatter = max(0.0, dot(-normal, sunDirView) * 0.6 + 0.4);
+
+          vec3 deepBlue = vec3(0.12, 0.46, 0.98);
+          vec3 cyanRim = vec3(0.55, 0.85, 1.0);
+          vec3 atmoColor = mix(deepBlue, cyanRim, rim);
+
+          float alpha = rim * sunScatter * 1.1;
+          gl_FragColor = vec4(atmoColor, alpha);
         }
       `,
       blending: THREE.AdditiveBlending,
       side: THREE.BackSide,
-      transparent: true
+      transparent: true,
+      depthWrite: false
     });
     this.atmosphereMesh = new THREE.Mesh(atmoGeo, atmoMat);
     this.group.add(this.atmosphereMesh);
 
-    // 5. India / New Delhi Locus Coordinate Marker
-    // Lat ~28.6 deg N, Long ~77.2 deg E mapped to sphere surface
-    const phi = THREE.MathUtils.degToRad(90 - 28.6);
-    const theta = THREE.MathUtils.degToRad(77.2 + 180);
+    // 7. Precise India / New Delhi Locus Coordinate Marker
+    // Latitude 28.614° N, Longitude 77.209° E mapped exactly to equirectangular sphere UV:
+    const u = (77.209 + 180) / 360;
+    const v = (28.614 + 90) / 180;
+    const theta = u * Math.PI * 2;
+    const phi = (1 - v) * Math.PI;
+
     const markerPos = new THREE.Vector3(
-      -(this.earthRadius * 1.01) * Math.sin(phi) * Math.cos(theta),
+      -(this.earthRadius * 1.01) * Math.cos(theta) * Math.sin(phi),
       (this.earthRadius * 1.01) * Math.cos(phi),
-      (this.earthRadius * 1.01) * Math.sin(phi) * Math.sin(theta)
+      (this.earthRadius * 1.01) * Math.sin(theta) * Math.sin(phi)
     );
 
+    const markerGroup = new THREE.Group();
     const markerGeo = new THREE.RingGeometry(0.8, 1.6, 32);
     const markerMat = new THREE.MeshBasicMaterial({
       color: 0xd4af37,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.9
     });
-    this.indiaMarker = new THREE.Mesh(markerGeo, markerMat);
-    this.indiaMarker.position.copy(markerPos);
-    this.indiaMarker.lookAt(markerPos.clone().multiplyScalar(2));
+    const ringMesh = new THREE.Mesh(markerGeo, markerMat);
+
+    const dotGeo = new THREE.CircleGeometry(0.4, 16);
+    const dotMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+    const dotMesh = new THREE.Mesh(dotGeo, dotMat);
+
+    markerGroup.add(ringMesh);
+    markerGroup.add(dotMesh);
+    markerGroup.position.copy(markerPos);
+    markerGroup.lookAt(markerPos.clone().multiplyScalar(2));
+    this.indiaMarker = markerGroup;
     this.earthMesh.add(this.indiaMarker);
 
-    // Register update callback for slow rotational kinematics
+    // 8. Rotational Kinematics Update Loop
     threeScene.registerUpdatable((delta, time) => {
       if (!this.group.visible) return;
+
+      // Realistic slow cloud circulation independent of terrain
       if (this.cloudMesh) {
-        this.cloudMesh.rotation.y += delta * 0.015;
+        this.cloudMesh.rotation.y += delta * 0.005;
       }
-      if (this.indiaMarker) {
-        const s = 1 + Math.sin(time * 3) * 0.15;
-        this.indiaMarker.scale.set(s, s, 1);
+      if (this.cloudShadowMesh) {
+        this.cloudShadowMesh.rotation.y += delta * 0.005;
+      }
+
+      // Elegant pulse on New Delhi marker ring
+      if (ringMesh) {
+        const s = 1.0 + Math.sin(time * 3.2) * 0.18;
+        ringMesh.scale.set(s, s, 1);
       }
     });
 
     this.isBuilt = true;
-    console.log('[EarthScene] High-detail procedural Earth initialized.');
+    console.log('[EarthScene] Photorealistic NASA Blue Marble Earth initialized.');
   }
 
   createStarfield() {
-    const starCount = 2800;
+    const starCount = 3200;
     const starGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(starCount * 3);
     const colors = new Float32Array(starCount * 3);
@@ -138,10 +274,21 @@ class EarthScene {
       positions[i * 3 + 1] = radius * Math.cos(phi);
       positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
 
-      const tint = 0.8 + Math.random() * 0.2;
-      colors[i * 3] = tint;
-      colors[i * 3 + 1] = tint * (0.9 + Math.random() * 0.1);
-      colors[i * 3 + 2] = 1.0;
+      // Realistic stellar color temperature: white, cyan-blue, and warm yellow
+      const tempType = Math.random();
+      if (tempType > 0.8) {
+        colors[i * 3] = 1.0;
+        colors[i * 3 + 1] = 0.85;
+        colors[i * 3 + 2] = 0.65; // Warm K/M type
+      } else if (tempType > 0.4) {
+        colors[i * 3] = 0.85;
+        colors[i * 3 + 1] = 0.92;
+        colors[i * 3 + 2] = 1.0;  // Blue-white O/B type
+      } else {
+        colors[i * 3] = 0.98;
+        colors[i * 3 + 1] = 0.98;
+        colors[i * 3 + 2] = 1.0;  // White A/F type
+      }
     }
 
     starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -156,125 +303,6 @@ class EarthScene {
 
     this.starsMesh = new THREE.Points(starGeo, starMat);
     this.group.add(this.starsMesh);
-  }
-
-  generateEarthTexture() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 2048;
-    canvas.height = 1024;
-    const ctx = canvas.getContext('2d');
-
-    // Deep Ocean gradient
-    const oceanGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    oceanGrad.addColorStop(0, '#041026');
-    oceanGrad.addColorStop(0.5, '#071e40');
-    oceanGrad.addColorStop(1, '#041026');
-    ctx.fillStyle = oceanGrad;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Continental landmasses
-    ctx.fillStyle = '#223821';
-    
-    // Eurasia / Africa / India broad coordinates
-    // Indian Subcontinent (centered around X: ~1460, Y: ~380)
-    ctx.beginPath();
-    // India Peninsular Triangle
-    ctx.moveTo(1400, 310);
-    ctx.lineTo(1510, 320); // Northern Himalaya border
-    ctx.lineTo(1490, 420); // Eastern coast
-    ctx.lineTo(1455, 480); // Kanyakumari cape
-    ctx.lineTo(1420, 410); // Western coast
-    ctx.closePath();
-    ctx.fillStyle = '#4a5d2e';
-    ctx.fill();
-
-    // Himalayan crest
-    ctx.beginPath();
-    ctx.moveTo(1390, 305);
-    ctx.lineTo(1530, 310);
-    ctx.lineTo(1510, 290);
-    ctx.lineTo(1410, 290);
-    ctx.closePath();
-    ctx.fillStyle = '#cfd8dc';
-    ctx.fill();
-
-    // Broad Eurasian & African landmasses
-    ctx.fillStyle = '#283822';
-    // Africa
-    ctx.beginPath();
-    ctx.ellipse(1200, 500, 160, 200, 0.1, 0, Math.PI * 2);
-    ctx.fill();
-    // Eurasia
-    ctx.beginPath();
-    ctx.ellipse(1350, 260, 380, 140, -0.1, 0, Math.PI * 2);
-    ctx.fill();
-    // Americas
-    ctx.beginPath();
-    ctx.ellipse(500, 340, 180, 120, -0.2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(650, 620, 120, 180, 0.2, 0, Math.PI * 2);
-    ctx.fill();
-
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.wrapS = THREE.RepeatWrapping;
-    return texture;
-  }
-
-  generateBumpMap() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1024;
-    canvas.height = 512;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#808080';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Mountain ridges in white
-    ctx.fillStyle = '#ffffff';
-    ctx.beginPath();
-    ctx.arc(730, 150, 30, 0, Math.PI * 2);
-    ctx.fill();
-
-    return new THREE.CanvasTexture(canvas);
-  }
-
-  generateSpecularMap() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1024;
-    canvas.height = 512;
-    const ctx = canvas.getContext('2d');
-    // Oceans specular (high shine)
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // Landmass non-specular
-    ctx.fillStyle = '#111111';
-    ctx.beginPath();
-    ctx.arc(730, 200, 90, 0, Math.PI * 2);
-    ctx.fill();
-
-    return new THREE.CanvasTexture(canvas);
-  }
-
-  generateCloudTexture() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1024;
-    canvas.height = 512;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
-    for (let i = 0; i < 70; i++) {
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height;
-      const r = 25 + Math.random() * 55;
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.wrapS = THREE.RepeatWrapping;
-    return texture;
   }
 }
 
