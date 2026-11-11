@@ -6,6 +6,7 @@
 
 import * as THREE from 'three';
 import { threeScene } from './three_scene.js';
+import { createTeakWoodPBR, createBrassPBR } from './procedural_textures.js';
 
 class KathgharasSystem {
   constructor() {
@@ -72,17 +73,25 @@ class KathgharasSystem {
     const root = new THREE.Group();
     root.name = id;
 
-    // Materials
+    // High-Fidelity Teak & Brass PBR Materials
+    const teakPBR = createTeakWoodPBR(512, 512);
     const teakMat = new THREE.MeshStandardMaterial({
-      color: 0x4a2615,
-      roughness: 0.45,
-      metalness: 0.08
+      color: 0x482414,
+      map: teakPBR.map,
+      normalMap: teakPBR.normalMap,
+      normalScale: new THREE.Vector2(0.85, 0.85),
+      roughnessMap: teakPBR.roughnessMap,
+      roughness: 0.48,
+      metalness: 0.05
     });
 
+    const brassPBR = createBrassPBR(256, 256);
     const brassMat = new THREE.MeshStandardMaterial({
       color: accentColor,
-      roughness: 0.3,
-      metalness: 0.8
+      map: brassPBR.map,
+      normalMap: brassPBR.normalMap,
+      roughness: 0.28,
+      metalness: 0.85
     });
 
     // 1. Elevated Wooden Base Plinth (Width: 6.8, Depth: 6.8, Height: 1.2)

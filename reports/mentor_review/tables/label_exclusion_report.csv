@@ -1,0 +1,7 @@
+"exclusion_reason","normalized_verdict","Excluded_Cases","Pct_of_Corpus"
+"Disposed on consent, terms, or without decision on merits","DISPOSED_OF",5152,11.82
+"Partial relief granted; ambiguous binary status","PARTIALLY_ALLOWED",2168,4.97
+"Missing disposal field",NA,1083,2.49
+"Interlocutory direction or reference; not a final decision","INTERLOCUTORY",801,1.84
+"Unmapped miscellaneous disposition phrase","OTHER",101,0.23
+"Case remitted to lower court for fresh adjudication","REMANDED",40,0.09

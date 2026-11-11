@@ -1,0 +1,46 @@
+{
+  "project": "PRAMANA ?\" Indian Supreme Court Outcome Prediction",
+  "corpus_scope": "Complete 77-Year Indian Supreme Court Corpus (1950?\"2026)",
+  "substantive_cohort_size": 34233,
+  "split_protocol": "Grouped Partitioning by Citation / CNR (70% Train / 15% Val / 15% Test)",
+  "evaluated_checkpoint": "Epoch 5 Checkpoint (pramana_hierarchical_bundle.rds)",
+  "primary_metrics_reported_full_test_n5132": {
+    "test_sample_size": 5132,
+    "accuracy": 0.7855,
+    "balanced_accuracy": 0.7861,
+    "precision_allowed": 0.8452,
+    "recall_allowed": 0.703,
+    "specificity_dismissed": 0.8692,
+    "f1_score": 0.7676,
+    "brier_score": 0.1439,
+    "confusion_matrix": {
+      "true_positives": 1818,
+      "true_negatives": 2213,
+      "false_positives": 333,
+      "false_negatives": 768
+    }
+  },
+  "audit_reevaluation_sample_n300": {
+    "test_sample_size": 300,
+    "accuracy": 0.8033,
+    "balanced_accuracy": 0.7986,
+    "precision_allowed": 0.8226,
+    "recall_allowed": 0.7338,
+    "specificity_dismissed": 0.8634,
+    "f1_score": 0.7757,
+    "brier_score": 0.1434,
+    "confusion_matrix": {
+      "true_positives": 102,
+      "true_negatives": 139,
+      "false_positives": 22,
+      "false_negatives": 37
+    }
+  },
+  "loco_explainability": {
+    "wilcoxon_z_score": 11.2,
+    "p_value": "< 1e-15",
+    "mean_salient_probability_shift": 0.0876,
+    "random_chunk_baseline_shift": 0.0093,
+    "attribution_margin": 0.0783
+  }
+}

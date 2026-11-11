@@ -1,0 +1,5 @@
+"Split","Total_Cases","Unique_Groups","Allowed_Count","Dismissed_Count","Allowed_Pct"
+"Train (70%)",23937,20723,12050,11887,50.34
+"Validation (15%)",5163,4441,2602,2561,50.4
+"Test (15%)",5133,4440,2586,2547,50.38
+"Total",34233,29604,17238,16995,50.35

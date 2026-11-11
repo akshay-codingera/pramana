@@ -35,7 +35,9 @@ import {
   createIndianFlagPBR,
   createBarkPBR,
   createPalmBarkPBR,
+  createPineBarkPBR,
   createPalmFrondTexture,
+  createPineNeedleTexture,
   createFoliageTexture
 } from './procedural_textures.js';
 
@@ -265,6 +267,37 @@ class SupremeCourtExteriorScene {
       transparent: true,
       roughness: 0.55,
       metalness: 0.04,
+      side: THREE.DoubleSide
+    });
+
+    // High-Fidelity PBR Pine Bark (Rich Furrowed Reddish-Brown)
+    const pineBarkPBR = createPineBarkPBR(256, 512);
+    const pineBarkMat = new THREE.MeshStandardMaterial({
+      map: pineBarkPBR.map,
+      normalMap: pineBarkPBR.normalMap,
+      normalScale: new THREE.Vector2(0.95, 0.95),
+      roughnessMap: pineBarkPBR.roughnessMap,
+      roughness: 0.90,
+      metalness: 0.02
+    });
+
+    // Realistic Evergreen Pine Needle Foliage Spray (Double-Sided Alpha Test with Depth Write)
+    const pineNeedleTex = createPineNeedleTexture(512, 512);
+    const pineNeedleMat = new THREE.MeshStandardMaterial({
+      map: pineNeedleTex,
+      alphaTest: 0.18,
+      transparent: true,
+      depthWrite: true,
+      roughness: 0.65,
+      metalness: 0.02,
+      side: THREE.DoubleSide
+    });
+
+    // Deep evergreen interior core material for inner canopy depth and optical occlusion
+    const pineCoreMat = new THREE.MeshStandardMaterial({
+      color: 0x112b18,
+      roughness: 0.88,
+      metalness: 0.01,
       side: THREE.DoubleSide
     });
 
@@ -1216,77 +1249,124 @@ class SupremeCourtExteriorScene {
     // 9. CAMPUS AVENUE TREES, STREETLAMPS & PERIMETER WALL
     // =========================================================================
 
-    // A. 14 Realistic Royal Palm Trees (Roystonea regia) lining the Semicircular Driveway
+    // A. 14 Majestic Evergreen Pine Trees (Pinus roxburghii / Weeping Architectural Pines)
+    // lining the Semicircular Driveway — Lush, dense, tiered evergreen boughs with ZERO bare sticks or pins
     for (let p = 0; p < 14; p++) {
       const angle = (p * Math.PI / 13);
       const rad = 176;
       const px = Math.cos(angle) * rad;
       const pz = 160 + Math.sin(angle) * 76;
 
-      const palmGroup = new THREE.Group();
+      const pineGroup = new THREE.Group();
 
-      // Swelling root flare collar
-      const baseGeo = new THREE.CylinderGeometry(1.8, 2.5, 3.5, 16);
-      const baseMesh = new THREE.Mesh(baseGeo, palmBarkMat);
-      baseMesh.position.y = 1.75;
-      baseMesh.castShadow = true;
-      palmGroup.add(baseMesh);
+      // Subtle natural variation in height and rotation
+      const pScale = 0.94 + (p % 4) * 0.05;
+      pineGroup.scale.set(pScale, pScale, pScale);
 
-      // Tapered ringed grey trunk (Height: 33)
-      const trunkGeo = new THREE.CylinderGeometry(1.2, 1.8, 33, 16);
-      const trunk = new THREE.Mesh(trunkGeo, palmBarkMat);
-      trunk.position.y = 20.0;
-      trunk.castShadow = true;
-      palmGroup.add(trunk);
+      // 1. Natural root flare at base (Y = 0 to 2.2)
+      const flareGeo = new THREE.CylinderGeometry(1.5, 2.6, 2.4, 14);
+      const flareMesh = new THREE.Mesh(flareGeo, pineBarkMat);
+      flareMesh.position.y = 1.2;
+      flareMesh.castShadow = true;
+      pineGroup.add(flareMesh);
 
-      // Smooth emerald green crownshaft
-      const crownshaftGeo = new THREE.CylinderGeometry(1.22, 1.25, 7.5, 16);
-      const crownshaftMat = new THREE.MeshStandardMaterial({ color: 0x24611d, roughness: 0.42, metalness: 0.04 });
-      const crownshaft = new THREE.Mesh(crownshaftGeo, crownshaftMat);
-      crownshaft.position.y = 40.0;
-      palmGroup.add(crownshaft);
+      // 2. Tapered Trunk (Height 16.5, Y = 8.25)
+      // Base radius 1.35, top radius 0.40 at Y = 16.5 — completely enveloped by dense cascading evergreen boughs!
+      const trunkGeo = new THREE.CylinderGeometry(0.40, 1.35, 16.5, 16);
+      const trunkMesh = new THREE.Mesh(trunkGeo, pineBarkMat);
+      trunkMesh.position.y = 8.25;
+      trunkMesh.castShadow = true;
+      pineGroup.add(trunkMesh);
 
-      // Dynamic Crown Fronds Group (animated with wind)
-      const crownGroup = new THREE.Group();
-      crownGroup.position.y = 43.5;
-      crownGroup.userData = { baseRotZ: 0, baseRotX: 0, seed: p * 1.4 };
-      this.animatedFoliage.push(crownGroup);
+      // 3. Dynamic Animated Crown Group (sways gently in environmental breeze)
+      const foliageGroup = new THREE.Group();
+      foliageGroup.userData = { baseRotZ: 0, baseRotX: 0, seed: p * 1.5 };
+      this.animatedFoliage.push(foliageGroup);
 
-      // 16 Arching feather fronds arranged in 3 natural tiers
-      const tiers = [
-        { count: 4, elevation: 0.35, length: 18, width: 4.8 },  // Upright young fronds
-        { count: 6, elevation: 0.75, length: 22, width: 5.4 },  // Horizontal mature fronds
-        { count: 6, elevation: 1.25, length: 20, width: 4.8 }   // Drooping lower fronds
+      // 4. Fifteen dense, cascading, tiered evergreen skirts forming a majestic, seamless pyramidal pine
+      // Continuous, full coverage from base to summit — zero bare sticks, zero gaps, zero cactus appearance!
+      const pineTiers = [
+        { y: 4.8,  count: 14, len: 14.5, wid: 8.8, droop: -0.38 }, // Lowest skirt: sweeping gracefully toward lawn
+        { y: 6.8,  count: 14, len: 13.5, wid: 8.4, droop: -0.36 },
+        { y: 8.8,  count: 13, len: 12.2, wid: 7.8, droop: -0.34 },
+        { y: 10.7, count: 13, len: 11.0, wid: 7.2, droop: -0.32 },
+        { y: 12.5, count: 12, len: 9.8,  wid: 6.6, droop: -0.30 },
+        { y: 14.2, count: 12, len: 8.6,  wid: 6.0, droop: -0.28 },
+        { y: 15.8, count: 11, len: 7.5,  wid: 5.4, droop: -0.26 },
+        { y: 17.3, count: 11, len: 6.4,  wid: 4.8, droop: -0.25 },
+        { y: 18.7, count: 10, len: 5.3,  wid: 4.2, droop: -0.24 },
+        { y: 20.0, count: 10, len: 4.3,  wid: 3.8, droop: -0.22 },
+        { y: 21.2, count: 9,  len: 3.4,  wid: 3.4, droop: -0.20 },
+        { y: 22.3, count: 8,  len: 2.6,  wid: 2.8, droop: -0.19 },
+        { y: 23.3, count: 8,  len: 1.9,  wid: 2.2, droop: -0.18 },
+        { y: 24.2, count: 7,  len: 1.3,  wid: 1.6, droop: -0.18 },
+        { y: 24.9, count: 6,  len: 0.8,  wid: 1.1, droop: -0.18 }
       ];
 
-      tiers.forEach(tier => {
-        for (let f = 0; f < tier.count; f++) {
-          const frondAngle = (f * Math.PI * 2) / tier.count + (tier.elevation * 0.4);
-          const frondGroup = new THREE.Group();
-          frondGroup.rotation.y = frondAngle;
+      pineTiers.forEach((tier, tIdx) => {
+        const tierGroup = new THREE.Group();
+        tierGroup.position.y = tier.y;
 
-          // Arching rachis stem
-          const stemGeo = new THREE.CylinderGeometry(0.08, 0.04, tier.length, 6);
-          const stem = new THREE.Mesh(stemGeo, crownshaftMat);
-          stem.position.set(0, tier.length * 0.45 * Math.cos(tier.elevation), tier.length * 0.45 * Math.sin(tier.elevation));
-          stem.rotation.x = tier.elevation;
-          frondGroup.add(stem);
+        const radialOffset = tIdx * 0.44; // Stagger tiers radially for natural dense interleaving
 
-          // Feather leaflet blade plane with authentic pinnate palm texture
-          const leafGeo = new THREE.PlaneGeometry(tier.width, tier.length);
-          const leafMesh = new THREE.Mesh(leafGeo, palmFrondMat);
-          leafMesh.position.set(0, tier.length * 0.45 * Math.cos(tier.elevation), tier.length * 0.45 * Math.sin(tier.elevation));
-          leafMesh.rotation.x = tier.elevation + Math.PI / 2;
-          leafMesh.castShadow = true;
-          frondGroup.add(leafMesh);
+        for (let b = 0; b < tier.count; b++) {
+          const bAngle = (b * Math.PI * 2) / tier.count + radialOffset;
+          const boughGroup = new THREE.Group();
+          boughGroup.rotation.y = bAngle;
 
-          crownGroup.add(frondGroup);
+          // Outer Sweeping Bough Pad (Horizontal Fan Plane with downward droop)
+          const outerZ = tier.len * 0.58 * Math.cos(tier.droop);
+          const outerY = tier.len * 0.58 * Math.sin(tier.droop);
+          const fanGeo = new THREE.PlaneGeometry(tier.wid, tier.len * 0.75);
+          const fanMesh = new THREE.Mesh(fanGeo, pineNeedleMat);
+          fanMesh.position.set(0, outerY, outerZ);
+          fanMesh.rotation.x = Math.PI / 2 - tier.droop;
+          fanMesh.castShadow = true;
+          boughGroup.add(fanMesh);
+
+          // Inner Overlapping Shoulder Pad (hugs close to trunk, filling inner canopy)
+          const innerZ = tier.len * 0.28 * Math.cos(tier.droop);
+          const innerY = tier.len * 0.28 * Math.sin(tier.droop);
+          const innerGeo = new THREE.PlaneGeometry(tier.wid * 0.85, tier.len * 0.55);
+          const innerMesh = new THREE.Mesh(innerGeo, pineNeedleMat);
+          innerMesh.position.set(0, innerY, innerZ);
+          innerMesh.rotation.x = Math.PI / 2 - tier.droop * 0.6;
+          innerMesh.castShadow = true;
+          boughGroup.add(innerMesh);
+
+          // Volumetric Cross-Card (vertical quad tilted at 60 deg to add fluffy 3D fullness)
+          const crossGeo = new THREE.PlaneGeometry(tier.wid * 0.72, tier.len * 0.68);
+          const crossMesh = new THREE.Mesh(crossGeo, pineNeedleMat);
+          crossMesh.position.set(0, outerY, outerZ);
+          crossMesh.rotation.x = Math.PI / 2 - tier.droop;
+          crossMesh.rotation.z = Math.PI / 3;
+          crossMesh.castShadow = true;
+          boughGroup.add(crossMesh);
+
+          tierGroup.add(boughGroup);
         }
+
+        foliageGroup.add(tierGroup);
       });
 
-      palmGroup.add(crownGroup);
-      palmGroup.position.set(px, 0, pz);
-      this.group.add(palmGroup);
+      // 5. Delicate Pointed Pine Spire Tip (Y = 25.1 to 26.2)
+      // Tiny pointed needle cluster that smoothly finishes the conical crown
+      const apexGroup = new THREE.Group();
+      apexGroup.position.y = 25.1;
+
+      for (let s = 0; s < 4; s++) {
+        const spireGeo = new THREE.PlaneGeometry(0.9, 1.4);
+        const spireMesh = new THREE.Mesh(spireGeo, pineNeedleMat);
+        spireMesh.position.y = 0.7;
+        spireMesh.rotation.y = (s * Math.PI) / 4;
+        spireMesh.castShadow = true;
+        apexGroup.add(spireMesh);
+      }
+      foliageGroup.add(apexGroup);
+
+      pineGroup.add(foliageGroup);
+      pineGroup.position.set(px, 0, pz);
+      this.group.add(pineGroup);
     }
 
     // B. 6 Majestic Mature Indian Shade Trees (Neem / Peepal) framing the Wings

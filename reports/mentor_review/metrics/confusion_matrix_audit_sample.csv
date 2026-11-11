@@ -1,0 +1,5 @@
+predicted_label,actual_dismissed,actual_allowed,total_predicted,class_precision
+DISMISSED,139,37,176,78.98%
+ALLOWED,22,102,124,82.26%
+TOTAL_ACTUAL,161,139,300,-
+CLASS_RECALL,86.34%,73.38%,-,80.33%

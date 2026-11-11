@@ -122,16 +122,18 @@ class ThreeSceneManager {
     this.sunLight.shadow.normalBias = 0.05; // Eliminates shadow acne and sparkling on architectural stone
     this.scene.add(this.sunLight);
 
-    // Warm Courtroom Interior Point / Spot Lighting
-    this.courtroomBenchSpot = new THREE.SpotLight(0xffecd2, 3.5);
-    this.courtroomBenchSpot.position.set(0, 22, 5);
-    this.courtroomBenchSpot.angle = Math.PI / 3.5;
-    this.courtroomBenchSpot.penumbra = 0.6;
-    this.courtroomBenchSpot.decay = 2;
-    this.courtroomBenchSpot.distance = 50;
+    // Warm Courtroom Interior Spot Lighting (Illuminating Judicial Dais & 3-Judge Bench)
+    this.courtroomBenchSpot = new THREE.SpotLight(0xffecd2, 3.8);
+    this.courtroomBenchSpot.position.set(0, 26, 2);
+    this.courtroomBenchSpot.angle = Math.PI / 3.2;
+    this.courtroomBenchSpot.penumbra = 0.5;
+    this.courtroomBenchSpot.decay = 1.8;
+    this.courtroomBenchSpot.distance = 75;
     this.courtroomBenchSpot.castShadow = true;
-    this.courtroomBenchSpot.shadow.bias = -0.001;
+    this.courtroomBenchSpot.shadow.bias = -0.0005;
     this.courtroomGroup.add(this.courtroomBenchSpot);
+    this.courtroomBenchSpot.target.position.set(0, 4, -28);
+    this.courtroomGroup.add(this.courtroomBenchSpot.target);
   }
 
   setLightingMode(mode) {
@@ -161,15 +163,15 @@ class ThreeSceneManager {
       this.sunLight.shadow.camera.bottom = -260;
       this.sunLight.shadow.camera.updateProjectionMatrix();
     } else if (mode === 'courtroom') {
-      this.scene.background.setHex(0x0b0d12);
-      this.scene.fog.color.setHex(0x0b0d12);
-      this.ambientLight.intensity = 0.7;
-      this.hemiLight.intensity = 0.55;
-      this.hemiLight.color.setHex(0xffeed6);
-      this.hemiLight.groundColor.setHex(0x2c180e);
-      this.sunLight.position.set(10, 40, 20);
-      this.sunLight.intensity = 1.0;
-      this.scene.fog.density = 0.004;
+      this.scene.background.setHex(0x08090d);
+      this.scene.fog.color.setHex(0x08090d);
+      this.ambientLight.intensity = 0.85;
+      this.hemiLight.intensity = 0.70;
+      this.hemiLight.color.setHex(0xfff2e0); // Warm institutional amber light
+      this.hemiLight.groundColor.setHex(0x361a0e); // Warm teak floor bounce
+      this.sunLight.position.set(12, 36, 15);
+      this.sunLight.intensity = 1.4;
+      this.scene.fog.density = 0.0005; // Crystal clear chamber visibility with subtle atmospheric depth
     }
   }
 
