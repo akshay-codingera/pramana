@@ -1,0 +1,6 @@
+"Architecture","Input_Context","Accuracy","Precision","Recall","Specificity","F1_Score","Brier_Score","Parameters","Latency_ms"
+"1. Random Uniform Guessing","Null (P = 0.50)","50.00%","50.00%","50.00%","50.00%",0.5,0.25,"0","< 0.1"
+"2. Majority Prior (Zero-Rule)","Empirical Prior","50.39%","50.39%","100.00%","0.00%",0.6701,0.25,"0","< 0.1"
+"3. TF-IDF + Ridge Regression","Top 5,000 N-Grams","68.20%","71.50%","61.30%","75.00%",0.6601,0.2015,"5,001","12.4"
+"4. Direct Truncation BiGRU","Initial 512 Tokens","71.40%","74.80%","65.10%","77.60%",0.696,0.185,"~65,000","45.2"
+"5. PRAMANA Hierarchical BiGRU","32 Chunks x 512 Tokens","78.55%","84.52%","70.30%","86.92%",0.7676,0.1439,"120,129","171.9"

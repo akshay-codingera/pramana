@@ -614,5 +614,512 @@
     "ground_truth_entered_at": {},
     "is_correct": {},
     "text_preview": "Goverdhan Vs. State of Rajasthan\n\n[2026 INSC 1190]\n\n[Criminal Appeal No(s). 1394 of 2017]\n\nMehta, J.\n\n1. Heard.\n\n2. The appellant was tried for the offence punishable under Section 306 of the Indian Penal Code, 18601 before the learned Additional Sessions Judge, Women Atrocities Cases No.1, Jaipur Metropolitan2, in Sessions Case No.27 of 2011. The trial Court, vide judgment and order dated 9th December, 2016 convicted the appellant for the said offence and sentenced him to undergo rigorous imprisonment for ten years and to pay a fine of Rs.50,000/-, and, in default of payment of fine, to undergo further rigorous imprisonment for three months. The appeal preferred by the appellant against the judgment of conviction was dismissed by the learned Single Judge of the High Court of Judicature for Rajasthan at Jaipur3 vide judgment dated 11th May, 2017. Being aggrieved thereby, the appellant has approached this Court by way of the instant appeal, upon grant of special leave.\n\nFactual Background:-\n\n3. Brief facts relevant and essential for disposal of the appeal are noted hereinbelow.\n\n4. The appellant was married to Smt. Anju (deceased) on 21st November, 1996, and a son, namely, Hemant, w"
+  },
+  {
+    "experiment_id": "EXP_20261110_221700_8a059864",
+    "document_name": "1794329167909_2023_1_317_334_EN.txt",
+    "file_hash": "512612b3ce1c9e0c7dbe674e5e5b50cca1a868a2d3975902f47014f83a847423",
+    "text_hash": "8a059864b925f3e8cfa24acf4a8481701442a26b5a2ef8b6cd185721261cf555",
+    "upload_timestamp": "2026-11-10 16:47:00 UTC",
+    "model_type": "Hierarchical BiGRU + Additive Attention (512-Token Chunks)",
+    "model_version": "PRAMANA-HBiGRU-v1.0",
+    "dataset_version": "Supreme Court of India (1950-2026 Corpus, Grouped Partition)",
+    "predicted_outcome": "DISMISSED",
+    "prob_allowed": 0.466079,
+    "prob_dismissed": 0.533921,
+    "confidence": 0.0678,
+    "confidence_justification": "Prediction Decision Margin (|P - 0.5| * 2)",
+    "dataset_presence": {
+      "exists": false,
+      "match_type": "NO_MATCH",
+      "matched_id": {},
+      "citation": {},
+      "split": {}
+    },
+    "verdict_warnings": "WARNING: 1 explicit verdict indicator(s) or operative order(s) detected in the document. Pre-decision masking will be enforced during feature extraction to avoid trivial outcome leakage, but original document text is preserved unaltered.",
+    "indicators_count": 1,
+    "detected_indicators": [
+      {
+        "line_number": 262,
+        "matched_pattern": "Leave granted",
+        "snippet": "1. Leave granted in Special Leave Petition (Civil) No. 4441 of"
+      }
+    ],
+    "total_chunks": 32,
+    "word_count": 6812,
+    "top_passages": [
+      {
+        "chunk_id": "chk_004",
+        "paragraph_num": 4,
+        "start_char": 5298,
+        "end_char": 7723,
+        "delta_probability": -0.32062,
+        "importance_score": 0.32062,
+        "direction": "OPPOSING",
+        "verbatim_text": "in a case relating to another tax enactment – This rule of caution is    A\nimportant and should not be overlooked, more so when the language\nof the enactment and the object and purpose of the enactment are\ndifferent.\n       Constitution of India – Art.141 – SLP – Dismissal of – Held:\nIf the dismissal is in limine and at the admission stage, it would not   B\nconstitute a binding precedent u/Art.141 of the Constitution.\n      Allowing the appeals, the Court\n       HELD : 1. A hire-purchase agreement has two elements –\nan element of bailment and an element of sale. The element of            C\nsale fructifies when the option to purchase is exercised by the\nintending purchaser after fulfilling the terms of the agreement.\nTill then, the goods are given on hire. One can argue that in a\nhire-purchase, an element of interest is inbuilt, but what is payable\nis the hire amount and not interest per se. The hirer has an option\nto return the vehicle or the goods taken on hire. It is not a simple     D\ntransaction of giving a loan or advance on which interest is payable.\nThe transaction(s) in commercial and legal sense are far more\ncomplex with corresponding rights of the parties. Even if the\nhirer is recorded as the owner of the vehicle under Section 51 of\nthe MV Act, the name of the appellant – assessee is also recorded\n                                                                         E\nin the registration book, which is in recognition of the hire-\npurchase agreement. The registered owner under the MV Act\nmay be liable in case of accidents/traffic challans, etc. But this, in\nno way, dilutes the right of the appellants – assessees in respect\nof the title of the property, that is, the vehicle. Any transfer or\nsale made by the hirer or any violation of the hire-purchase             F\nagreement can lead to civil as well as criminal consequences.\nGiven the dictum and ratio in Sahara India Savings and Investment\nCorporation Limited and State Bank of Patiala Through General\nManager, the view taken by the High Court of Delhi in M/s G.E.\nCapital Transportation, as followed by the High Court of Delhi in\n                                                                         G\nCommissioner of Interest Tax v. M/S G.E. Capital Transportation is\ncorrect and the view taken by the High Court of Kerala in the\nimpugned judgment is not in consonance with the above decisions\nof this court. [Para 14][329-C-H]",
+        "preview": "in a case relating to another tax enactment – This rule of caution is    A\nimportant and should not be overlooked, more so when the language\nof the en"
+      },
+      {
+        "chunk_id": "chk_002",
+        "paragraph_num": 2,
+        "start_char": 2583,
+        "end_char": 5178,
+        "delta_probability": 0.22125,
+        "importance_score": 0.22125,
+        "direction": "SUPPORTING",
+        "verbatim_text": "A     of the asset, the hire-purchase company and the end user of the\n      asset; and (iii) the intention of the parties which manifests itself in\n      the fixation of the initial payment, the method of determination of\n      hire-purchase price etc – However, when hire-purchase company\n      pays the price or a substantial part thereof on behalf of such hirer\n      who is real purchaser but does not pay the full price, then such\nB\n      agreement is in nature of a security for re-payment of the loan and\n      is essentially a loan transaction – High Court reversed finding of\n      ITAT without framing a specific substantial question of law and\n      thus, interference with findings of fact was unwarranted – Orders\n      passed by ITAT deleting the additions made by assessing officer in\nC     case of appellant, set aside – Motor Vehicles Act 1988 – s.51.\n             Interest Tax Act,1974 – s.2(7) – Interpretation & scope of –\n      Interest recovered under hire-purchase agreement, if falls under\n      s.2(7) – Held: s.2(7) has been interpreted in two decisions, that is,\n      in the cases of Sahara India Savings and Investment Corporation\nD     Limited and State Bank of Patiala Through General Manager, which\n      have given a very limited and restricted meaning to s.2(7) of the Act\n      as interest directly arising “on” loans and advances, and not any\n      other interest, be it interest earned on investment or interest payable\n      on delayed payment of the discounted bill of exchange.\nE           Hire-Purchase – Elements – Held: A hire-purchase agreement\n      has two elements – an element of bailment and an element of sale –\n      Any transfer or sale made by the hirer or any violation of the hire-\n      purchase agreement can lead to civil as well as criminal\n      consequences.\nF           Taxation – Taxation matters – Interference by High Court with\n      findings of fact recorded by the ITAT – Scope – Held: Findings of\n      fact generally recorded by the ITAT are treated as conclusive – The\n      High Court can interfere with the findings of fact while deciding a\n      substantial question of law when the findings are not supported by\n      the material on record, so as to be treated as perverse – For this,\nG\n      the High Court must frame a separate substantial question of law\n      and only then interfere with the findings of fact by the ITAT, while\n      applying the strict parameters.\n            Taxation matters – Precedents – Rule of caution when applying\n      the ratio of judgments relating to one tax enactment as a precedent\nH",
+        "preview": "A     of the asset, the hire-purchase company and the end user of the\n      asset; and (iii) the intention of the parties which manifests itself in\n  "
+      },
+      {
+        "chunk_id": "chk_009",
+        "paragraph_num": 9,
+        "start_char": 12826,
+        "end_char": 14617,
+        "delta_probability": -0.12376,
+        "importance_score": 0.12376,
+        "direction": "OPPOSING",
+        "verbatim_text": "A           Commissioner of Income Tax v. Cholamandalam\n            Investment and Finance Co. Ltd. (2008) 296 ITR 601\n            – held approved.\n            K.L. Johar and Co. (In Both Appeals) v. Deputy\n            Commercial Tax Officer, Coimbatore III (In Both\nB           Appeals) AIR 1965 SC 1082 : [1965] 2 SCR 112;\n            Sundaram Finance Limited v. State of Kerala and\n            Another AIR 1966 SC 1178 : [1966] 2 SCR 828;\n            Commissioner of Interest Tax, New Delhi v. M/s G.E.\n            Capital Services India [Decision of Supreme Court\nC           dated 16 th May, 2008 in SLP(C) No. 14202 of 2008]\n            and Association of Leasing and Financial Service\n            Companies v. Union of India and Others (2011) 2 SCC\n            352 : [2010] 13 SCR 381 – referred to.\n                             Case Law Reference\nD\n      [1966] 2 SCR 828                referred to             Para 7\n      (2009) 17 SCC 43                relied on               Para 10\n      [2015] 12 SCR 243               relied on               Para 10\nE     [1965] 2 SCR 112                referred to             Para 15\n      [2010] 13 SCR 381               referred to             Para 18\n           CIVIL APPELLATE JURISDICTION : Civil Appeal Nos.10201-\n      10202 of 2010.\nF\n            From the Judgment and Order dated 10/03/2008 of the High Court\n      of Kerala at Ernakulam in ITA Nos.230 and 269/2002.\n            With\n            Civil Appeal Nos.10203, 10204, 10205-10206, 10207 of 2010, 4903,\nG     4904, 4905, 4906, 4907 Of 2014 And Slp (Civil) No.4441 of 2011.\n            Rupesh Kumar, Shashank Bajpai, Chinmayee Chandra, A.\n      Raghunath, Ms. Ritika Sinha, V. K. Monga, E. M. S. Anam, A. N. Arora,\n      Mrs. Anil Katiyar, Advs. for the appearing parties.\nH",
+        "preview": "A           Commissioner of Income Tax v. Cholamandalam\n            Investment and Finance Co. Ltd. (2008) 296 ITR 601\n            – held approved.\n  "
+      },
+      {
+        "chunk_id": "chk_006",
+        "paragraph_num": 6,
+        "start_char": 7805,
+        "end_char": 10375,
+        "delta_probability": -0.1049,
+        "importance_score": 0.1049,
+        "direction": "OPPOSING",
+        "verbatim_text": "A            2. In Circular No. 760 dated 13th January 1998, the CBDT\n      observed that they considered the issue and were advised that\n      in case of transactions which are, in substance, in the nature of\n      hire-purchase, the receipts of hire charges would not be in the\n      nature of interest. In transactions which are, in substance, in the\n      nature of financing transactions, the hire charges should be\nB\n      treated as interest, subject to interest tax. To determine the\n      distinction between the two transactions, the assessing officers\n      were required to consider the issue on merits taking, inter alia,\n      into account – (i) the terms of the agreement; (ii) the nature of\n      the arrangement between the supplier of the asset, the hire-\nC     purchase company and the end user of the asset; and (iii) the\n      intention of the parties which manifests itself in the fixation of\n      the initial payment, the method of determination of hire-purchase\n      price etc. However, when the hire-purchase company pays the\n      price or a substantial part thereof on behalf of such hirer who is\n      the real purchaser but does not pay the full price, then such\nD\n      agreement is in the nature of a security for re-payment of the\n      loan and is essentially a loan transaction. [Para 16][331-F-H;\n      332-A-B]\n            3.1. The judgment in Sundaram Finance Limited relates to\n      the true nature of hire in hire-purchase agreements as in the\nE\n      context of the sales tax enactment. In the present case, however,\n      one is dealing with and interpreting Section 2(7) of the Act, which\n      has been interpreted in two decisions, that is, in the case of Sahara\n      India Savings and Investment Corporation Limited and State Bank\n      of Patiala Through General Manager, which have given a very\nF     limited and restricted meaning to Section 2(7) of the Act as\n      interest directly arising “on” loans and advances, and not any\n      other interest, be it interest earned on investment or interest\n      payable on delayed payment of the discounted bill of exchange.\n      [Para 17][332-B-E]\nG           3.2. Taxation depends upon the language of the charging\n      section and what is brought to tax within the four corners of the\n      charging section. Therefore, one should be careful and cautious\n      when applying the ratio of judgments relating to one tax enactment\n      as a precedent in a case relating to another tax enactment. This\n      rule of caution is important and should not be overlooked, more\nH",
+        "preview": "A            2. In Circular No. 760 dated 13th January 1998, the CBDT\n      observed that they considered the issue and were advised that\n      in cas"
+      },
+      {
+        "chunk_id": "chk_001",
+        "paragraph_num": 1,
+        "start_char": 1,
+        "end_char": 2576,
+        "delta_probability": 0.05732,
+        "importance_score": 0.05732,
+        "direction": "SUPPORTING",
+        "verbatim_text": "M/S. MUTHOOT LEASING AND FINANCE LIMITED                             A\n                   AND ANOTHER\n                        v.\n               COMMISSIONER OF INCOME TAX\n              (Civil Appeal Nos. 10201-10202 of 2010)\n                                                                          B\n                         JANUARY 03, 2023\n       [SANJIV KHANNA AND M. M. SUNDRESH, JJ.]\n      Interest Tax Act,1974 – s.2(5-A) and s.2(5-B) – Hire-purchase\nagreements – Appellants-assessees are credit institutions within\n                                                                          C\nmeaning of s.2(5-A) – Whether appellants-assessees liable to pay\ntax on interest component included in hire-purchase instalments paid\nunder hire-purchase agreements – ITAT referred to CBDT Circular\nNo. 760 dated 13th January 1998 and observed that hire-purchase\nagreement is a composite transaction, and has elements of bailment\nand sale and appellants-assessees are not liable to pay interest tax      D\nas hire instalments are not interest on loans and advances that is\nchargeable to interest tax – High Court reversed the finding of ITAT,\nobserving that hire-purchase instalment includes “finance charges”,\nwhich is nothing but interest, and therefore, interest tax is leviable\non the interest component – The transaction, though styled as a\n                                                                          E\nhire-purchase agreement, the High Court held, is in fact a finance\nagreement for purchase of a vehicle – Reliance placed by appellant-\nassessee on Circular No. 760 dated 13th January 1998 issued by\nCBDT was rejected by the High Court – On appeal, held: Given the\ndictum and ratio in the cases of Sahara India Savings and Investment\nCorporation Limited and State Bank of Patiala Through General             F\nManager, the view taken by High Court is not correct – In Circular\nNo. 760 dated 13th January 1998, the CBDT observed that they\nconsidered the issue and were advised that in case of transactions\nwhich are, in substance, in the nature of hire-purchase, the receipts\nof hire charges would not be in the nature of interest – In\ntransactions which are, in substance, in the nature of financing          G\ntransactions, the hire charges should be treated as interest, subject\nto interest tax – To determine the distinction between the two\ntransactions, the assessing officers were required to consider the\nissue on merits taking, inter alia, into account – (i) the terms of the\nagreement; (ii) the nature of the arrangement between the supplier        H",
+        "preview": "M/S. MUTHOOT LEASING AND FINANCE LIMITED                             A\n                   AND ANOTHER\n                        v.\n               COMMIS"
+      },
+      {
+        "chunk_id": "chk_007",
+        "paragraph_num": 7,
+        "start_char": 10382,
+        "end_char": 10490,
+        "delta_probability": 0.02875,
+        "importance_score": 0.02875,
+        "direction": "SUPPORTING",
+        "verbatim_text": "M/S. MUTHOOT LEASING AND FINANCE LIMITED v.                        321\n            COMMISSIONER OF INCOME TAX",
+        "preview": "M/S. MUTHOOT LEASING AND FINANCE LIMITED v.                        321\n            COMMISSIONER OF INCOME TAX"
+      },
+      {
+        "chunk_id": "chk_025",
+        "paragraph_num": 25,
+        "start_char": 27268,
+        "end_char": 27342,
+        "delta_probability": 0.0236,
+        "importance_score": 0.0236,
+        "direction": "SUPPORTING",
+        "verbatim_text": "(2015) 15 SCC 483.                                                        H",
+        "preview": "(2015) 15 SCC 483.                                                        H"
+      },
+      {
+        "chunk_id": "chk_008",
+        "paragraph_num": 8,
+        "start_char": 10493,
+        "end_char": 12820,
+        "delta_probability": -0.02079,
+        "importance_score": 0.02079,
+        "direction": "OPPOSING",
+        "verbatim_text": "so when the language of the enactment and the object and               A\npurpose of the enactment are different. [Para 18][332-E-F]\n       4.1. Findings of fact generally recorded by the ITAT are\ntreated as conclusive. The High Court can interfere with the\nfindings of fact while deciding a substantial question of law when\nthe findings are not supported by the material on record, so as to     B\nbe treated as perverse. For this, the High Court must frame a\nseparate substantial question of law and only then interfere with\nthe findings of fact by the ITAT, while applying the strict\nparameters. In the present case, the High Court did not frame a\nspecific substantial question of law and thus, the interference with\n                                                                       C\nthe findings of fact is unwarranted. This is not to say that the tax\nauthorities are not entitled to examine the surrounding facts and\ncircumstances to ascertain the true character and nature of the\ntransaction, regardless of the nomenclature given by the parties.\n[Para 19][333-C-E]\n                                                                       D\n      4.2. In the present case, at this distinct point of time, it\nwould not be appropriate to pass an order of remand. It is to be\nalso noted that the Act has ceased to operate with effect from\n31st March 2000. 21. The impugned judgment is accordingly set\naside. The additions made by the assessing officer are set aside\nand the orders passed by the ITAT deleting the additions in the        E\ncase of appellant and other cases are upheld. [Paras 20, 21]\n[333-G; 334-A]\n      Commissioner of Income Tax, Kanpur v. Sahara India\n      Savings and Investment Corporation Limited (2009) 17\n      SCC 43 and State Bank of Patiala Through General                 F\n      Manager v. Commissioner of Income Tax, Patiala (2015)\n      15 SCC 483 : [2015] 12 SCR 243 – relied on.\n      The Commissioner of Income Tax, Cochin v. M/s.\n      Muthoot Leasing & Finance Limited [Judgment dated\n      10th March, 2008 of High Court of Kerala in ITA No.              G\n      269 of 2002] – overruled.\n      State Bank of Mysore v. Commissioner of I.T.,\n      Karnataka-I, Bangalore (1989) 175 ITR 607 – held\n      overruled.\n                                                                       H",
+        "preview": "so when the language of the enactment and the object and               A\npurpose of the enactment are different. [Para 18][332-E-F]\n       4.1. Findin"
+      }
+    ],
+    "ground_truth": {},
+    "ground_truth_entered_at": {},
+    "is_correct": {},
+    "text_preview": "M/S. MUTHOOT LEASING AND FINANCE LIMITED                             A\n                   AND ANOTHER\n                        v.\n               COMMISSIONER OF INCOME TAX\n              (Civil Appeal Nos. 10201-10202 of 2010)\n                                                                          B\n                         JANUARY 03, 2023\n       [SANJIV KHANNA AND M. M. SUNDRESH, JJ.]\n      Interest Tax Act,1974 – s.2(5-A) and s.2(5-B) – Hire-purchase\nagreements – Appellants-assessees are credit institutions within\n                                                                          C\nmeaning of s.2(5-A) – Whether appellants-assessees liable to pay\ntax on interest component included in hire-purchase instalments paid\nunder hire-purchase agreements – ITAT referred to CBDT Circular\nNo. 760 dated 13th January 1998 and observed that hire-purchase\nagreement is a composite transaction, and has elements of bailment\nand sale and appellants-assessees are not liable to pay interest tax      D\nas hire instalments are not interest on loans and advances that is\nchargeable to interest tax – High Court reversed the finding of ITAT,\nobserving that hire-purchase instalment includes “finance c"
+  },
+  {
+    "experiment_id": "EXP_20261110_221721_8a059864",
+    "document_name": "1794329227801_2023_1_317_334_EN.txt",
+    "file_hash": "512612b3ce1c9e0c7dbe674e5e5b50cca1a868a2d3975902f47014f83a847423",
+    "text_hash": "8a059864b925f3e8cfa24acf4a8481701442a26b5a2ef8b6cd185721261cf555",
+    "upload_timestamp": "2026-11-10 16:47:21 UTC",
+    "model_type": "Hierarchical BiGRU + Additive Attention (512-Token Chunks)",
+    "model_version": "PRAMANA-HBiGRU-v1.0",
+    "dataset_version": "Supreme Court of India (1950-2026 Corpus, Grouped Partition)",
+    "predicted_outcome": "DISMISSED",
+    "prob_allowed": 0.466079,
+    "prob_dismissed": 0.533921,
+    "confidence": 0.0678,
+    "confidence_justification": "Prediction Decision Margin (|P - 0.5| * 2)",
+    "dataset_presence": {
+      "exists": false,
+      "match_type": "NO_MATCH",
+      "matched_id": {},
+      "citation": {},
+      "split": {}
+    },
+    "verdict_warnings": "WARNING: 1 explicit verdict indicator(s) or operative order(s) detected in the document. Pre-decision masking will be enforced during feature extraction to avoid trivial outcome leakage, but original document text is preserved unaltered.",
+    "indicators_count": 1,
+    "detected_indicators": [
+      {
+        "line_number": 262,
+        "matched_pattern": "Leave granted",
+        "snippet": "1. Leave granted in Special Leave Petition (Civil) No. 4441 of"
+      }
+    ],
+    "total_chunks": 32,
+    "word_count": 6812,
+    "top_passages": [
+      {
+        "chunk_id": "chk_004",
+        "paragraph_num": 4,
+        "start_char": 5298,
+        "end_char": 7723,
+        "delta_probability": -0.32062,
+        "importance_score": 0.32062,
+        "direction": "OPPOSING",
+        "verbatim_text": "in a case relating to another tax enactment – This rule of caution is    A\nimportant and should not be overlooked, more so when the language\nof the enactment and the object and purpose of the enactment are\ndifferent.\n       Constitution of India – Art.141 – SLP – Dismissal of – Held:\nIf the dismissal is in limine and at the admission stage, it would not   B\nconstitute a binding precedent u/Art.141 of the Constitution.\n      Allowing the appeals, the Court\n       HELD : 1. A hire-purchase agreement has two elements –\nan element of bailment and an element of sale. The element of            C\nsale fructifies when the option to purchase is exercised by the\nintending purchaser after fulfilling the terms of the agreement.\nTill then, the goods are given on hire. One can argue that in a\nhire-purchase, an element of interest is inbuilt, but what is payable\nis the hire amount and not interest per se. The hirer has an option\nto return the vehicle or the goods taken on hire. It is not a simple     D\ntransaction of giving a loan or advance on which interest is payable.\nThe transaction(s) in commercial and legal sense are far more\ncomplex with corresponding rights of the parties. Even if the\nhirer is recorded as the owner of the vehicle under Section 51 of\nthe MV Act, the name of the appellant – assessee is also recorded\n                                                                         E\nin the registration book, which is in recognition of the hire-\npurchase agreement. The registered owner under the MV Act\nmay be liable in case of accidents/traffic challans, etc. But this, in\nno way, dilutes the right of the appellants – assessees in respect\nof the title of the property, that is, the vehicle. Any transfer or\nsale made by the hirer or any violation of the hire-purchase             F\nagreement can lead to civil as well as criminal consequences.\nGiven the dictum and ratio in Sahara India Savings and Investment\nCorporation Limited and State Bank of Patiala Through General\nManager, the view taken by the High Court of Delhi in M/s G.E.\nCapital Transportation, as followed by the High Court of Delhi in\n                                                                         G\nCommissioner of Interest Tax v. M/S G.E. Capital Transportation is\ncorrect and the view taken by the High Court of Kerala in the\nimpugned judgment is not in consonance with the above decisions\nof this court. [Para 14][329-C-H]",
+        "preview": "in a case relating to another tax enactment – This rule of caution is    A\nimportant and should not be overlooked, more so when the language\nof the en"
+      },
+      {
+        "chunk_id": "chk_002",
+        "paragraph_num": 2,
+        "start_char": 2583,
+        "end_char": 5178,
+        "delta_probability": 0.22125,
+        "importance_score": 0.22125,
+        "direction": "SUPPORTING",
+        "verbatim_text": "A     of the asset, the hire-purchase company and the end user of the\n      asset; and (iii) the intention of the parties which manifests itself in\n      the fixation of the initial payment, the method of determination of\n      hire-purchase price etc – However, when hire-purchase company\n      pays the price or a substantial part thereof on behalf of such hirer\n      who is real purchaser but does not pay the full price, then such\nB\n      agreement is in nature of a security for re-payment of the loan and\n      is essentially a loan transaction – High Court reversed finding of\n      ITAT without framing a specific substantial question of law and\n      thus, interference with findings of fact was unwarranted – Orders\n      passed by ITAT deleting the additions made by assessing officer in\nC     case of appellant, set aside – Motor Vehicles Act 1988 – s.51.\n             Interest Tax Act,1974 – s.2(7) – Interpretation & scope of –\n      Interest recovered under hire-purchase agreement, if falls under\n      s.2(7) – Held: s.2(7) has been interpreted in two decisions, that is,\n      in the cases of Sahara India Savings and Investment Corporation\nD     Limited and State Bank of Patiala Through General Manager, which\n      have given a very limited and restricted meaning to s.2(7) of the Act\n      as interest directly arising “on” loans and advances, and not any\n      other interest, be it interest earned on investment or interest payable\n      on delayed payment of the discounted bill of exchange.\nE           Hire-Purchase – Elements – Held: A hire-purchase agreement\n      has two elements – an element of bailment and an element of sale –\n      Any transfer or sale made by the hirer or any violation of the hire-\n      purchase agreement can lead to civil as well as criminal\n      consequences.\nF           Taxation – Taxation matters – Interference by High Court with\n      findings of fact recorded by the ITAT – Scope – Held: Findings of\n      fact generally recorded by the ITAT are treated as conclusive – The\n      High Court can interfere with the findings of fact while deciding a\n      substantial question of law when the findings are not supported by\n      the material on record, so as to be treated as perverse – For this,\nG\n      the High Court must frame a separate substantial question of law\n      and only then interfere with the findings of fact by the ITAT, while\n      applying the strict parameters.\n            Taxation matters – Precedents – Rule of caution when applying\n      the ratio of judgments relating to one tax enactment as a precedent\nH",
+        "preview": "A     of the asset, the hire-purchase company and the end user of the\n      asset; and (iii) the intention of the parties which manifests itself in\n  "
+      },
+      {
+        "chunk_id": "chk_009",
+        "paragraph_num": 9,
+        "start_char": 12826,
+        "end_char": 14617,
+        "delta_probability": -0.12376,
+        "importance_score": 0.12376,
+        "direction": "OPPOSING",
+        "verbatim_text": "A           Commissioner of Income Tax v. Cholamandalam\n            Investment and Finance Co. Ltd. (2008) 296 ITR 601\n            – held approved.\n            K.L. Johar and Co. (In Both Appeals) v. Deputy\n            Commercial Tax Officer, Coimbatore III (In Both\nB           Appeals) AIR 1965 SC 1082 : [1965] 2 SCR 112;\n            Sundaram Finance Limited v. State of Kerala and\n            Another AIR 1966 SC 1178 : [1966] 2 SCR 828;\n            Commissioner of Interest Tax, New Delhi v. M/s G.E.\n            Capital Services India [Decision of Supreme Court\nC           dated 16 th May, 2008 in SLP(C) No. 14202 of 2008]\n            and Association of Leasing and Financial Service\n            Companies v. Union of India and Others (2011) 2 SCC\n            352 : [2010] 13 SCR 381 – referred to.\n                             Case Law Reference\nD\n      [1966] 2 SCR 828                referred to             Para 7\n      (2009) 17 SCC 43                relied on               Para 10\n      [2015] 12 SCR 243               relied on               Para 10\nE     [1965] 2 SCR 112                referred to             Para 15\n      [2010] 13 SCR 381               referred to             Para 18\n           CIVIL APPELLATE JURISDICTION : Civil Appeal Nos.10201-\n      10202 of 2010.\nF\n            From the Judgment and Order dated 10/03/2008 of the High Court\n      of Kerala at Ernakulam in ITA Nos.230 and 269/2002.\n            With\n            Civil Appeal Nos.10203, 10204, 10205-10206, 10207 of 2010, 4903,\nG     4904, 4905, 4906, 4907 Of 2014 And Slp (Civil) No.4441 of 2011.\n            Rupesh Kumar, Shashank Bajpai, Chinmayee Chandra, A.\n      Raghunath, Ms. Ritika Sinha, V. K. Monga, E. M. S. Anam, A. N. Arora,\n      Mrs. Anil Katiyar, Advs. for the appearing parties.\nH",
+        "preview": "A           Commissioner of Income Tax v. Cholamandalam\n            Investment and Finance Co. Ltd. (2008) 296 ITR 601\n            – held approved.\n  "
+      },
+      {
+        "chunk_id": "chk_006",
+        "paragraph_num": 6,
+        "start_char": 7805,
+        "end_char": 10375,
+        "delta_probability": -0.1049,
+        "importance_score": 0.1049,
+        "direction": "OPPOSING",
+        "verbatim_text": "A            2. In Circular No. 760 dated 13th January 1998, the CBDT\n      observed that they considered the issue and were advised that\n      in case of transactions which are, in substance, in the nature of\n      hire-purchase, the receipts of hire charges would not be in the\n      nature of interest. In transactions which are, in substance, in the\n      nature of financing transactions, the hire charges should be\nB\n      treated as interest, subject to interest tax. To determine the\n      distinction between the two transactions, the assessing officers\n      were required to consider the issue on merits taking, inter alia,\n      into account – (i) the terms of the agreement; (ii) the nature of\n      the arrangement between the supplier of the asset, the hire-\nC     purchase company and the end user of the asset; and (iii) the\n      intention of the parties which manifests itself in the fixation of\n      the initial payment, the method of determination of hire-purchase\n      price etc. However, when the hire-purchase company pays the\n      price or a substantial part thereof on behalf of such hirer who is\n      the real purchaser but does not pay the full price, then such\nD\n      agreement is in the nature of a security for re-payment of the\n      loan and is essentially a loan transaction. [Para 16][331-F-H;\n      332-A-B]\n            3.1. The judgment in Sundaram Finance Limited relates to\n      the true nature of hire in hire-purchase agreements as in the\nE\n      context of the sales tax enactment. In the present case, however,\n      one is dealing with and interpreting Section 2(7) of the Act, which\n      has been interpreted in two decisions, that is, in the case of Sahara\n      India Savings and Investment Corporation Limited and State Bank\n      of Patiala Through General Manager, which have given a very\nF     limited and restricted meaning to Section 2(7) of the Act as\n      interest directly arising “on” loans and advances, and not any\n      other interest, be it interest earned on investment or interest\n      payable on delayed payment of the discounted bill of exchange.\n      [Para 17][332-B-E]\nG           3.2. Taxation depends upon the language of the charging\n      section and what is brought to tax within the four corners of the\n      charging section. Therefore, one should be careful and cautious\n      when applying the ratio of judgments relating to one tax enactment\n      as a precedent in a case relating to another tax enactment. This\n      rule of caution is important and should not be overlooked, more\nH",
+        "preview": "A            2. In Circular No. 760 dated 13th January 1998, the CBDT\n      observed that they considered the issue and were advised that\n      in cas"
+      },
+      {
+        "chunk_id": "chk_001",
+        "paragraph_num": 1,
+        "start_char": 1,
+        "end_char": 2576,
+        "delta_probability": 0.05732,
+        "importance_score": 0.05732,
+        "direction": "SUPPORTING",
+        "verbatim_text": "M/S. MUTHOOT LEASING AND FINANCE LIMITED                             A\n                   AND ANOTHER\n                        v.\n               COMMISSIONER OF INCOME TAX\n              (Civil Appeal Nos. 10201-10202 of 2010)\n                                                                          B\n                         JANUARY 03, 2023\n       [SANJIV KHANNA AND M. M. SUNDRESH, JJ.]\n      Interest Tax Act,1974 – s.2(5-A) and s.2(5-B) – Hire-purchase\nagreements – Appellants-assessees are credit institutions within\n                                                                          C\nmeaning of s.2(5-A) – Whether appellants-assessees liable to pay\ntax on interest component included in hire-purchase instalments paid\nunder hire-purchase agreements – ITAT referred to CBDT Circular\nNo. 760 dated 13th January 1998 and observed that hire-purchase\nagreement is a composite transaction, and has elements of bailment\nand sale and appellants-assessees are not liable to pay interest tax      D\nas hire instalments are not interest on loans and advances that is\nchargeable to interest tax – High Court reversed the finding of ITAT,\nobserving that hire-purchase instalment includes “finance charges”,\nwhich is nothing but interest, and therefore, interest tax is leviable\non the interest component – The transaction, though styled as a\n                                                                          E\nhire-purchase agreement, the High Court held, is in fact a finance\nagreement for purchase of a vehicle – Reliance placed by appellant-\nassessee on Circular No. 760 dated 13th January 1998 issued by\nCBDT was rejected by the High Court – On appeal, held: Given the\ndictum and ratio in the cases of Sahara India Savings and Investment\nCorporation Limited and State Bank of Patiala Through General             F\nManager, the view taken by High Court is not correct – In Circular\nNo. 760 dated 13th January 1998, the CBDT observed that they\nconsidered the issue and were advised that in case of transactions\nwhich are, in substance, in the nature of hire-purchase, the receipts\nof hire charges would not be in the nature of interest – In\ntransactions which are, in substance, in the nature of financing          G\ntransactions, the hire charges should be treated as interest, subject\nto interest tax – To determine the distinction between the two\ntransactions, the assessing officers were required to consider the\nissue on merits taking, inter alia, into account – (i) the terms of the\nagreement; (ii) the nature of the arrangement between the supplier        H",
+        "preview": "M/S. MUTHOOT LEASING AND FINANCE LIMITED                             A\n                   AND ANOTHER\n                        v.\n               COMMIS"
+      },
+      {
+        "chunk_id": "chk_007",
+        "paragraph_num": 7,
+        "start_char": 10382,
+        "end_char": 10490,
+        "delta_probability": 0.02875,
+        "importance_score": 0.02875,
+        "direction": "SUPPORTING",
+        "verbatim_text": "M/S. MUTHOOT LEASING AND FINANCE LIMITED v.                        321\n            COMMISSIONER OF INCOME TAX",
+        "preview": "M/S. MUTHOOT LEASING AND FINANCE LIMITED v.                        321\n            COMMISSIONER OF INCOME TAX"
+      },
+      {
+        "chunk_id": "chk_025",
+        "paragraph_num": 25,
+        "start_char": 27268,
+        "end_char": 27342,
+        "delta_probability": 0.0236,
+        "importance_score": 0.0236,
+        "direction": "SUPPORTING",
+        "verbatim_text": "(2015) 15 SCC 483.                                                        H",
+        "preview": "(2015) 15 SCC 483.                                                        H"
+      },
+      {
+        "chunk_id": "chk_008",
+        "paragraph_num": 8,
+        "start_char": 10493,
+        "end_char": 12820,
+        "delta_probability": -0.02079,
+        "importance_score": 0.02079,
+        "direction": "OPPOSING",
+        "verbatim_text": "so when the language of the enactment and the object and               A\npurpose of the enactment are different. [Para 18][332-E-F]\n       4.1. Findings of fact generally recorded by the ITAT are\ntreated as conclusive. The High Court can interfere with the\nfindings of fact while deciding a substantial question of law when\nthe findings are not supported by the material on record, so as to     B\nbe treated as perverse. For this, the High Court must frame a\nseparate substantial question of law and only then interfere with\nthe findings of fact by the ITAT, while applying the strict\nparameters. In the present case, the High Court did not frame a\nspecific substantial question of law and thus, the interference with\n                                                                       C\nthe findings of fact is unwarranted. This is not to say that the tax\nauthorities are not entitled to examine the surrounding facts and\ncircumstances to ascertain the true character and nature of the\ntransaction, regardless of the nomenclature given by the parties.\n[Para 19][333-C-E]\n                                                                       D\n      4.2. In the present case, at this distinct point of time, it\nwould not be appropriate to pass an order of remand. It is to be\nalso noted that the Act has ceased to operate with effect from\n31st March 2000. 21. The impugned judgment is accordingly set\naside. The additions made by the assessing officer are set aside\nand the orders passed by the ITAT deleting the additions in the        E\ncase of appellant and other cases are upheld. [Paras 20, 21]\n[333-G; 334-A]\n      Commissioner of Income Tax, Kanpur v. Sahara India\n      Savings and Investment Corporation Limited (2009) 17\n      SCC 43 and State Bank of Patiala Through General                 F\n      Manager v. Commissioner of Income Tax, Patiala (2015)\n      15 SCC 483 : [2015] 12 SCR 243 – relied on.\n      The Commissioner of Income Tax, Cochin v. M/s.\n      Muthoot Leasing & Finance Limited [Judgment dated\n      10th March, 2008 of High Court of Kerala in ITA No.              G\n      269 of 2002] – overruled.\n      State Bank of Mysore v. Commissioner of I.T.,\n      Karnataka-I, Bangalore (1989) 175 ITR 607 – held\n      overruled.\n                                                                       H",
+        "preview": "so when the language of the enactment and the object and               A\npurpose of the enactment are different. [Para 18][332-E-F]\n       4.1. Findin"
+      }
+    ],
+    "ground_truth": {},
+    "ground_truth_entered_at": {},
+    "is_correct": {},
+    "text_preview": "M/S. MUTHOOT LEASING AND FINANCE LIMITED                             A\n                   AND ANOTHER\n                        v.\n               COMMISSIONER OF INCOME TAX\n              (Civil Appeal Nos. 10201-10202 of 2010)\n                                                                          B\n                         JANUARY 03, 2023\n       [SANJIV KHANNA AND M. M. SUNDRESH, JJ.]\n      Interest Tax Act,1974 – s.2(5-A) and s.2(5-B) – Hire-purchase\nagreements – Appellants-assessees are credit institutions within\n                                                                          C\nmeaning of s.2(5-A) – Whether appellants-assessees liable to pay\ntax on interest component included in hire-purchase instalments paid\nunder hire-purchase agreements – ITAT referred to CBDT Circular\nNo. 760 dated 13th January 1998 and observed that hire-purchase\nagreement is a composite transaction, and has elements of bailment\nand sale and appellants-assessees are not liable to pay interest tax      D\nas hire instalments are not interest on loans and advances that is\nchargeable to interest tax – High Court reversed the finding of ITAT,\nobserving that hire-purchase instalment includes “finance c"
+  },
+  {
+    "experiment_id": "EXP_20261111_150059_518cd0d0",
+    "document_name": "1794389342787_criminal_01.pdf",
+    "file_hash": "df3d5cc7f049f379641ddc5f9ec12c0088a77750c4eaf46f428cc5bcc4bcf6c8",
+    "text_hash": "518cd0d0adad7c941b3bd2cfcaa87e46b99276e00cd3043986a8f5cb583f6560",
+    "upload_timestamp": "2026-11-11 09:30:59 UTC",
+    "model_type": "Hierarchical BiGRU + Additive Attention (512-Token Chunks)",
+    "model_version": "PRAMANA-HBiGRU-v1.0",
+    "dataset_version": "Supreme Court of India (1950-2026 Corpus, Grouped Partition)",
+    "predicted_outcome": "ALLOWED",
+    "prob_allowed": 0.847907,
+    "prob_dismissed": 0.152093,
+    "confidence": 0.6958,
+    "confidence_justification": "Prediction Decision Margin (|P - 0.5| * 2)",
+    "dataset_presence": {
+      "exists": false,
+      "match_type": "NO_MATCH",
+      "matched_id": {},
+      "citation": {},
+      "split": {}
+    },
+    "verdict_warnings": "WARNING: 2 explicit verdict indicator(s) or operative order(s) detected in the document. Pre-decision masking will be enforced during feature extraction to avoid trivial outcome leakage, but original document text is preserved unaltered.",
+    "indicators_count": 2,
+    "detected_indicators": [
+      {
+        "line_number": 32,
+        "matched_pattern": "Leave granted",
+        "snippet": "Leave granted."
+      },
+      {
+        "line_number": 909,
+        "matched_pattern": "stands allowed",
+        "snippet": "23.   In the result, the Criminal Appeal stands allowed in the above terms."
+      }
+    ],
+    "total_chunks": 32,
+    "word_count": 5071,
+    "top_passages": [
+      {
+        "chunk_id": "chk_010",
+        "paragraph_num": 10,
+        "start_char": 767,
+        "end_char": 780,
+        "delta_probability": 0.07916,
+        "importance_score": 0.07916,
+        "direction": "SUPPORTING",
+        "verbatim_text": "Leave granted.",
+        "preview": "Leave granted."
+      },
+      {
+        "chunk_id": "chk_017",
+        "paragraph_num": 17,
+        "start_char": 1411,
+        "end_char": 1411,
+        "delta_probability": 0.02357,
+        "importance_score": 0.02357,
+        "direction": "SUPPORTING",
+        "verbatim_text": "2",
+        "preview": "2"
+      },
+      {
+        "chunk_id": "chk_015",
+        "paragraph_num": 15,
+        "start_char": 1164,
+        "end_char": 1247,
+        "delta_probability": 0.01676,
+        "importance_score": 0.01676,
+        "direction": "SUPPORTING",
+        "verbatim_text": "Digitally signed by\n   BORRA LM VALLI\n   Date: 2025.09.24\n   19:19:23 IST\n   Reason:",
+        "preview": "Digitally signed by\n   BORRA LM VALLI\n   Date: 2025.09.24\n   19:19:23 IST\n   Reason:"
+      },
+      {
+        "chunk_id": "chk_003",
+        "paragraph_num": 3,
+        "start_char": 136,
+        "end_char": 233,
+        "delta_probability": 0.00985,
+        "importance_score": 0.00985,
+        "direction": "SUPPORTING",
+        "verbatim_text": "IN THE SUPREME COURT OF INDIA\n                                     CRIMINAL APPELLATE JURISDICTION",
+        "preview": "IN THE SUPREME COURT OF INDIA\n                                     CRIMINAL APPELLATE JURISDICTION"
+      },
+      {
+        "chunk_id": "chk_016",
+        "paragraph_num": 16,
+        "start_char": 1265,
+        "end_char": 1325,
+        "delta_probability": -0.00868,
+        "importance_score": 0.00868,
+        "direction": "OPPOSING",
+        "verbatim_text": "1\n                Hereinafter referred to as “the High Court”",
+        "preview": "1\n                Hereinafter referred to as “the High Court”"
+      },
+      {
+        "chunk_id": "chk_004",
+        "paragraph_num": 4,
+        "start_char": 275,
+        "end_char": 389,
+        "delta_probability": 0.00668,
+        "importance_score": 0.00668,
+        "direction": "SUPPORTING",
+        "verbatim_text": "CRIMINAL APPEAL NO. 4250 OF 2025\n                                      (Arising out of SLP (Crl.) No. 2682 of 2020)",
+        "preview": "CRIMINAL APPEAL NO. 4250 OF 2025\n                                      (Arising out of SLP (Crl.) No. 2682 of 2020)"
+      },
+      {
+        "chunk_id": "chk_012",
+        "paragraph_num": 12,
+        "start_char": 895,
+        "end_char": 967,
+        "delta_probability": 0.00592,
+        "importance_score": 0.00592,
+        "direction": "SUPPORTING",
+        "verbatim_text": "dated 22.10.2019 passed by the High Court of Judicature at Allahabad 1 in",
+        "preview": "dated 22.10.2019 passed by the High Court of Judicature at Allahabad 1 in"
+      },
+      {
+        "chunk_id": "chk_023",
+        "paragraph_num": 23,
+        "start_char": 1785,
+        "end_char": 1860,
+        "delta_probability": 0.00544,
+        "importance_score": 0.00544,
+        "direction": "SUPPORTING",
+        "verbatim_text": "admeasuring 8.592 hectares, situated in Khasra Nos. 18, 19, 20, 21 and 22 of",
+        "preview": "admeasuring 8.592 hectares, situated in Khasra Nos. 18, 19, 20, 21 and 22 of"
+      }
+    ],
+    "ground_truth": "ALLOWED",
+    "ground_truth_entered_at": "2026-11-11 09:32:24 UTC",
+    "is_correct": true,
+    "text_preview": "1\n\n\n2025 INSC 1153                                                                   REPORTABLE\n\n                                      IN THE SUPREME COURT OF INDIA\n                                     CRIMINAL APPELLATE JURISDICTION\n\n                                       CRIMINAL APPEAL NO. 4250 OF 2025\n                                      (Arising out of SLP (Crl.) No. 2682 of 2020)\n\n\n            ANUKUL SINGH                                                … APPELLANT(S)\n\n\n                                                          VERSUS\n\n\n\n\n            STATE OF UTTAR PRADESH AND ANR.                             … RESPONDENT(S)\n\n\n\n\n                                                      JUDGMENT\n\n\n\n            R. MAHADEVAN, J.\n\n                            Leave granted.\n\n\n            2.              This Criminal Appeal is directed against the final judgment and order\n\n            dated 22.10.2019 passed by the High Court of Judicature at Allahabad 1 in\n\n            Application No. 3856 of 2004, whereby the High Court dismissed the\n\n            appellant’s application filed under Section 482 of the Code of Criminal\n   Signature Not Verified\n\n   Digitally signed by\n   BORRA LM VALLI"
+  },
+  {
+    "experiment_id": "EXP_20261111_161637_77328ddc",
+    "document_name": "1794393891641_fb2d6e181435ae24e2c917b6a0618770e6287c82feb25e2edf14d371bf119c4e1794393706.pdf",
+    "file_hash": "be28bb367cea4926672f2ed2dce0e38d1b1dc47bf604a5dd2320bd5b9c34a80a",
+    "text_hash": "77328ddc98f6aba5bba18152f6c4cfbf39e066f847eb7e7a4a264cb869b902fd",
+    "upload_timestamp": "2026-11-11 10:46:37 UTC",
+    "model_type": "Hierarchical BiGRU + Additive Attention (512-Token Chunks)",
+    "model_version": "PRAMANA-HBiGRU-v1.0",
+    "dataset_version": "Supreme Court of India (1950-2026 Corpus, Grouped Partition)",
+    "predicted_outcome": "ALLOWED",
+    "prob_allowed": 0.675718,
+    "prob_dismissed": 0.324282,
+    "confidence": 0.3514,
+    "confidence_justification": "Prediction Decision Margin (|P - 0.5| * 2)",
+    "dataset_presence": {
+      "exists": false,
+      "match_type": "NO_MATCH",
+      "matched_id": {},
+      "citation": {},
+      "split": {}
+    },
+    "verdict_warnings": "Document validated: No explicit outcome indicators detected in preliminary scan.",
+    "indicators_count": 0,
+    "detected_indicators": [],
+    "total_chunks": 32,
+    "word_count": 2501,
+    "top_passages": [
+      {
+        "chunk_id": "chk_002",
+        "paragraph_num": 2,
+        "start_char": 883,
+        "end_char": 1689,
+        "delta_probability": 0.07365,
+        "importance_score": 0.07365,
+        "direction": "SUPPORTING",
+        "verbatim_text": "... ... Respondent/s\n     ======================================================\n     Appearance :\n     For the Petitioner/s    :      Mr. Sanjeeb Kumar Sanju, Advocate\n                                    Mr. Sunil Kumar, Advocate\n                                    Mr. Bhaskar Sandilya, Advocate\n                                    Mr. Ravi Kumar, Advocate\n     For the A.G.            :      Mr. Raj Nandan Prasad, Advocate\n                                    Mr. Vishesh Kumar Singh, Advocate\n     For the Respondent/s    :      AC to Additional Advocate General (13)\n     ======================================================\n     CORAM: HONOURABLE MR. JUSTICE PURNENDU SINGH\n                         ORAL JUDGMENT\n     Date : 21-07-2026\n                 Heard Mr. Sanjeeb Kumar Sanju, learned counsel",
+        "preview": "... ... Respondent/s\n     ======================================================\n     Appearance :\n     For the Petitioner/s    :      Mr. Sanjeeb Kum"
+      },
+      {
+        "chunk_id": "chk_006",
+        "paragraph_num": 6,
+        "start_char": 1887,
+        "end_char": 1937,
+        "delta_probability": -0.05613,
+        "importance_score": 0.05613,
+        "direction": "OPPOSING",
+        "verbatim_text": "2. The petitioner in paragraph no. 1 of the present",
+        "preview": "2. The petitioner in paragraph no. 1 of the present"
+      },
+      {
+        "chunk_id": "chk_001",
+        "paragraph_num": 1,
+        "start_char": 1,
+        "end_char": 815,
+        "delta_probability": 0.05247,
+        "importance_score": 0.05247,
+        "direction": "SUPPORTING",
+        "verbatim_text": "IN THE HIGH COURT OF JUDICATURE AT PATNA\n                      Civil Writ Jurisdiction Case No.5393 of 2026\n     ======================================================\n     Najma Khatoon W/o Late Md. Usman, resident of Aman Colony, ward no. 23,\n     P.S.- Phulwari Sharif, District- Patna.\n                                                                  ... ... Petitioner/s\n                                          Versus\n1.   The State of Bihar through Additional Chief Secretary, Health Department,\n     Government of Bihar, Patna.\n2.   The Director, Health Services, New Secretariat, Bihar, Patna.\n3.   The District Magistrate, Lakhisarai.\n4.   The Civil Surgeon, Lakhisarai.\n5.   The In-charge Medical Officer, Community Health Centre, Surajgadha,\n     Lakhisarai.\n6.   The Accountant General, Bihar, Patna.",
+        "preview": "IN THE HIGH COURT OF JUDICATURE AT PATNA\n                      Civil Writ Jurisdiction Case No.5393 of 2026\n     ====================================="
+      },
+      {
+        "chunk_id": "chk_003",
+        "paragraph_num": 3,
+        "start_char": 1698,
+        "end_char": 1758,
+        "delta_probability": 0.03737,
+        "importance_score": 0.03737,
+        "direction": "SUPPORTING",
+        "verbatim_text": "appearing on behalf of the petitioner; Mr. Raj Nandan Prasad,",
+        "preview": "appearing on behalf of the petitioner; Mr. Raj Nandan Prasad,"
+      },
+      {
+        "chunk_id": "chk_004",
+        "paragraph_num": 4,
+        "start_char": 1767,
+        "end_char": 1827,
+        "delta_probability": 0.0246,
+        "importance_score": 0.0246,
+        "direction": "SUPPORTING",
+        "verbatim_text": "learned counsel for the Accountant General, Bihar and learned",
+        "preview": "learned counsel for the Accountant General, Bihar and learned"
+      },
+      {
+        "chunk_id": "chk_007",
+        "paragraph_num": 7,
+        "start_char": 1946,
+        "end_char": 2013,
+        "delta_probability": -0.01974,
+        "importance_score": 0.01974,
+        "direction": "OPPOSING",
+        "verbatim_text": "writ petition has sought, inter alia, the following relief(s), which",
+        "preview": "writ petition has sought, inter alia, the following relief(s), which"
+      },
+      {
+        "chunk_id": "chk_011",
+        "paragraph_num": 11,
+        "start_char": 2946,
+        "end_char": 2990,
+        "delta_probability": 0.01795,
+        "importance_score": 0.01795,
+        "direction": "SUPPORTING",
+        "verbatim_text": "3. Learned counsel appearing on behalf of the",
+        "preview": "3. Learned counsel appearing on behalf of the"
+      },
+      {
+        "chunk_id": "chk_012",
+        "paragraph_num": 12,
+        "start_char": 3002,
+        "end_char": 3063,
+        "delta_probability": 0.01216,
+        "importance_score": 0.01216,
+        "direction": "SUPPORTING",
+        "verbatim_text": "petitioner submitted that the resolution contained in Memo No.",
+        "preview": "petitioner submitted that the resolution contained in Memo No."
+      }
+    ],
+    "ground_truth": {},
+    "ground_truth_entered_at": {},
+    "is_correct": {},
+    "text_preview": "IN THE HIGH COURT OF JUDICATURE AT PATNA\n                      Civil Writ Jurisdiction Case No.5393 of 2026\n     ======================================================\n     Najma Khatoon W/o Late Md. Usman, resident of Aman Colony, ward no. 23,\n     P.S.- Phulwari Sharif, District- Patna.\n                                                                  ... ... Petitioner/s\n                                          Versus\n1.   The State of Bihar through Additional Chief Secretary, Health Department,\n     Government of Bihar, Patna.\n2.   The Director, Health Services, New Secretariat, Bihar, Patna.\n3.   The District Magistrate, Lakhisarai.\n4.   The Civil Surgeon, Lakhisarai.\n5.   The In-charge Medical Officer, Community Health Centre, Surajgadha,\n     Lakhisarai.\n6.   The Accountant General, Bihar, Patna.\n\n\n                                                                ... ... Respondent/s\n     ======================================================\n     Appearance :\n     For the Petitioner/s    :      Mr. Sanjeeb Kumar Sanju, Advocate\n                                    Mr. Sunil Kumar, Advocate\n                                    Mr. Bhaskar Sandilya, Advocate\n                    "
   }
 ]
