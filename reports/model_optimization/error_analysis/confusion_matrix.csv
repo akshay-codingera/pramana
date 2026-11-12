@@ -1,0 +1,8 @@
+"Metric","Value"
+"Test_Sample_Size",5132
+"Accuracy",78.55
+"True_Positives",1818
+"True_Negatives",2213
+"False_Positives",333
+"False_Negatives",768
+"Total_Errors",1101
