@@ -1121,5 +1121,126 @@
     "ground_truth_entered_at": {},
     "is_correct": {},
     "text_preview": "IN THE HIGH COURT OF JUDICATURE AT PATNA\n                      Civil Writ Jurisdiction Case No.5393 of 2026\n     ======================================================\n     Najma Khatoon W/o Late Md. Usman, resident of Aman Colony, ward no. 23,\n     P.S.- Phulwari Sharif, District- Patna.\n                                                                  ... ... Petitioner/s\n                                          Versus\n1.   The State of Bihar through Additional Chief Secretary, Health Department,\n     Government of Bihar, Patna.\n2.   The Director, Health Services, New Secretariat, Bihar, Patna.\n3.   The District Magistrate, Lakhisarai.\n4.   The Civil Surgeon, Lakhisarai.\n5.   The In-charge Medical Officer, Community Health Centre, Surajgadha,\n     Lakhisarai.\n6.   The Accountant General, Bihar, Patna.\n\n\n                                                                ... ... Respondent/s\n     ======================================================\n     Appearance :\n     For the Petitioner/s    :      Mr. Sanjeeb Kumar Sanju, Advocate\n                                    Mr. Sunil Kumar, Advocate\n                                    Mr. Bhaskar Sandilya, Advocate\n                    "
+  },
+  {
+    "experiment_id": "EXP_20261112_160552_77328ddc",
+    "document_name": "1794479616796_fb2d6e181435ae24e2c917b6a0618770e6287c82feb25e2edf14d371bf119c4e1794393706.pdf",
+    "file_hash": "be28bb367cea4926672f2ed2dce0e38d1b1dc47bf604a5dd2320bd5b9c34a80a",
+    "text_hash": "77328ddc98f6aba5bba18152f6c4cfbf39e066f847eb7e7a4a264cb869b902fd",
+    "upload_timestamp": "2026-11-12 10:35:53 UTC",
+    "model_type": "Hierarchical BiGRU + Additive Attention (512-Token Chunks)",
+    "model_version": "PRAMANA-HBiGRU-v1.0",
+    "dataset_version": "Supreme Court of India (1950-2026 Corpus, Grouped Partition)",
+    "predicted_outcome": "ALLOWED",
+    "prob_allowed": 0.675718,
+    "prob_dismissed": 0.324282,
+    "confidence": 0.3514,
+    "confidence_justification": "Prediction Decision Margin (|P - 0.5| * 2)",
+    "dataset_presence": {
+      "exists": false,
+      "match_type": "NO_MATCH",
+      "matched_id": {},
+      "citation": {},
+      "split": {}
+    },
+    "verdict_warnings": "Document validated: No explicit outcome indicators detected in preliminary scan.",
+    "indicators_count": 0,
+    "detected_indicators": [],
+    "total_chunks": 32,
+    "word_count": 2501,
+    "top_passages": [
+      {
+        "chunk_id": "chk_002",
+        "paragraph_num": 2,
+        "start_char": 883,
+        "end_char": 1689,
+        "delta_probability": 0.07365,
+        "importance_score": 0.07365,
+        "direction": "SUPPORTING",
+        "verbatim_text": "... ... Respondent/s\n     ======================================================\n     Appearance :\n     For the Petitioner/s    :      Mr. Sanjeeb Kumar Sanju, Advocate\n                                    Mr. Sunil Kumar, Advocate\n                                    Mr. Bhaskar Sandilya, Advocate\n                                    Mr. Ravi Kumar, Advocate\n     For the A.G.            :      Mr. Raj Nandan Prasad, Advocate\n                                    Mr. Vishesh Kumar Singh, Advocate\n     For the Respondent/s    :      AC to Additional Advocate General (13)\n     ======================================================\n     CORAM: HONOURABLE MR. JUSTICE PURNENDU SINGH\n                         ORAL JUDGMENT\n     Date : 21-07-2026\n                 Heard Mr. Sanjeeb Kumar Sanju, learned counsel",
+        "preview": "... ... Respondent/s\n     ======================================================\n     Appearance :\n     For the Petitioner/s    :      Mr. Sanjeeb Kum"
+      },
+      {
+        "chunk_id": "chk_006",
+        "paragraph_num": 6,
+        "start_char": 1887,
+        "end_char": 1937,
+        "delta_probability": -0.05613,
+        "importance_score": 0.05613,
+        "direction": "OPPOSING",
+        "verbatim_text": "2. The petitioner in paragraph no. 1 of the present",
+        "preview": "2. The petitioner in paragraph no. 1 of the present"
+      },
+      {
+        "chunk_id": "chk_001",
+        "paragraph_num": 1,
+        "start_char": 1,
+        "end_char": 815,
+        "delta_probability": 0.05247,
+        "importance_score": 0.05247,
+        "direction": "SUPPORTING",
+        "verbatim_text": "IN THE HIGH COURT OF JUDICATURE AT PATNA\n                      Civil Writ Jurisdiction Case No.5393 of 2026\n     ======================================================\n     Najma Khatoon W/o Late Md. Usman, resident of Aman Colony, ward no. 23,\n     P.S.- Phulwari Sharif, District- Patna.\n                                                                  ... ... Petitioner/s\n                                          Versus\n1.   The State of Bihar through Additional Chief Secretary, Health Department,\n     Government of Bihar, Patna.\n2.   The Director, Health Services, New Secretariat, Bihar, Patna.\n3.   The District Magistrate, Lakhisarai.\n4.   The Civil Surgeon, Lakhisarai.\n5.   The In-charge Medical Officer, Community Health Centre, Surajgadha,\n     Lakhisarai.\n6.   The Accountant General, Bihar, Patna.",
+        "preview": "IN THE HIGH COURT OF JUDICATURE AT PATNA\n                      Civil Writ Jurisdiction Case No.5393 of 2026\n     ====================================="
+      },
+      {
+        "chunk_id": "chk_003",
+        "paragraph_num": 3,
+        "start_char": 1698,
+        "end_char": 1758,
+        "delta_probability": 0.03737,
+        "importance_score": 0.03737,
+        "direction": "SUPPORTING",
+        "verbatim_text": "appearing on behalf of the petitioner; Mr. Raj Nandan Prasad,",
+        "preview": "appearing on behalf of the petitioner; Mr. Raj Nandan Prasad,"
+      },
+      {
+        "chunk_id": "chk_004",
+        "paragraph_num": 4,
+        "start_char": 1767,
+        "end_char": 1827,
+        "delta_probability": 0.0246,
+        "importance_score": 0.0246,
+        "direction": "SUPPORTING",
+        "verbatim_text": "learned counsel for the Accountant General, Bihar and learned",
+        "preview": "learned counsel for the Accountant General, Bihar and learned"
+      },
+      {
+        "chunk_id": "chk_007",
+        "paragraph_num": 7,
+        "start_char": 1946,
+        "end_char": 2013,
+        "delta_probability": -0.01974,
+        "importance_score": 0.01974,
+        "direction": "OPPOSING",
+        "verbatim_text": "writ petition has sought, inter alia, the following relief(s), which",
+        "preview": "writ petition has sought, inter alia, the following relief(s), which"
+      },
+      {
+        "chunk_id": "chk_011",
+        "paragraph_num": 11,
+        "start_char": 2946,
+        "end_char": 2990,
+        "delta_probability": 0.01795,
+        "importance_score": 0.01795,
+        "direction": "SUPPORTING",
+        "verbatim_text": "3. Learned counsel appearing on behalf of the",
+        "preview": "3. Learned counsel appearing on behalf of the"
+      },
+      {
+        "chunk_id": "chk_012",
+        "paragraph_num": 12,
+        "start_char": 3002,
+        "end_char": 3063,
+        "delta_probability": 0.01216,
+        "importance_score": 0.01216,
+        "direction": "SUPPORTING",
+        "verbatim_text": "petitioner submitted that the resolution contained in Memo No.",
+        "preview": "petitioner submitted that the resolution contained in Memo No."
+      }
+    ],
+    "ground_truth": {},
+    "ground_truth_entered_at": {},
+    "is_correct": {},
+    "text_preview": "IN THE HIGH COURT OF JUDICATURE AT PATNA\n                      Civil Writ Jurisdiction Case No.5393 of 2026\n     ======================================================\n     Najma Khatoon W/o Late Md. Usman, resident of Aman Colony, ward no. 23,\n     P.S.- Phulwari Sharif, District- Patna.\n                                                                  ... ... Petitioner/s\n                                          Versus\n1.   The State of Bihar through Additional Chief Secretary, Health Department,\n     Government of Bihar, Patna.\n2.   The Director, Health Services, New Secretariat, Bihar, Patna.\n3.   The District Magistrate, Lakhisarai.\n4.   The Civil Surgeon, Lakhisarai.\n5.   The In-charge Medical Officer, Community Health Centre, Surajgadha,\n     Lakhisarai.\n6.   The Accountant General, Bihar, Patna.\n\n\n                                                                ... ... Respondent/s\n     ======================================================\n     Appearance :\n     For the Petitioner/s    :      Mr. Sanjeeb Kumar Sanju, Advocate\n                                    Mr. Sunil Kumar, Advocate\n                                    Mr. Bhaskar Sandilya, Advocate\n                    "
   }
 ]
