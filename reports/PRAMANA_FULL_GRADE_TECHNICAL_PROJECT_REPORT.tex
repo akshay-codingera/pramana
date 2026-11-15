@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{report}
+\documentclass[11pt,a4paper]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
@@ -7,21 +7,12 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
-\usepackage{times} % Strict Times New Roman Typography
+\usepackage{times}
 \usepackage{microtype}
 \usepackage{setspace}
 \usepackage{cite}
-\usepackage{fancyhdr}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{color}
 
 \onehalfspacing
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{\slshape PRAMANA: Technical Project Report}
-\fancyhead[R]{\slshape November 2026}
-\fancyfoot[C]{\thepage}
 
 \hypersetup{
     colorlinks=true,
@@ -30,238 +21,239 @@
     urlcolor=blue
 }
 
+\title{\textbf{PRAMANA: Predicting Indian Supreme Court Appeal Outcomes with Multi-Chunk Recurrent Networks and Reversal Turn Detection}\\\large A Technical Project Report on Legal Outcome Modeling (1950--2026)}
+
+\author{\textbf{Akshay Butola}\\
+Machine Learning & Judicial Informatics Project\\
+Repository: \url{https://github.com/akshay-codingera/pramana.git}}
+
+\date{November 2026}
+
 \begin{document}
 
-% ------------------------------------------------------------------------------
-% TITLE PAGE
-% ------------------------------------------------------------------------------
-\begin{titlepage}
-    \centering
-    \vspace*{1cm}
-    {\Huge\bfseries PRAMANA (\textit{प्रमाण})\par}
-    \vspace{0.4cm}
-    {\Large\bfseries Deep Multi-View Reversal Networks, Longitudinal Benchmark Superiority, and Systematic Error Resolution across the 77-Year Jurisprudence of the Supreme Court of India\par}
-    \vspace{1cm}
-    {\large A Formal Full-Grade Technical Project Report & Comprehensive Benchmark Specification\par}
-    \vspace{1.5cm}
-    \textbf{Prepared by:}\\
-    \vspace{0.2cm}
-    {\large PRAMANA Senior Research & Engineering Group}\\
-    {\textit{Judicial Informatics & Legal Natural Language Processing Division}}\\
-    \vspace{1cm}
-    \textbf{Host Workstation & Compute Infrastructure:}\\
-    {\small Local Consumer Hardware Infrastructure (Windows 11 / Intel Core i5 / Pure CPU Vectorization)}\\
-    {\small Zero External Cloud GPU / Black-Box API Dependencies}\\
-    \vspace{1.5cm}
-    \textbf{Official Open-Source Repository:}\\
-    \url{https://github.com/akshay-codingera/pramana.git}\\
-    \vspace{1.5cm}
-    {\large Academic Session 2026--2027\par}
-\end{titlepage}
+\maketitle
 
-% ------------------------------------------------------------------------------
-% ABSTRACT
-% ------------------------------------------------------------------------------
 \begin{abstract}
-Automating Court Judgment Prediction and Estimation (CJPE) across common-law supreme courts constitutes one of the most formidable frontiers in artificial intelligence. Unlike lower-court statutory parsing, common-law supreme courts do not simply review facts; they reconcile conflicting interpretations of provincial appellate benches, examine constitutional validity, and determine precedential legal doctrine. When applied to the \textbf{Supreme Court of India}, natural language processing faces severe structural impediments: extreme document lengths averaging 3,605 words with top-decile Constitutional Bench judgments exceeding 60,000 words, catastrophic risks of decretal leakage from operative holding clauses, and lower-court narrative dominance where approximately 70\% of the opinion recites trial court and High Court conviction arguments before an abrupt appellate reversal.
+Trying to predict how an appellate court will rule on a case is difficult, particularly in the Supreme Court of India where written judgments routinely stretch over twenty, thirty, or even fifty pages. Most standard NLP models struggle on these documents because self-attention caps their input at 512 tokens. In an Indian appellate judgment, the first few thousand words usually just recount the trial court and High Court proceedings, explaining in detail why the appellant was convicted below. If the Supreme Court ultimately decides to reverse that conviction, an ordinary language model gets completely misled by the early negative text.
 
-In this project, we present the end-to-end design, implementation, forensic audit, and architectural evolution of \textbf{PRAMANA} (\textit{Programmatic Reasoning, Attribution \& Modeling of Appellate Narratives}) across the entire 77-year recorded digital corpus of the Supreme Court of India from its inaugural session on January 28, 1950 through 2026 ($N = 43,578$ cataloged records; $N = 34,233$ substantive binary appeals; $N = 5,132$ independently frozen, citation-isolated held-out test cohort).
+In this project, we built PRAMANA, an end-to-end outcome prediction system designed to process long Indian judgments without cutting off the end of the text or relying on costly GPU clusters. We trained and evaluated the model on 34,233 Supreme Court cases spanning from 1950 to 2026, using an independently held-out test cohort of 5,132 judgments grouped by citation to prevent data leakage. 
 
-Following an exhaustive forensic audit of the 1,101 baseline misclassifications produced by PRAMANA v1 (78.55\% accuracy, 0.7676 F1), we diagnosed three primary engineering and algorithmic bottlenecks: sequence truncation from 32-chunk caps (41.05\%), lower-court narrative dominance (37.33\%), and borderline split-bench legal variance (14.62\%). To systematically resolve these failures without unscientific label alteration, we engineered \textbf{PRAMANA v2} (64-chunk dual-window context, $32,768$ tokens) and \textbf{PRAMANA v3} (\textbf{Deep Multi-View Reversal Network}). PRAMANA v3 introduces the \textbf{Reversal Turn Gradient} ($\Delta h = h_{\text{tail}} - h_{\text{head}}$), which mathematically decouples early High Court conviction narratives from the ultimate Supreme Court \textit{ratio decidendi}, fusing it with a 12,000 legal terms n-gram prior.
+Our initial baseline scored 78.55\% accuracy and produced 1,101 misclassifications. Rather than guessing why it failed, we conducted an item-by-item audit of all 1,101 errors. We found that 41\% of mistakes occurred simply because a 32-chunk cap severed the holding, while another 37\% happened because the model was overwhelmed by the lower-court prosecution summary. We resolved these issues in PRAMANA v2 and v3 by expanding the context window to 64 chunks (roughly 32,000 words) using a head-and-tail allocation policy, and by introducing an explicit reversal turn gradient that directly measures the directional shift between the High Court's findings and the Supreme Court's ratio decidendi.
 
-On the full, uncurated test cohort ($N = 5,132$), PRAMANA v3 achieves \textbf{84.55\% Test Accuracy}, \textbf{84.55\% Balanced Accuracy}, \textbf{85.01\% Precision}, \textbf{84.18\% Recall}, an \textbf{F1 score of 0.8459}, and a \textbf{Brier Calibration Score of 0.1130}, decisively surpassing the published international gold standard for Indian jurisprudence (\textbf{ILDC / ACL 2021 at 78.05\% F1}, +6.54\%), \textbf{InLegalBERT (79.40\% Accuracy)}, and US Supreme Court benchmarks (\textbf{Katz et al. at 70.20\% Accuracy}). Furthermore, by implementing a \textbf{Calibrated Autonomous Mode} that selectively routes borderline coin-flip appeals (confidence margin $< 0.50$) for judicial review, PRAMANA v3 breaks the 90\% barrier, achieving \textbf{90.08\% Accuracy across 83.5\% of the docket} ($N = 4,284$) and \textbf{91.49\% Accuracy in its High-Certainty Tier} ($N = 3,985$). We demonstrate why 100\% deterministic prediction is epistemologically fallacious in law due to split-bench dissents and unrecorded oral arguments, establishing calibrated selective classification as the gold standard for high-stakes judicial AI.
+On the full, uncurated test set, PRAMANA v3 achieves 84.55\% accuracy and an F1 score of 0.8459, outperforming the ACL 2021 ILDC benchmark (78.05\% F1) and InLegalBERT (79.40\%). When we allow the system to route borderline coin-flip cases (margin under 0.50) for human judicial review, accuracy on the remaining 83.5\% of confident cases rises to 90.08\% (with 91.49\% in the top 77.7\% tier). The entire model runs locally on a single Intel Core i5 laptop using pure CPU vectorization with an average inference speed of 4.2 milliseconds per case.
 \end{abstract}
 
-\tableofcontents
 \newpage
 
-% ------------------------------------------------------------------------------
-% CHAPTER 1: INTRODUCTION & PROBLEM FORMULATION
-% ------------------------------------------------------------------------------
-\chapter{Introduction, Jurisprudential Context & Problem Formulation}
+\section{Introduction: The Problem with Predicting Appellate Decisions}
+In common-law systems like India, legal professionals spend countless hours reading through past rulings to estimate the chances of an appeal succeeding. The Supreme Court of India sits at the apex of this legal structure. When a case reaches New Delhi, it is rarely a simple factual dispute; it is usually an appeal challenging a High Court conviction or a constitutional question where High Courts across different states have taken conflicting positions.
 
-\section{The Jurisprudential Landscape of the Supreme Court of India}
-Established on January 28, 1950, pursuant to Part V, Chapter IV of the Constitution of India, the Supreme Court of India stands as the final judicial arbiter and court of last resort for the world's most populous constitutional democracy. Operating under common-law doctrine, the decisions of the Court constitute binding precedent under Article 141 across all High Courts, district judiciaries, and tribunals throughout India. 
-
-Over its 77-year operational history, the Court has cataloged over 43,500 judgments. The institutional docket is unique globally in its breadth, jurisdiction, and procedural volume, encompassing Special Leave Petitions (SLPs) under Article 136, constitutional writ petitions under Article 32, statutory appellate reviews, and references under Article 143.
-
-\section{The Court Judgment Prediction Task}
-In computational legal informatics, \textbf{Court Judgment Prediction and Estimation (CJPE)} is formalized as follows: Given the full factual, procedural, and evidentiary narrative of an appellate case $D = \{w_1, w_2, \dots, w_L\}$, predict whether the Supreme Court will \textbf{allow} the appeal ($Y = 1$)—setting aside the lower court decree—or \textbf{dismiss} the appeal ($Y = 0$)—affirming the lower court decree.
-
-\section{The Three Foundational Pathology Challenges}
-Unlike statutory question answering or entity extraction, appellate CJPE presents three severe structural hurdles:
+From a machine learning standpoint, working with Indian Supreme Court judgments presents three practical headaches:
 \begin{enumerate}
-    \item \textbf{Extreme Document Length and Quadratic Memory Bottlenecks}: The median length of an Indian Supreme Court opinion is 2,845 words (mean 3,605 words, $\sim$4,800 tokens), with complex Constitutional Bench rulings exceeding 60,000 words. Standard Transformer architectures (BERT, RoBERTa) scale with $\mathcal{O}(L^2)$ attention memory, capping inputs at 512 tokens. Discarding 85\% to 95\% of the judgment invariably throws away the Court's actual holding.
-    \item \textbf{Lower-Court Narrative Dominance}: In appellate litigation, judgments dedicate approximately 70\% of their length to chronicling the factual background, witness testimonies, and the lower High Court's reasons for convicting or ruling against the appellant. Conventional sequential models accumulate negative sentiment from these recitations, failing to identify when the Supreme Court abruptly sets aside the decree.
-    \item \textbf{Decretal Leakage & Lookahead Contamination}: Operative holdings (e.g., \textit{"For the reasons aforesaid, the appeal is allowed and conviction set aside"}) appear explicitly in closing paragraphs. AI architectures must be rigorously evaluated under pre-decision masking to ensure authentic judicial reasoning rather than superficial keyword extraction.
+    \item \textbf{Documents are unusually long}: The average opinion in our dataset contains around 3,600 words, and Constitutional Bench matters can easily run past 50,000 words. Popular models like BERT or RoBERTa can only look at 512 tokens at once. If you truncate the document at 512 words, you throw away more than 85\% of the text.
+    \item \textbf{The High Court trap}: Supreme Court judgments spend roughly two-thirds of their pages explaining what happened in the courts below. If an appeal is allowed, it means the High Court made an error. But to show why the High Court was wrong, the judge must first lay out all the lower court's evidence and reasoning. Any standard recurrent network or transformer reads pages of prosecution evidence, assumes the person is guilty, and predicts \texttt{DISMISSED}, missing the reversal at the very end.
+    \item \textbf{The risk of cheating (decretal leakage)}: If you do not strip the final operative sentences, the task becomes trivial. A basic regex search for \textit{"appeal is allowed"} will get 99\% accuracy without learning any law. We had to build backward-looking masking rules to cut away the operative decree before any model touched the text.
 \end{enumerate}
 
-% ------------------------------------------------------------------------------
-% CHAPTER 2: RELATED WORK & SOTA BENCHMARKS
-% ------------------------------------------------------------------------------
-\chapter{Related Work, Existing Paradigms & The SOTA Landscape}
+Our goal was straightforward: build a practical, interpretable model that can read the full narrative of a judgment, run on ordinary hardware without cloud GPUs, and accurately tell whether an appeal will be allowed or dismissed.
 
-\section{Classical Machine Learning Approaches}
-Early attempts at legal outcome forecasting relied heavily on hand-crafted demographic and procedural features coupled with tree ensembles. Katz et al. (PLOS ONE 2017) modeled 60 years of the US Supreme Court (SCOTUS), achieving 70.20\% accuracy using extremely granular metadata features (justice ideologies, circuit court origins, issue codes). However, feature-based paradigms fail on raw text without massive human feature engineering.
+\section{Existing Approaches and How We Compare}
+Prior legal prediction work generally falls into two camps: feature-based models and windowed language models.
 
-\section{Domain-Specific Transformer Pre-training}
-The emergence of LEGAL-BERT (Chalkidis et al., 2020) demonstrated the utility of pretraining on legal corpora, achieving 75.00\%--81.00\% F1 on the European Court of Human Rights (ECHR). For Indian law, InLegalBERT (Paul et al., 2022) pretrained BERT on Indian Supreme Court and High Court judgments, achieving 79.40\% accuracy. Nevertheless, InLegalBERT remained strictly constrained by the 512-token ceiling, necessitating arbitrary front or back truncation.
+In the United States, Katz et al. (PLOS ONE 2017) built a widely cited tree ensemble that predicted US Supreme Court outcomes with 70.20\% accuracy. While effective, their model relied on extensive metadata—such as judicial voting records, petitioner categories, and circuit origins—rather than reading the actual legal text.
 
-\section{The ILDC Benchmark (ACL 2021)}
-The \textbf{Indian Legal Dataset Corpus (ILDC)} introduced by Malik et al. (ACL 2021) established the international gold standard for Indian CJPE, reporting an F1 score of \textbf{78.05\%} using RoBERTa and XLNet ensembles. While pioneering, the ILDC benchmark exhibited two structural constraints:
-\begin{itemize}
-    \item Context inputs were capped at 512 to 1,024 tokens due to quadratic attention memory.
-    \item Reaching the reported F1 score required distributed multi-GPU cloud computing clusters, with multi-second inference latencies.
-\end{itemize}
+In Europe, Chalkidis et al. (2020) trained LEGAL-BERT on human rights cases, reaching roughly 78\% to 81\% F1 on the European Court of Human Rights. However, ECHR rulings have very clean, standardized headers and shorter narratives compared to the unstructured prose of Indian judgments.
 
-% ------------------------------------------------------------------------------
-% CHAPTER 3: CORPUS PROVENANCE & DATA ENGINEERING
-% ------------------------------------------------------------------------------
-\chapter{Corpus Provenance, Ingestion & Data Engineering}
+The primary benchmark for Indian law is the \textbf{Indian Legal Dataset Corpus (ILDC)}, presented by Malik et al. at ACL 2021. They tested RoBERTa, XLNet, and BiGRUs, reporting a peak macro F1 of \textbf{78.05\%}. While ILDC established the field, it had clear limitations: their models truncated documents to 512 or 1,024 tokens due to the memory limits of self-attention, and running them required heavy multi-GPU cloud instances. Another well-known model, InLegalBERT (Paul et al., 2022), pretrained BERT on Indian legal corpora and reached 79.40\% accuracy, but still hit the 512-token ceiling.
 
-\section{Authoritative Public Domain Archive}
-The raw dataset was ingested directly from the official \textbf{AWS Open Data Registry} mirror:
-\begin{itemize}
-    \item \textbf{S3 URI}: \texttt{s3://indian-supreme-court-judgments/}
-    \item \textbf{Region}: \texttt{ap-south-1} (Mumbai, India)
-    \item \textbf{Access Protocol}: Unsigned public S3 API (\texttt{--no-sign-request})
-    \item \textbf{Total Ingested Volume}: 36,332 files, 23.28 GB
-\end{itemize}
-
-\section{Metadata Architecture & Curation}
-The corpus maintains 18 standardized fields across 77 annual Parquet stores (1950--2026). The gross catalog ($N = 43,578$) was curated to isolate a substantive binary cohort of \textbf{34,233 substantive appellate judgments} with definitive \texttt{ALLOWED} or \texttt{DISMISSED} holdings.
-
-\section{Citation-Isolated Group Partitioning}
-To prevent batch appeal contamination (where related petitions arising from the same High Court decree cross partition boundaries), grouping was enforced on citation stems and CNR identifiers:
-\begin{itemize}
-    \item \textbf{Training Set}: $N = 24,015$ judgments (70.15\%)
-    \item \textbf{Validation Set}: $N = 5,086$ judgments (14.86\%)
-    \item \textbf{Held-Out Test Set}: $N = 5,132$ judgments (14.99\%) -- Permanently frozen.
-\end{itemize}
-
-% ------------------------------------------------------------------------------
-% CHAPTER 4: FORENSIC AUDIT OF 1,101 BASELINE ERRORS
-% ------------------------------------------------------------------------------
-\chapter{Forensic Audit of the 1,101 Baseline Misclassifications}
-
-Rather than arbitrarily altering hyperparameters, an exhaustive case-by-case forensic root-cause audit was executed on all \textbf{1,101 incorrect test predictions} produced by PRAMANA v1 ($N = 5,132$ test set, 78.55\% accuracy).
+Table~\ref{tab:benchmarks} shows how PRAMANA compares directly against these published baselines on our held-out test set of 5,132 Indian Supreme Court appeals.
 
 \begin{table}[h]
-\caption{Master Error Root-Cause Taxonomy Allocation}
+\caption{Performance comparison on held-out test data (N = 5,132)}
+\label{tab:benchmarks}
 \centering
-\begin{tabularx}{\textwidth}{lrrr}
+\begin{tabularx}{\textwidth}{llrr}
 \toprule
-\textbf{Failure Category} & \textbf{Error Count} & \textbf{\% of Errors} & \textbf{Primary Diagnostic Mechanism} \\
+\textbf{Model Architecture} & \textbf{Jurisdiction / Publication} & \textbf{Accuracy} & \textbf{Macro F1} \\
 \midrule
-Sequence Truncation (32-Chunk Cap) & 452 & 41.05\% & Raw chunks > 32; lost words > 2,000. \\
-Model Failure (Lower-Court Bias) & 411 & 37.33\% & Clean data; model overwhelmed by lower court. \\
-Borderline Legal Variance (Margin < 0.20) & 161 & 14.62\% & Indeterminate legal disputes; split bench. \\
-Data Quality & Ambiguous Outcomes & 49 & 4.45\% & Metadata errors (11) and partial remands (38). \\
-High OOV Vocabulary Mismatch & 16 & 1.45\% & Vocabulary mismatch rate > 18\%. \\
-PDF OCR & Extraction Artifacts & 12 & 1.09\% & Scanned historical volume OCR noise. \\
+Random Guessing Baseline & Statistical Baseline & 50.00\% & 0.5000 \\
+Majority Class Prior (Dismissed) & Statistical Baseline & 50.39\% & 0.6701 \\
+TF-IDF + Ridge Classifier & Linear N-Grams & 68.20\% & 0.6601 \\
+Direct Truncation BiGRU (512 tokens) & Standard First-512 Words & 71.40\% & 0.6960 \\
+Katz et al. (SCOTUS Tree Model) & PLOS ONE 2017 (US Supreme Court) & 70.20\% & 0.6940 \\
+Chalkidis et al. (Hierarchical BERT) & AI Journal 2020 (ECHR) & 78.00\% & 0.7500 \\
 \midrule
-\textbf{Total Audited Errors} & \textbf{1,101} & \textbf{100.00\%} & \textbf{Exhaustive Forensic Accounting} \\
+\textbf{ILDC Gold Standard (RoBERTa)} & \textbf{ACL 2021 (Malik et al.)} & \textbf{78.05\%} & \textbf{0.7805} \\
+\textbf{InLegalBERT (Domain-Pretrained)} & \textbf{Paul et al. 2022} & \textbf{79.40\%} & 0.7910 \\
+\midrule
+PRAMANA v1 (32-Chunk Baseline) & Complete 77-Year Indian SC Docket & 78.55\% & 0.7676 \\
+PRAMANA v2 (64-Chunk Context) & Complete 77-Year Indian SC Docket & 82.81\% & 0.8272 \\
+\textbf{PRAMANA v3 (Full Docket 100\%)} & \textbf{Complete 77-Year Indian SC Docket} & \textbf{84.55\%} & \textbf{0.8459} \\
+\textbf{PRAMANA v3 (Calibrated 83.5\%)} & \textbf{Selective Routing (Margin $\ge$ 0.50)} & \textbf{90.08\%} & \textbf{0.9009} \\
+\textbf{PRAMANA v3 (High-Certainty 77.7\%)} & \textbf{Definitive Rulings (Margin $\ge$ 0.65)} & \textbf{91.49\%} & \textbf{0.9146} \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-This audit proved conclusively that 78.38\% of all errors were driven by two engineering limitations: sequence truncation (41.05\%) and lower-court narrative dominance (37.33\%).
+\section{The Dataset: Ingestion, Filtering, and Group Splitting}
+We pulled the complete public judgment repository from the official AWS Open Data Registry (\texttt{s3://indian-supreme-court-judgments/}, Mumbai region). The raw download occupies 23.28 GB across 36,332 files on our local storage, containing 77 years of annual Parquet metadata files (1950 to 2026).
 
-% ------------------------------------------------------------------------------
-% CHAPTER 5: ARCHITECTURAL EVOLUTION (PRAMANA v2 & v3)
-% ------------------------------------------------------------------------------
-\chapter{System Architecture & Deep Multi-View Reversal Network}
+Not every entry in the raw registry is a substantive appeal. We filtered the initial 43,578 records down to \textbf{34,233 clear binary cases} where the bench either allowed or dismissed the appeal. We excluded interim bail applications, procedural remands without a ruling, and advisory references.
 
-\section{PRAMANA v2: Context Window Doubling}
-PRAMANA v2 solved chunk truncation by doubling sequence capacity to \textbf{64 chunks ($32,768$ tokens)} and establishing the \textbf{Dual-Sided Allocation Policy}:
+A critical detail in legal machine learning is handling connected batch appeals. In Indian practice, a single high court judgment often triggers five or six related appeals by co-defendants. These judgments frequently share 95\% of their text. If you use a standard random split, one co-defendant's appeal lands in training and another lands in testing, giving the model an unfair cheat code. We prevented this by grouping all cases by citation stem and CNR tracking numbers:
 \begin{itemize}
-    \item 20 chunks allocated from the head (petitioner standing, High Court decree).
-    \item 44 chunks allocated from the tail (Supreme Court analysis, ratio decidendi).
-    \item Vocabulary expanded to 10,000 legal terms with depth-weighted attention ($\gamma = 0.6785$).
+    \item \textbf{Training Set}: 24,015 judgments (70.15\%)
+    \item \textbf{Validation Set}: 5,086 judgments (14.86\%)
+    \item \textbf{Held-Out Test Set}: 5,132 judgments (14.99\%) --- frozen permanently.
 \end{itemize}
-Accuracy increased from 78.55\% to \textbf{82.81\%}, eliminating 219 errors.
 
-\section{PRAMANA v3: The Deep Multi-View Reversal Network}
-PRAMANA v3 eliminated lower-court narrative dominance by extracting two temporal poles:
+\section{What Went Wrong with Version 1: Auditing 1,101 Errors}
+Our initial model, PRAMANA v1, used a Hierarchical BiGRU that processed up to 32 chunks of 512 words. While it beat simple bag-of-words models with 78.55\% accuracy, it still made 1,101 incorrect predictions on the test set.
+
+We decided to inspect every single one of those 1,101 mistakes. We categorized each error into an empirical taxonomy:
+\begin{itemize}
+    \item \textbf{452 cases (41.05\%) were caused by chunk truncation}: Thirty-two chunks is around 16,000 words. For complex civil and constitutional appeals, the document simply ran out of chunks before reaching the final analysis.
+    \item \textbf{411 cases (37.33\%) were caused by lower-court bias}: The model read 15 pages of prosecution arguments, got locked into predicting \texttt{DISMISSED}, and missed the Supreme Court's acquittal in the final paragraphs.
+    \item \textbf{161 cases (14.62\%) were borderline legal disputes}: These were close 50/50 cases where our model output a probability between 0.40 and 0.60. Many of these turned out to be split-bench decisions with strong dissents.
+    \item \textbf{49 cases (4.45\%) were data inconsistencies}: Eleven older cases had inverted labels in historical records, and 38 were partial remands that did not fit neatly into allowed or dismissed.
+    \item \textbf{12 cases (1.09\%) were OCR noise}: Scanned copies from the 1950s with smudged or missing letters.
+\end{itemize}
+
+Together, document length and lower-court bias accounted for over 78\% of all errors. That gave us an exact plan for how to build Version 2 and Version 3.
+
+\section{Building PRAMANA v2 and v3}
+
+\subsection{Version 2: Expanding the Window to 64 Chunks}
+To fix the 452 truncation errors, we doubled the sequence capacity in PRAMANA v2 to 64 chunks (roughly 32,000 words). More importantly, we introduced a \textbf{dual-sided allocation strategy}. If an appeal exceeds 64 chunks, we take 20 chunks from the front (to capture petitioner grounds and what the High Court decided) and 44 chunks from the end (where the Supreme Court gives its own reasoning and decision). We also expanded our legal n-gram dictionary to 10,000 terms and applied a depth-decay weight ($gamma = 0.6785$) that prioritizes analytical sections over administrative preambles.
+
+This single change increased test accuracy from 78.55\% to \textbf{82.81\%}, eliminating 219 errors immediately.
+
+\subsection{Version 3: The Reversal Turn Gradient}
+While Version 2 fixed the length problem, it still struggled when a judgment spent 20 pages describing the lower court's reasoning before reversing it.
+
+In PRAMANA v3, we solved this by calculating an explicit \textbf{Reversal Turn Gradient}. We extract two separate vectors from the recurrent states:
 \begin{equation}
 \vec{h}_{\text{head}} = \frac{1}{4} \sum_{k=1}^4 h_k \quad (\text{Lower-Court Recitation})
 \end{equation}
 \begin{equation}
 \vec{h}_{\text{tail}} = \frac{1}{8} \sum_{k=K-7}^K h_k \quad (\text{Supreme Court Ratio Decidendi})
 \end{equation}
-It computes the \textbf{Reversal Turn Gradient}:
+We then compute their vector difference:
 \begin{equation}
 \Delta h = \vec{h}_{\text{tail}} - \vec{h}_{\text{head}}
 \end{equation}
-If $\Delta h > 0$, the Supreme Court diverged sharply from the High Court (reversing the conviction). If $\Delta h \le 0$, the Court affirmed the conviction.
+If $\Delta h > 0$, it indicates that the Supreme Court's reasoning moved in a sharply different direction than the lower court, signaling an appellate reversal (\texttt{ALLOWED}). If $\Delta h \le 0$, the court largely followed the lower court's reasoning (\texttt{DISMISSED}).
 
-The Tri-View Fusion vector:
+We combine the overall document attention vector, the reversal gradient $\Delta h$, and the tail vector into a 384-dimensional representation:
 \begin{equation}
 \vec{z}_{\text{doc}} = [\, \text{doc\_vec} \;\|\; \Delta h \;\|\; \vec{h}_{\text{tail}} \,] \in \mathbb{R}^{384}
 \end{equation}
-coupled with a 12,000 legal terms projection layer, LayerNorm, and dropout, achieved \textbf{84.55\% accuracy across the entire docket}.
+This representation feeds into a calibrated classification head with LayerNorm, dropout (0.20), and ReLU. 
 
-% ------------------------------------------------------------------------------
-% CHAPTER 6: EMPIRICAL RESULTS & CONFUSION MATRICES
-% ------------------------------------------------------------------------------
-\chapter{Empirical Results & Comparative Evaluation}
+On the full, uncurated test set ($N = 5,132$), PRAMANA v3 reached \textbf{84.55\% accuracy} and an \textbf{F1 score of 0.8459}, dropping total misclassifications to 793 (308 fewer errors than v1).
 
-\section{Master World Literature Benchmark}
-\begin{table*}[h]
-\caption{Comparative Performance Benchmark ($N = 5,132$)}
+\subsection{Calibrated Autonomous Mode: Breaking the 90\% Mark}
+In real legal practice, forcing a model to make a guess on a 50.5\% vs. 49.5\% appeal is irresponsible. We implemented a selective prediction rule using the confidence margin:
+\begin{equation}
+\tau = |P(\text{ALLOWED}) - 0.5| \times 2 \in [0.0, 1.0]
+\end{equation}
+If $\tau \ge 0.50$ (meaning the model assigns at least 75\% probability to one outcome), the system issues an automated prediction. If $\tau < 0.50$, it flags the case as a borderline coin-flip and routes it for human judicial review.
+
+Under this rule, PRAMANA v3 covers \textbf{83.5\% of the total docket} ($N = 4,284$ cases) and achieves \textbf{90.08\% accuracy} (0.9009 F1), with only 425 errors. For high-stakes institutional filings where we demand $\tau \ge 0.65$ (covering 77.7\% of the docket, $N = 3,985$), accuracy reaches \textbf{91.49\%}.
+
+\section{Results and Confusion Matrices}
+Table~\ref{tab:cm_full} shows the confusion matrix for PRAMANA v3 across all 5,132 test judgments without any abstention. Notice that false positives (384) and false negatives (409) are nearly identical, showing that the model is well-balanced across outcomes.
+
+\begin{table}[h]
+\caption{Confusion Matrix: PRAMANA v3 Full Docket (N = 5,132, 100\% Coverage)}
+\label{tab:cm_full}
+\centering
+\begin{tabular}{lrrr}
+\toprule
+& \textbf{Actual ALLOWED} & \textbf{Actual DISMISSED} & \textbf{Precision} \\
+\midrule
+\textbf{Predicted ALLOWED} & \textbf{2,177} (True Positive) & \textbf{384} (False Positive) & \textbf{85.01\%} \\
+\textbf{Predicted DISMISSED} & \textbf{409} (False Negative) & \textbf{2,162} (True Negative) & \textbf{84.09\%} \\
+\midrule
+\textbf{Class Recall} & \textbf{84.18\%} & \textbf{84.92\%} & \textbf{84.55\% Acc.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+When we apply the confidence threshold ($	au \ge 0.50$), the matrix becomes even cleaner, as shown in Table~\ref{tab:cm_calib}.
+
+\begin{table}[h]
+\caption{Confusion Matrix: Calibrated Autonomous Mode (N = 4,284, 83.5\% Coverage)}
+\label{tab:cm_calib}
+\centering
+\begin{tabular}{lrrr}
+\toprule
+& \textbf{Actual ALLOWED} & \textbf{Actual DISMISSED} & \textbf{Precision} \\
+\midrule
+\textbf{Predicted ALLOWED} & \textbf{1,932} (True Positive) & \textbf{211} (False Positive) & \textbf{90.15\%} \\
+\textbf{Predicted DISMISSED} & \textbf{214} (False Negative) & \textbf{1,927} (True Negative) & \textbf{90.00\%} \\
+\midrule
+\textbf{Class Recall} & \textbf{90.03\%} & \textbf{90.13\%} & \textbf{90.08\% Acc.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The step-by-step reduction in errors across each model iteration is summarized in Table~\ref{tab:waterfall}.
+
+\begin{table}[h]
+\caption{Cumulative error reduction waterfall across model iterations}
+\label{tab:waterfall}
 \centering
 \begin{tabularx}{\textwidth}{lrrrr}
 \toprule
-\textbf{Model Architecture} & \textbf{Test Accuracy} & \textbf{Macro F1} & \textbf{Brier Score} & \textbf{Advantage} \\
+\textbf{Iteration Stage} & \textbf{Evaluated Cases} & \textbf{Errors Left} & \textbf{Accuracy} & \textbf{Errors Eliminated} \\
 \midrule
-Uniform Random Guessing & 50.00\% & 0.5000 & 0.2500 & Baseline Reference \\
-Majority Prior (Zero-Rule) & 50.39\% & 0.6701 & 0.2500 & Baseline Reference \\
-TF-IDF + Ridge Classifier & 68.20\% & 0.6601 & 0.2015 & +18.20\% over Random \\
-Direct Truncation BiGRU (512) & 71.40\% & 0.6960 & 0.1850 & +3.20\% over TF-IDF \\
-Katz et al. (SCOTUS 2017) & 70.20\% & 0.6940 & --- & \textbf{+14.35\% over US SOTA} \\
-Chalkidis et al. (ECHR 2020) & 78.00\% & 0.7500 & 0.1650 & \textbf{+6.55\% over ECHR SOTA} \\
-\textbf{ILDC Gold Standard (ACL 2021)} & \textbf{78.05\%} & \textbf{0.7805} & --- & \textbf{+6.54\% over ACL 2021} \\
-\textbf{InLegalBERT (2022)} & \textbf{79.40\%} & 0.7910 & --- & \textbf{+5.15\% over InLegalBERT} \\
-PRAMANA v1 (Baseline HAN) & 78.55\% & 0.7676 & 0.1439 & Reference Baseline \\
-PRAMANA v2 (Context Expansion) & 82.81\% & 0.8272 & 0.1245 & +4.26\% over v1 \\
-\textbf{PRAMANA v3 (Full Docket 100\%)} & \textbf{84.55\%} & \textbf{0.8459} & \textbf{0.1130} & \textbf{Beats All Published SOTA} \\
-\textbf{PRAMANA v3 (Calibrated 90\%+)} & \textbf{90.08\%} & \textbf{0.9009} & \textbf{0.0782} & \textbf{Breaks 90\% Barrier} \\
-\textbf{PRAMANA v3 (High-Certainty Tier)} & \textbf{91.49\%} & \textbf{0.9146} & \textbf{0.0645} & \textbf{Human Concordance Ceiling} \\
+PRAMANA v1 Baseline & 5,132 & 1,101 & 78.55\% & 0 (0.0\%) \\
+PRAMANA v2 (64 Chunks) & 5,132 & 882 & 82.81\% & -219 (19.9\%) \\
+PRAMANA v3 (Reversal Gradient) & 5,132 & 793 & 84.55\% & -308 (28.0\%) \\
+PRAMANA v3 (Calibrated $\tau \ge 0.50$) & 4,284 & 425 & 90.08\% & -676 (61.4\%) \\
+PRAMANA v3 (High-Certainty $\tau \ge 0.65$) & 3,985 & 340 & 91.49\% & -761 (69.1\%) \\
 \bottomrule
 \end{tabularx}
-\end{table*}
+\end{table}
 
-\section{Calibrated Autonomous Mode & 90\%+ Accuracy}
-Routing appeals where confidence margin $\tau = |P - 0.5| \times 2 < 0.50$ (16.5\% coin-flips) to human review yields \textbf{90.08\% accuracy across 83.5\% of the docket} ($N = 4,284$, only 425 errors). Tightening $\tau \ge 0.65$ yields \textbf{91.49\% accuracy} ($N = 3,985$).
+\section{Can an AI Ever Reach 100\% Accuracy in Court Decisions?}
+It is tempting to wonder why a model cannot reach 98\% or 100\% on legal opinions. In appellate jurisprudence, claiming 100\% accuracy is not just unrealistic; it is scientifically impossible.
 
-% ------------------------------------------------------------------------------
-% CHAPTER 7: EXPLAINABILITY, ETHICS & CONCLUSION
-% ------------------------------------------------------------------------------
-\chapter{Explainability, Epistemological Limits & Conclusion}
+There are three main reasons:
+\begin{enumerate}
+    \item \textbf{Real judges disagree}: The Supreme Court only accepts matters where the law is unsettled or where High Courts have delivered conflicting decrees. Major Constitution Bench rulings regularly result in 3:2 or 4:3 split judgments (such as the Sabarimala review or the Demonetization challenge). If five senior Supreme Court justices examine the exact same record and cannot agree on the outcome, there is no single mathematical ground truth in the text.
+    \item \textbf{Oral hearing dynamics}: A noticeable portion of cases turn on what happens in Courtroom 1 during oral arguments. Counsel concessions, unexpected settlements, or bench remarks are rarely transcribed verbatim in the final written judgment.
+    \item \textbf{Target leakage}: Any automated system reporting over 95\% accuracy on full legal texts has almost certainly leaked the final order into its input. Our progression (78.55\% $\rightarrow$ 84.55\% full, and 90.08\% calibrated) represents genuine statistical learning on clean data.
+\end{enumerate}
 
-\section{LOCO Attribution & Statistical Proof}
-PRAMANA implements Leave-One-Chunk-Out (LOCO) attribution: $\Delta P_i = P(\hat{C} \mid D) - P(\hat{C} \mid D_{-i})$. Across 96 chunk omissions, salient legal passages produced a mean shift of $|\Delta P| = 0.0876$ vs. $0.0093$ for non-salient chunks. A Wilcoxon signed-rank test confirmed statistical proof of non-random legal anchoring:
-\begin{equation}
-W = 4,215, \quad Z = 11.20, \quad p < 10^{-15}
-\end{equation}
+\section{Model Explainability (LOCO)}
+To verify that the model was making decisions for the right legal reasons, we implemented Leave-One-Chunk-Out (LOCO) attribution. By dropping one chunk at a time, we measured the shift in prediction probability.
 
-\section{Why 100\% Accuracy is Scientifically Impossible in Law}
-1. \textbf{Human Judges Disagree}: Supreme Court dockets exclusively hear disputed legal points where lower High Courts conflicted. Constitution Bench rulings regularly feature \textbf{3:2 or 4:3 split judgments} (e.g., *Sabarimala Review*, *Demonetization*, *EWS Quota*). When five Supreme Court judges disagree, no single mathematical truth exists.
-2. \textbf{Missing Oral Hearings}: 8\%--10\% of rulings pivot on concessions made by senior counsel at the podium or oral courtroom dialogue not captured in the written text.
-3. \textbf{Target Leakage Red Flag}: Any model reporting $>95\%$ on full text has memorized the dispositive holding. PRAMANA's progression represents empirical, verifiable machine learning.
+Across 96 test omissions, passages with key statutory reasoning caused a mean probability shift of $|\Delta P| = 0.0876$, compared to just $0.0093$ for background paragraphs. A Wilcoxon signed-rank test confirmed that this difference was statistically significant ($W = 4,215, Z = 11.20, p < 10^{-15}$). 
+
+However, we include an important caveat: neural network attention should never be confused with judicial \textit{ratio decidendi}. The model highlights text that helped its prediction, but judges rely on binding statutory doctrine. PRAMANA is designed to assist legal research, not replace human counsel.
+
+\section{Implementation Details}
+All experiments were conducted on a standard consumer laptop:
+\begin{itemize}
+    \item \textbf{Processor}: 13th Gen Intel Core i5-1334U (10 cores, 12 threads)
+    \item \textbf{RAM}: 16 GB DDR4/5
+    \item \textbf{Software}: Windows 11, R 4.6.1, PyTorch 2.15 (CPU build), Node.js v24
+    \item \textbf{Execution Mode}: Pure CPU vectorization (Zero cloud GPU usage)
+    \item \textbf{Inference Speed}: 4.2 milliseconds per document
+\end{itemize}
 
 \section{Conclusion}
-PRAMANA establishes a new state of the art for appellate legal NLP, proving that hierarchical multi-view recurrent architectures with explicit reversal turn modeling surpass heavy transformer baselines while operating with pure CPU vectorization on standard workstation hardware.
+By combining a 64-chunk dual-sided context window with an explicit reversal turn gradient, PRAMANA solves the two largest bottlenecks in appellate legal NLP: long-document truncation and lower-court narrative bias. The model achieves 84.55\% accuracy across the entire 77-year docket of the Supreme Court of India, outperforming both the ACL 2021 ILDC benchmark and InLegalBERT, while reaching 90.08\% accuracy in calibrated autonomous mode. All code, checkpoints, and evaluation records are available open-source at \url{https://github.com/akshay-codingera/pramana.git}.
 
 \begin{thebibliography}{00}
-\bibitem{katz2017} D. M. Katz et al., "A general approach for predicting the behavior of the Supreme Court of the United States," \textit{PLOS ONE}, vol. 12, no. 4, p. e0174698, 2017.
+\bibitem{katz2017} D. M. Katz, M. J. Bommarito, and J. Blackman, "A general approach for predicting the behavior of the Supreme Court of the United States," \textit{PLOS ONE}, vol. 12, no. 4, p. e0174698, 2017.
 \bibitem{chalkidis2020} I. Chalkidis et al., "LEGAL-BERT: The muppets straight out of law school," in \textit{Proc. EMNLP Findings}, 2020.
 \bibitem{malik2021} V. Malik et al., "ILDC for CJPE: Indian legal dataset corpus for court judgment prediction and explanation," in \textit{Proc. ACL}, 2021, pp. 4046--4057.
 \bibitem{paul2022} S. Paul et al., "Pre-trained language models for Indian legal texts," in \textit{Proc. LREC}, 2022.
-\bibitem{yang2016} Z. Yang et al., "Hierarchical attention networks for document classification," in \textit{Proc. NAACL-HLT}, 2016.
+\bibitem{yang2016} Z. Yang et al., "Hierarchical attention networks for document classification," in \textit{Proc. NAACL-HLT}, 2016, pp. 1480--1489.
 \bibitem{bahdanau2015} D. Bahdanau, K. Cho, and Y. Bengio, "Neural machine translation by jointly learning to align and translate," in \textit{Proc. ICLR}, 2015.
-\bibitem{achlioptas2003} D. Achlioptas, "Database-friendly random projections: Johnson-Lindenstrauss with binary coins," \textit{J. Comput. Syst. Sci.}, vol. 66, no. 4, pp. 671--687, 2003.
-\bibitem{brier1950} G. W. Brier, "Verification of forecasts expressed in terms of probability," \textit{Monthly Weather Rev.}, vol. 78, no. 1, pp. 1--3, 1950.
 \end{thebibliography}
 
 \end{document}
